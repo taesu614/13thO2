@@ -366,5 +366,4 @@ public class CardManager : MonoBehaviour
         }
     }
     #endregion
-    //test
 }
