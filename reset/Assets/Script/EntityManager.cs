@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 
 public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
 {
@@ -33,7 +34,6 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
     Entity targetPickEntity;
     WaitForSeconds delay1 = new WaitForSeconds(1);
     List<Monster> monsterBuffer;
-    MonsterPatternManager monsterpattern;
 
     void Start()
     {
@@ -110,9 +110,7 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
             {
                 yield return delay1;
 
-                monsterpattern = GetComponent<MonsterPatternManager>(); // monsterpattern 컴포넌트 가져오기
-                monsterpattern.GetThisValue(selectEntity);
-                monsterpattern.ExecutePattern(selectEntity.monsterfunctionname);
+                selectEntity.ExecutePattern(selectEntity.monsterfunctionname);
                 //공격로직
             }
             else
@@ -145,14 +143,14 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
                 myEntities.Remove(selectEntity);
                 Destroy(selectEntity.gameObject);
                 entities = GameObject.FindGameObjectsWithTag("Monster");
-                break;
+                continue;
             }
             else
             {
                 otherEntites.Remove(selectEntity);
                 Destroy(selectEntity.gameObject);
                 entities = GameObject.FindGameObjectsWithTag("Monster");
-                break;
+                continue;
             }
         }
     }
@@ -317,5 +315,15 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
     {
         var targetEntites = isMine ? myEntities : otherEntites;
         targetEntites.ForEach(x => x.attackable = true);
+    }
+
+    public void CheckBuffDebuff()
+    {
+        GameObject[] entities = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject entityObject in entities)
+        {
+            Entity selectEntity = entityObject.GetComponent<Entity>();
+            selectEntity.DebuffPosion();
+        }
     }
 }

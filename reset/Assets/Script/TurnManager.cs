@@ -81,11 +81,20 @@ public class TurnManager : MonoBehaviour
     {
         myTurn = !myTurn;
         StartCoroutine(StartTurnCo());
-
     }
 
     public int GetNowTurn()      //SerializeField로 인한 보호수준으로 인해 값을 보내는 기능
     {
         return nowTurn;
+    }
+
+    public void BuffDebuffCheck()
+    {
+
+    }
+
+    public bool IsEndTurn()
+    {
+        return false;
     }
 }

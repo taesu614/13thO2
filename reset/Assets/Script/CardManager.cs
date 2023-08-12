@@ -258,14 +258,13 @@ public class CardManager : MonoBehaviour
             {
                 CostManager.Inst.SubtractCost(selectCard);
                 CostManager.Inst.ShowCost();
-                    UseCard();
+                UseCard();
                 IntrusionConditionCheck();
                 EntityManager.Inst.FindDieEntity();
                 TryPutCard(true);
+                EntityManager.Inst.CheckBuffDebuff();
             }
-
         }
-
     }
 
     void CardDrag()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,26 +7,33 @@ using DG.Tweening;
 
 public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´Ù¸¥ monsterSO¸¦ ¸¸µê
 {
+    private Dictionary<string, Action> monsterPatterns = new Dictionary<string, Action>();
     [SerializeField] SpriteRenderer entity;
     [SerializeField] SpriteRenderer charater;
     [SerializeField] TMP_Text healthTMP;
     [SerializeField] TMP_Text attackTMP;
 
     public Monster monster;
+    public CardManager cardmanager;
     public int attack;
-    public int health;
+    public int health = 40;
     public string monsterfunctionname;
     public bool isMine;
     public bool myTurn;
     public bool isDie;
     public bool isBossOrEmpty;
     public bool attackable;
+    //»óÅÂÀÌ»ó °ü·Ã
+    public bool debuffPoisonBool;
+    public int debuffPosionInt = 0;
     public Vector3 originPos;
-    int liveCount = 0;
+    public int liveCount = 0;
+    public int poisonCount = 0;
 
     void Start()
     {
         TurnManager.OnTurnStarted += OnTurnStarted;
+        monsterPatterns["Snail"] = () => SnailPattern();
     }
 
     void OnDestroy()
@@ -39,7 +47,16 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
             return;
 
         if (isMine == myTurn)
+        {
             liveCount++;
+            BuffDown(1);
+        }
+            
+    }
+
+    public void BuffDown(int count)  //¹öÇÁ Áö¼Ó½Ã°£À» ±ð´Â È¿°ú
+    {
+        poisonCount -= count;
     }
     public void Setup(Monster monster)
     {
@@ -52,7 +69,6 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         charater.sprite = this.monster.sprite;
         healthTMP.text = this.monster.health.ToString();
         attackTMP.text = this.monster.attack.ToString();
-
     }
 
     private void OnMouseDown()
@@ -108,5 +124,86 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
             transform.position = pos;
     }
 
+    #region Buff
 
+    public void DebuffPosion()
+    {
+        if(poisonCount > 0)    //º¸¿©Áö´Â È¿°úµµ Ãß°¡ÇØ¾ßÇÒ·Á³ª...
+        {
+            Debug.Log("test");
+            health--;
+            healthTMP.text = health.ToString();
+            return;
+        }
+    }
+
+    #endregion
+
+
+    #region MonsterPattern
+
+    private void SnailPattern()
+    {
+        // Player ÅÂ±×¸¦ °¡Áø ¸ðµç °ÔÀÓ ¿ÀºêÁ§Æ®¸¦ Ã£½À´Ï´Ù.
+        Entity playerEntity = GameObject.Find("MyPlayer").GetComponent<Entity>();
+        GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject playerObject in playerObjects)
+        {
+            // °¢ Player °ÔÀÓ ¿ÀºêÁ§Æ®¿¡¼­ TMP_Text ÄÄÆ÷³ÍÆ®¸¦ Ã£½À´Ï´Ù.
+            TMP_Text playerhealthTMP = playerObject.GetComponentInChildren<TMP_Text>();
+            if (playerhealthTMP != null)
+            {
+                // ÇöÀç HealthTMPÀÇ °ªÀ» °¡Á®¿Í¼­ int·Î º¯È¯
+                int currentHealth = int.Parse(playerhealthTMP.text);
+
+                if (health >= 5 && liveCount > 3)
+                {
+                    int random = UnityEngine.Random.Range(0, 10);
+                    if (random < 5)
+                    {
+                        playerEntity.health -= 4;
+                        currentHealth = playerEntity.health;
+                    }
+                    else
+                    {
+                        playerEntity.health -= 8;
+                        currentHealth = playerEntity.health;
+                    }
+                }
+                else if (health >= 5)
+                {
+                    // -5¸¦ ÇÏ°í °ª º¯°æ
+                    playerEntity.health -= 5;
+                    currentHealth = playerEntity.health;
+                }
+                else if (health < 5)
+                {
+                    Debug.Log("¸Íµ¶");
+                    playerEntity.poisonCount = 1;
+                }
+
+                playerhealthTMP.text = currentHealth.ToString();
+
+            }
+            else
+            {
+                Debug.LogWarning("HealthTMP not found in the Player GameObject.");
+            }
+        }
+    }
+
+    // ¸ó½ºÅÍ ÆÐÅÏ ½ÇÇà ¸Þ¼­µå
+    public void ExecutePattern(string patternName)
+    {
+        if (monsterPatterns.TryGetValue(patternName, out Action monsterPattern))
+        {
+            // ÇØ´ç Ä«µåÀÇ ±â´É ½ÇÇà
+            monsterPattern();
+        }
+        else
+        {
+            Debug.Log("MonsterPattern not found.");
+        }
+    }
+    #endregion MonsterPattern
 }

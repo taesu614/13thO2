@@ -50,6 +50,7 @@ public class CardFunctionManager : MonoBehaviour
         {
             // 각 Monster 게임 오브젝트에서 TMP_Text 컴포넌트를 찾습니다.
             TMP_Text healthTMP = monsterObject.GetComponentInChildren<TMP_Text>();
+            Entity thisEntity = monsterObject.GetComponent<Entity>();
 
             if (healthTMP != null)
             {
@@ -57,6 +58,7 @@ public class CardFunctionManager : MonoBehaviour
                 int currentHealth = int.Parse(healthTMP.text);
 
                 // -5를 하고 값 변경
+                thisEntity.health -= 5;
                 currentHealth -= 5;
                 healthTMP.text = currentHealth.ToString();
             }

@@ -132,6 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 15812642}
+  - component: {fileID: 15812643}
   m_Layer: 0
   m_Name: MyPlayer
   m_TagString: Player
@@ -161,6 +162,44 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &15812643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15812641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 372faebbd9f17a848be51eaf3e196bbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entity: {fileID: 0}
+  charater: {fileID: 0}
+  healthTMP: {fileID: 1007543093}
+  attackTMP: {fileID: 0}
+  monster:
+    name: 
+    grade: 
+    monsterfunctionname: 
+    sprite: {fileID: 0}
+    health: 0
+    attack: 0
+    percent: 0
+  cardmanager: {fileID: 0}
+  attack: 0
+  health: 100
+  monsterfunctionname: 
+  isMine: 0
+  myTurn: 0
+  isDie: 0
+  isBossOrEmpty: 0
+  attackable: 0
+  debuffPoisonBool: 0
+  debuffPosionInt: 0
+  originPos: {x: 0, y: 0, z: 0}
+  liveCount: 0
+  poisonCount: 0
 --- !u!1 &68311920
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,6 +422,7 @@ MonoBehaviour:
     health: 0
     attack: 0
     percent: 0
+  cardmanager: {fileID: 0}
   attack: 0
   health: 0
   monsterfunctionname: 
@@ -391,7 +431,11 @@ MonoBehaviour:
   isDie: 0
   isBossOrEmpty: 1
   attackable: 0
+  debuffPoisonBool: 0
+  debuffPosionInt: 0
   originPos: {x: 0, y: 0, z: 0}
+  liveCount: 0
+  poisonCount: 5
 --- !u!1 &185809266
 GameObject:
   m_ObjectHideFlags: 0
@@ -1008,7 +1052,6 @@ GameObject:
   m_Component:
   - component: {fileID: 357177815}
   - component: {fileID: 357177816}
-  - component: {fileID: 357177817}
   - component: {fileID: 357177818}
   m_Layer: 0
   m_Name: MyBoss
@@ -1084,39 +1127,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &357177817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 357177814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 372faebbd9f17a848be51eaf3e196bbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  entity: {fileID: 0}
-  charater: {fileID: 0}
-  healthTMP: {fileID: 0}
-  attackTMP: {fileID: 0}
-  monster:
-    name: 
-    grade: 
-    monsterfunctionname: 
-    sprite: {fileID: 0}
-    health: 0
-    attack: 0
-    percent: 0
-  attack: 0
-  health: 0
-  monsterfunctionname: 
-  isMine: 1
-  myTurn: 0
-  isDie: 0
-  isBossOrEmpty: 1
-  attackable: 0
-  originPos: {x: 0, y: 0, z: 0}
 --- !u!61 &357177818
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2276,8 +2286,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.827, y: 0.19}
-  m_SizeDelta: {x: 1.1528, y: 0.8246}
+  m_AnchoredPosition: {x: -4.031, y: 0.19}
+  m_SizeDelta: {x: 1.5608, y: 0.8246}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1007543093
 MonoBehaviour:
@@ -2299,7 +2309,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 40
+  m_text: 100
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2999,7 +3009,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1510336333
 GameObject:
@@ -3825,7 +3835,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1847514368
 GameObject:
