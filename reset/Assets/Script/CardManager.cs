@@ -36,6 +36,7 @@ public class CardManager : MonoBehaviour
     enum ECardState { Nothing, CanMouseOver, CanMouseDrag }
     int myPutCount; //엔티티 스폰
     bool intrusionencore = false;
+    bool intrusioncounter = false;
 
     private List<string> intrusionList = new List<string>();
 
@@ -184,7 +185,7 @@ public class CardManager : MonoBehaviour
     }
 
     #region MyCard
-    public void CardMouseOver(Card card)
+    public void CardMouseOver(Card card)    //카드 위에 마우스를 올려 놓을 때(사용 상태 X) 
     {
         if (eCardState == ECardState.Nothing)
             return;
@@ -193,18 +194,18 @@ public class CardManager : MonoBehaviour
         EnlargeCard(true, card);
     }
 
-    public void CardMouseExit(Card card)
+    public void CardMouseExit(Card card)    //카드 위에 마우스를 뗄 때(사용 상태 X) 
     {
         EnlargeCard(false, card);
     }
 
-    public void CardMouseDown()
+    public void CardMouseDown() //카드 사용 중 마우스 누를 때
     {
         if (eCardState != ECardState.CanMouseDrag)
         {
             return;    
         }
-        if(selectCard.cardtype =="Intrusion")
+        if(selectCard.cardtype =="Intrusion")   //클릭 시 현재 난입 개수, 중복 확인 용도
         {
             if (IsFullList())
             {
@@ -218,7 +219,7 @@ public class CardManager : MonoBehaviour
             }
                 
         }
-        if (costManager.CompareCost(selectCard))
+        if (costManager.CompareCost(selectCard))    //코스트 비교
         {   
             isMyCardDrag = true;
             if(onMyCardArea)
@@ -230,7 +231,7 @@ public class CardManager : MonoBehaviour
         GameManager.Inst.Notification("코스트가 부족하다");
     }
 
-    public void CardMouseUp()   //카드 사용
+    public void CardMouseUp()   //마우스를 뗄 때 카드 사용
     {
         isMyCardDrag = false;
 
@@ -256,6 +257,17 @@ public class CardManager : MonoBehaviour
             }
             else
             {
+                if (selectCard.selectable)
+                {
+                    GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+                    foreach(GameObject obj in monsters)
+                    {
+                        if (IsMouseCollidingWithObject(obj))
+                        {
+                            cardfuction.SetTarget(obj);
+                        }
+                    }
+                }
                 CostManager.Inst.SubtractCost(selectCard);
                 CostManager.Inst.ShowCost();
                 UseCard();
@@ -267,12 +279,18 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    void CardDrag()
+    void CardDrag() //카드 드래그 중일 때
     {
-        if(!onMyCardArea)
+        if (!onMyCardArea && !selectCard.selectable)
         {
             selectCard.MoveTransform(new PRS(Utils.MousePos, Utils.QI, selectCard.originPRS.scale), false);
         }
+        else if(!onMyCardArea && selectCard.selectable)     //선택 해야하는 케이스에 사용
+        {
+            selectCard.MoveTransform(new PRS(Utils.MousePos, Utils.QI, selectCard.originPRS.scale), false);
+            //Debug.Log("select");
+        }
+        
     }
 
     void DetectCardArea()
@@ -308,13 +326,14 @@ public class CardManager : MonoBehaviour
     }
 
     #endregion
-
-    #region Intrusion
+    //난입
+    #region Intrusion 
+    //앙코르
+    #region Encore
     public void SetIntrusionEncore()
     {
         intrusionencore = true;
     }
-
     public bool ConditionIntrusionEncore()  //앙코르 조건 확인
     {
         if (selectCard.cardtype == "Action" && EntityManager.Inst.IsDieEntity())
@@ -326,7 +345,27 @@ public class CardManager : MonoBehaviour
         cardfuction.UseSelectCard(selectCard.functionname);
         intrusionList.Remove("Encore"); //리스트 지우기
     }
+    #endregion
+    //반격
+    #region Counter
+    public void SetIntrusionCounter()
+    {
+        intrusioncounter = true;
+    }
+    public bool ConditionIntrusionCounter()  //반격 조건 확인
+    {
+        if (selectCard.cardtype == "Action" && EntityManager.Inst.IsDieEntity())
+            return true;
+        return false;
+    }
 
+    public void UseIntrusionCounter()    //반격 능력 발동
+    {
+        cardfuction.UseSelectCard(selectCard.functionname);
+        intrusionList.Remove("Counter"); //리스트 지우기
+    }
+
+    #endregion
 
     public void GetSelectCardType(string type, string functionName)
     {
@@ -357,7 +396,7 @@ public class CardManager : MonoBehaviour
         return false;
     }
 
-    public void IntrusionConditionCheck()
+    public void IntrusionConditionCheck()   //조건 확인용
     {
         if(intrusionencore == true && ConditionIntrusionEncore() == true)   //앙코르 조건 확인
         {
@@ -365,4 +404,21 @@ public class CardManager : MonoBehaviour
         }
     }
     #endregion
+
+    bool IsMouseCollidingWithObject(GameObject obj)
+    {
+        // 원하는 레이어 마스크 설정 (예: "Monster" 레이어만 고려)
+        int layerMask = LayerMask.GetMask("Entity");
+
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D hitInfo = Physics2D.Raycast(mousePosition, Vector2.zero, float.MaxValue, layerMask);
+
+        if (hitInfo.collider != null && hitInfo.collider.gameObject == obj)
+        {
+            // 마우스와 obj가 충돌한 경우
+            return true;
+        }
+
+        return false; // 충돌하지 않은 경우
+    }
 }

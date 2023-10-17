@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4f1d4a1046bf0394297f7263edaf269e
+guid: 56fe117c4a4b4834cb5855df1b4bf7ec
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -129,13 +129,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: puppet_0
+      name: Stella_face_0
       rect:
         serializedVersion: 2
-        x: 182
-        y: 288
-        width: 400
-        height: 400
+        x: 649
+        y: 1187
+        width: 600
+        height: 600
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,8 +143,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e805827cabe398048b2df9f626eff785
-      internalID: -36608714
+      spriteID: 36dc8fabe11a8d9478fc4632b84fb4d5
+      internalID: 1957732177
       vertices: []
       indices: 
       edges: []
@@ -160,7 +160,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      puppet_0: -36608714
+      Stella_face_0: 1957732177
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

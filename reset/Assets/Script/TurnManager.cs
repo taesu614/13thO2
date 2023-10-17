@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Random = UnityEngine.Random;  //랜덤 턴 삭제 시 삭제할 것
+using TMPro;
+using System.Xml.Schema;
 
 public class TurnManager : MonoBehaviour
 {
@@ -60,7 +62,9 @@ public class TurnManager : MonoBehaviour
 
     IEnumerator StartTurnCo()
     {
+        IsExistEnemy();
         isLoading = true;
+        FaceOnOff();
         if (myTurn)
         {
             costManager.CostSet();
@@ -80,6 +84,7 @@ public class TurnManager : MonoBehaviour
     public void EndTrun()
     {
         myTurn = !myTurn;
+        //EntityManager.Inst.DamagedReset();
         StartCoroutine(StartTurnCo());
     }
 
@@ -96,5 +101,44 @@ public class TurnManager : MonoBehaviour
     public bool IsEndTurn()
     {
         return false;
+    }
+
+    void FaceOnOff() //턴에 따라 화면 중앙 상단의 얼굴을 키고 끄고하는 작업 코드가 비효율 적이라 나중에 수정해야함.
+    {
+        Color off = new Color(128 / 255f, 128 / 255f, 128 / 255f, 255 / 255f);
+        Color on = new Color(255 / 255f, 255 / 255f, 255 / 255f, 255 / 255f);
+        if (myTurn)
+        {
+            GameObject.Find("Stella Face").GetComponent<SpriteRenderer>().color = on;
+            GameObject.Find("Enemy Face").GetComponent<SpriteRenderer>().color = off;
+        }
+        else
+        {
+            GameObject.Find("Enemy Face").GetComponent<SpriteRenderer>().color = on;
+            GameObject.Find("Stella Face").GetComponent<SpriteRenderer>().color = off;
+        }
+    }
+
+    void Achivement(int playerHp, int enemysHp) // 재미삼아 만들어본 달성도 표시 
+    {
+        print(playerHp);
+        int totalHp = playerHp + enemysHp;
+        float achivePercent = playerHp / totalHp;
+        print(achivePercent);
+        Transform stellaPower = GameObject.Find("Stella Power").transform;
+        stellaPower.localScale = new Vector3(achivePercent * 5, 0.7f, 1f);
+    }
+
+    public void IsExistEnemy() // Scene상의 몬스터를 찾아서 없으면 Scene을 이동하는 스크립트 
+    {
+        GameObject[] enemys = GameObject.FindGameObjectsWithTag("Monster");
+        int enemysHp = 0;
+        int playerHp = int.Parse(GameObject.Find("MyPlayer").GetComponentInChildren<TMP_Text>().text);
+        for (int i = 0; i < enemys.Length; i++)
+        {
+            enemysHp += int.Parse(enemys[i].GetComponentInChildren<TMP_Text>().text);
+        }
+        Achivement(playerHp, enemysHp); //미완성
+        if (enemys.Length == 0) { print("게임 끝!"); } // 여기에선 print로 했지만 후에 다른 기능 구현으로 바뀔 예정
     }
 }

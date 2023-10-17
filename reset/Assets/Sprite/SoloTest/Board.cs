@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Board : MonoBehaviour
 {
@@ -18,11 +19,12 @@ public class Board : MonoBehaviour
             return;
     }
 
-    private void OnMouseDown()
+    public void OnButtonClick()
     {
         Debug.Log("12345");
         BoardManager.Inst.EntityMouseDown(this);
     }
+
 
     private void OnMouseUp()
     {

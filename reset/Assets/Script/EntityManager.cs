@@ -38,8 +38,8 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
     void Start()
     {
         SetupMonsterBuffer();
-        AddEntity();
-        AddEntity();
+        AddEntity(0);
+        AddEntity(2.5f);
         TurnManager.OnTurnStarted += OnTurnStarted;
     }
 
@@ -72,9 +72,9 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
         return monster;
     }
 
-    void AddEntity()
+    void AddEntity(float distance)
     {
-        var entityObject = Instantiate(entityPrefab, new Vector3(4.3f, -1.5f, 0), Quaternion.identity);
+        var entityObject = Instantiate(entityPrefab, new Vector3(4.3f + distance, -1.5f, 0), Quaternion.identity);
         var monster = entityObject.GetComponent<Entity>();
         monster.Setup(PopMonster());
     }
@@ -317,13 +317,22 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
         targetEntites.ForEach(x => x.attackable = true);
     }
 
-    public void CheckBuffDebuff()
+    public void CheckBuffDebuff()   //버프 디버프 확인
     {
         GameObject[] entities = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject entityObject in entities)
         {
             Entity selectEntity = entityObject.GetComponent<Entity>();
             selectEntity.DebuffPosion();
+        }
+    }
+
+    public void DamagedReset()  //피해 여부 확인 리셋
+    {
+        Entity[] entities = GameObject.FindObjectsOfType<Entity>();
+        foreach (Entity entity in entities)
+        {
+            entity.isDamaged = false;
         }
     }
 }

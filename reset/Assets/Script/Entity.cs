@@ -21,6 +21,7 @@ public class Entity : MonoBehaviour //해당 내용을 통해 별자리 생성 계획 그래서 �
     public bool isMine;
     public bool myTurn;
     public bool isDie;
+    public bool isDamaged;
     public bool isBossOrEmpty;
     public bool attackable;
     //상태이상 관련
@@ -91,11 +92,9 @@ public class Entity : MonoBehaviour //해당 내용을 통해 별자리 생성 계획 그래서 �
 
     public bool Damaged(int damage)
     {
-        health -= damage;
         healthTMP.text = health.ToString();
-        
 
-        if(health <= 0)
+        if (health <= 0)
         {
             isDie = true;
             return true;

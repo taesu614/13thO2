@@ -20,6 +20,7 @@ public class Card : MonoBehaviour
     public PRS originPRS;
     public string functionname;
     public string cardtype;
+    public bool selectable;
 
     public void Setup(Item item, bool isMine)
     {
@@ -32,6 +33,7 @@ public class Card : MonoBehaviour
         acitveTMP.text = this.item.active;
         functionname = this.item.functionname;
         cardtype = this.item.cardtype;
+        selectable = this.item.selectable;
 
         if(this.item.color == 'R')  //여기 숫자 수정하면 글씨 색 바뀜
         {

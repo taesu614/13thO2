@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 897443476875653768}
   - component: {fileID: 8875967805005744813}
   - component: {fileID: 4148291011227122554}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Entity
   m_TagString: Monster
   m_Icon: {fileID: 0}
@@ -140,15 +140,21 @@ MonoBehaviour:
     health: 0
     attack: 0
     percent: 0
+  cardmanager: {fileID: 0}
   attack: 0
   health: 0
   monsterfunctionname: 
   isMine: 0
   myTurn: 0
   isDie: 0
+  isDamaged: 0
   isBossOrEmpty: 0
   attackable: 0
+  debuffPoisonBool: 0
+  debuffPosionInt: 0
   originPos: {x: 0, y: 0, z: 0}
+  liveCount: 0
+  poisonCount: 0
 --- !u!114 &4148291011227122554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,7 +183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6746904175922616828}
   - component: {fileID: 7084461899566804033}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +268,7 @@ GameObject:
   - component: {fileID: 3915515947234375499}
   - component: {fileID: 3713477569749644246}
   - component: {fileID: 4734321391002400042}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: AttackTMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -434,7 +440,7 @@ GameObject:
   - component: {fileID: 8232955279024564953}
   - component: {fileID: 5781874301824331500}
   - component: {fileID: 4657553434280404868}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HealthTMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}

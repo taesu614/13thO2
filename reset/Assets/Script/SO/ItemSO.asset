@@ -23,6 +23,7 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 39cd196c4425c5f4280b91b34a9bca02, type: 3}
     active: "\uCF54\uC2A4\uD2B8\uB97C 1 \uC5BB\uC2B5\uB2C8\uB2E4"
     percent: 1
+    selectable: 0
   - name: "\uB9E4\uB2EC\uB9B0 \uB0A8\uC790"
     functionname: TheHangedMan
     cost: 2
@@ -33,6 +34,7 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: e2dfca8c95517ae4ca5bffe1ba4feaf6, type: 3}
     active: "\uBAA8\uB4E0 \uC801\uC5D0\uAC8C \uD53C\uD574\uB97C 5 \uC90D\uB2C8\uB2E4"
     percent: 1
+    selectable: 0
   - name: "\uC559\uCF54\uB974"
     functionname: Encore
     cost: 2
@@ -44,3 +46,79 @@ MonoBehaviour:
     active: "\uC561\uC158 \uCE74\uB4DC\uB85C \uC0C1\uB300 \uC778\uD615\uC744 \uC4F0\uB7EC\uB728\uB838\uB2E4\uBA74,
       \uD574\uB2F9 \uC561\uC158\uCE74\uB4DC\uB97C \uD55C \uBC88 \uB354 \uC0AC\uC6A9\uD569\uB2C8\uB2E4"
     percent: 1
+    selectable: 0
+  - name: "\uBD80\uBA54\uB791"
+    functionname: Boomerang
+    cost: 2
+    colorimg: {fileID: 21300000, guid: 9b532bb1122a1f74aade2b1676bf5f5e, type: 3}
+    costcolor: {fileID: 21300000, guid: 2a2196063c47b384993a31b5751d2cdd, type: 3}
+    cardtype: Action
+    color: 71
+    sprite: {fileID: 0}
+    active: "\uC874\uC7AC\uAC10\uC774 \uAC00\uC7A5 \uB0AE\uC740 \uC778\uD615\uC744
+      \uB300\uC0C1\uC73C\uB85C 10\uC758 \uD53C\uD574\uB97C \uAC00\uD55C\uB2E4 \uC778\uD615\uC744
+      \uC4F0\uB7EC\uB728\uB838\uC744 \uACBD\uC6B0 \uBE44\uC6A9\uC5C6\uC774 \uC774
+      \uCE74\uB4DC\uB97C \uC7AC\uC0AC\uC6A9\uD55C\uB2E4 "
+    percent: 1
+    selectable: 0
+  - name: "\uAE30\uC138\uBAB0\uC774"
+    functionname: Rush
+    cost: 2
+    colorimg: {fileID: 21300000, guid: 1932e45efee00d24d960577d7fffe146, type: 3}
+    costcolor: {fileID: 21300000, guid: f563fc1c34c8b7245920cc36376ce737, type: 3}
+    cardtype: Action
+    color: 82
+    sprite: {fileID: 0}
+    active: "\uC874\uC7AC\uAC10\uC774 \uAC00\uC7A5 \uB0AE\uC740 \uC778\uD615\uC744
+      \uB300\uC0C1\uC73C\uB85C 10\uC758 \uD53C\uD574\uB97C \uAC00\uD55C\uB2E4 \uC778\uD615\uC744
+      \uC4F0\uB7EC\uB728\uB838\uC744 \uACBD\uC6B0 \uBE44\uC6A9\uC5C6\uC774 \uC774
+      \uCE74\uB4DC\uB97C \uC7AC\uC0AC\uC6A9\uD55C\uB2E4 "
+    percent: 1
+    selectable: 0
+  - name: "\uB3CC\uACA9"
+    functionname: Sortie
+    cost: 1
+    colorimg: {fileID: 21300000, guid: 1932e45efee00d24d960577d7fffe146, type: 3}
+    costcolor: {fileID: 21300000, guid: f563fc1c34c8b7245920cc36376ce737, type: 3}
+    cardtype: Action
+    color: 82
+    sprite: {fileID: 0}
+    active: "\uD53C\uD574\uB97C 5 \uAC00\uD55C\uB2E4."
+    percent: 1
+    selectable: 1
+  - name: "\uC815\uC9C1\uD55C \uC790\uC758 \uD39C\uCD09"
+    functionname: PenOfTruepenny
+    cost: 2
+    colorimg: {fileID: 21300000, guid: 1932e45efee00d24d960577d7fffe146, type: 3}
+    costcolor: {fileID: 21300000, guid: f563fc1c34c8b7245920cc36376ce737, type: 3}
+    cardtype: Action
+    color: 82
+    sprite: {fileID: 0}
+    active: "\uACE0\uC815\uD53C\uD574 12\uB97C \uAC00\uD55C\uB2E4."
+    percent: 1
+    selectable: 1
+  - name: "\uC6B0\uB2F9\uD0D5\uD0D5 \uBB34\uB300 \uC0AC\uACE0!"
+    functionname: StageAccident
+    cost: 3
+    colorimg: {fileID: 21300000, guid: 1932e45efee00d24d960577d7fffe146, type: 3}
+    costcolor: {fileID: 21300000, guid: f563fc1c34c8b7245920cc36376ce737, type: 3}
+    cardtype: Action
+    color: 82
+    sprite: {fileID: 0}
+    active: "\uBAA8\uB4E0 \uB300\uC0C1\uC758 \uC874\uC7AC\uAC10\uC744 \uD604\uC7AC
+      \uC874\uC7AC\uAC10\uC758 \uC808\uBC18\uC73C\uB85C \uB9CC\uB4E4\uACE0 \uC81C\uC555\uC744
+      \uBD80\uC5EC\uD55C\uB2E4."
+    percent: 1
+    selectable: 0
+  - name: "\uC608\uBC29\uC8FC\uC0AC"
+    functionname: Vaccination
+    cost: 1
+    colorimg: {fileID: 21300000, guid: 1932e45efee00d24d960577d7fffe146, type: 3}
+    costcolor: {fileID: 21300000, guid: f563fc1c34c8b7245920cc36376ce737, type: 3}
+    cardtype: Production
+    color: 71
+    sprite: {fileID: 0}
+    active: "\uC790\uC2E0\uC740 2 \uD53C\uD574\uB97C \uBC1B\uACE0 7 \uBC29\uC5B4\uB825\uACFC
+      \uBA74\uC5ED 2\uD68C\uB97C \uC5BB\uB294\uB2E4."
+    percent: 1
+    selectable: 0
