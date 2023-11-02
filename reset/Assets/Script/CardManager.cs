@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using DG.Tweening;
+using System.Linq;
 
 public class CardManager : MonoBehaviour
 {
@@ -257,35 +258,51 @@ public class CardManager : MonoBehaviour
             }
             else
             {
-                if (selectCard.selectable)
+                bool isObjectin = false;
+                GameObject[] monster = GameObject.FindGameObjectsWithTag("Monster");
+                GameObject[] player = GameObject.FindGameObjectsWithTag("Player");
+                GameObject[] entity = monster.Concat(player).ToArray();
+                if(selectCard.selectable)   //선택 가능한지 여부
                 {
-                    GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
-                    foreach(GameObject obj in monsters)
+                    foreach(GameObject obj in entity)
                     {
                         if (IsMouseCollidingWithObject(obj))
                         {
                             cardfuction.SetTarget(obj);
+                            isObjectin = true;
+                            break;
                         }
                     }
                 }
-                CostManager.Inst.SubtractCost(selectCard);
-                CostManager.Inst.ShowCost();
-                UseCard();
-                IntrusionConditionCheck();
-                EntityManager.Inst.FindDieEntity();
-                TryPutCard(true);
-                EntityManager.Inst.CheckBuffDebuff();
+                else
+                {
+                    //어차피 전체피해이므로
+                }
+                {
+                    isObjectin = true;
+                }
+                if(isObjectin)
+                {
+                    CostManager.Inst.SubtractCost(selectCard);
+                    CostManager.Inst.ShowCost();
+                    UseCard();
+                    IntrusionConditionCheck();
+                    EntityManager.Inst.FindDieEntity();
+                    TryPutCard(true);
+                    EntityManager.Inst.CheckBuffDebuff();
+                }
+
             }
         }
     }
 
     void CardDrag() //카드 드래그 중일 때
     {
-        if (!onMyCardArea && !selectCard.selectable)
+        if (!onMyCardArea)
         {
             selectCard.MoveTransform(new PRS(Utils.MousePos, Utils.QI, selectCard.originPRS.scale), false);
         }
-        else if(!onMyCardArea && selectCard.selectable)     //선택 해야하는 케이스에 사용
+        else if(!onMyCardArea)     //선택 해야하는 케이스에 사용
         {
             selectCard.MoveTransform(new PRS(Utils.MousePos, Utils.QI, selectCard.originPRS.scale), false);
             //Debug.Log("select");
@@ -407,13 +424,13 @@ public class CardManager : MonoBehaviour
 
     bool IsMouseCollidingWithObject(GameObject obj)
     {
-        // 원하는 레이어 마스크 설정 (예: "Monster" 레이어만 고려)
+        // 원하는 레이어 마스크 설정 (예: "Entity" 레이어만 고려)
         int layerMask = LayerMask.GetMask("Entity");
 
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        RaycastHit2D hitInfo = Physics2D.Raycast(mousePosition, Vector2.zero, float.MaxValue, layerMask);
+        Collider2D hitCollider = Physics2D.OverlapPoint(mousePosition, layerMask);
 
-        if (hitInfo.collider != null && hitInfo.collider.gameObject == obj)
+        if (hitCollider != null && hitCollider.gameObject == obj)
         {
             // 마우스와 obj가 충돌한 경우
             return true;

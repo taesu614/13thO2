@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Inst { get; private set; }
     void Awake() => Inst = this;
 
+    private int playerdamage;
+    private int enemydamage;
+
     [SerializeField] NotificatonPanel notificationPanel;
     void Start()
     {
@@ -51,4 +54,16 @@ public class GameManager : MonoBehaviour
     {
         notificationPanel.Show(message);
     }
+    /*public void SetPlayerDamage(int damage, GameObject target)
+    {
+        playerdamage = damage;
+        Debug.Log("값 전달 성공");
+        GetEnemyEffect();
+    }
+
+    private void GetEnemyEffect(GameManager target)
+    {
+
+    }
+    */
 }

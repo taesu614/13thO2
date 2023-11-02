@@ -18,11 +18,14 @@ public class CardFunctionManager : MonoBehaviour
     Card card;
     public CostManager costManager;
     public EntityManager entityManager;
-
+    GameManager gameManager;
     CardManager cardManager;
     PlayerManager playerManager;
 
     GameObject target;
+    GameObject[] monster;
+    GameObject findplayer;
+    Entity player;
     bool isRushUsed = false;
 
     // Start is called before the first frame update
@@ -40,6 +43,10 @@ public class CardFunctionManager : MonoBehaviour
         cardEffects["TheHangedMan"] = TheHangedMan;
         //cardEffects["TheDevil"] = () => TheDevil (myscore); // 람다식 사용 예시
         cardEffects["Encore"] = Encore;
+        cardEffects["TestBuffAttackUp"] = TestBuffAttackUp;
+        cardEffects["TestBuffAttackDown"] = TestBuffAttackDown;
+        cardEffects["TestAttack"] = TestAttack;
+        cardEffects["TestBuffShield"] = TestBuffShield;
     }
     //단일 적 gameobj 가져오는 함수
     public void GetEnemy(GameObject targetObj)
@@ -120,6 +127,7 @@ public class CardFunctionManager : MonoBehaviour
             currentHealth -= 5;
             healthTMP.text = currentHealth.ToString();
         }
+        ResetTarget();
     }
     private void Rush() // 기세몰이
     {
@@ -213,7 +221,7 @@ public class CardFunctionManager : MonoBehaviour
     {
         // Monster 태그를 가진 모든 게임 오브젝트를 찾습니다.
         GameObject[] monsterObjects = GameObject.FindGameObjectsWithTag("Monster");
-
+        
         foreach (GameObject monsterObject in monsterObjects)
         {
             // 각 Monster 게임 오브젝트에서 TMP_Text 컴포넌트를 찾습니다.
@@ -233,6 +241,31 @@ public class CardFunctionManager : MonoBehaviour
                 Debug.LogWarning("HealthTMP not found in the Monster GameObject.");
             }
         }
+    }
+
+    private void TestBuffAttackUp() //버프 테스트용 카드
+    {
+        FindPlayer();   //플레이어 찾기
+        player.MakeAttackUp(5, 2);    //엔티티에서 버프 리스트 생성
+        Debug.Log("버프 생성");
+    }
+
+    private void TestBuffAttackDown() //버프 테스트용 카드
+    {
+        FindPlayer();   //플레이어 찾기
+        player.MakeAttackDown(3, 2);    //엔티티에서 버프 리스트 생성
+        Debug.Log("버프 생성");
+    }
+
+    private void TestBuffShield()
+    {
+        FindPlayer();
+        player.MakeShield(10, 5);
+    }
+
+    private void TestAttack()   //선택한 대상에게 피해를 5 줍니다
+    {
+        Attack("anything", 5, "1");
     }
 
     private void Encore()
@@ -264,8 +297,63 @@ public class CardFunctionManager : MonoBehaviour
         }
     }
 
+    //메서드 유틸리티
+    #region method
+    
+    public void Attack(string targetcount, int damage, string type)   //대상에게 피해를 n 줍니다
+    {                                   //targetcount(anything: 단일 아무나, enemy:적, player: 플레이어, all:전체, enemyall: 적 전체 
+                                        //damage(피해량)
+        switch (targetcount)            //type 고정피해 등의 여부
+        {
+            case "anything":
+                //데미지 계산 과정
+                Debug.Log(target);
+                FindPlayer();
+                damage += player.GetAllAttackUpEffect();    //모든 공격력 증가 효과 가져와서 적용
+                damage -= player.GetAllAttackDownEffect();
+                Debug.Log(damage);
+                TMP_Text healthTMP = target.GetComponentInChildren<TMP_Text>();
+                Entity mytarget = target.GetComponent<Entity>();
+                // 현재 HealthTMP의 값을 가져와서 int로 변환
+                int currentHealth = int.Parse(healthTMP.text);
+                currentHealth -= damage;
+                mytarget.health -= damage;
+                healthTMP.text = currentHealth.ToString();
+                ResetTarget();
+        //target.GetComponents<Entity>();
+        break;
+            case "enemy":
+                break;
+            case "player":
+                break;
+            case "all":
+                break;
+            case "enemyall":
+                break;
+        }      
+    }
+    #endregion
+
+    #region methodUtils
     public void SetTarget(GameObject gameobject)
     {
         target = gameobject;
     }
+
+    private void ResetTarget()
+    {
+        target = null;
+    }
+
+    private void FindAllMonster()   //Monster 태그를 가진 모든 게임 오브젝트 찾기
+    {
+        monster = GameObject.FindGameObjectsWithTag("Monster");
+    }
+
+    private void FindPlayer()   //플레이어 태그를 가진 게임 오브젝트 찾기
+    {
+        findplayer = GameObject.FindGameObjectWithTag("Player");
+        player = findplayer.GetComponent<Entity>();
+    }
+    #endregion
 }

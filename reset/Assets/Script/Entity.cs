@@ -12,11 +12,14 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     [SerializeField] SpriteRenderer charater;
     [SerializeField] TMP_Text healthTMP;
     [SerializeField] TMP_Text attackTMP;
+    [SerializeField] TMP_Text shieldTMP;
 
+    List<StatusEffect> myStatusEffect = new List<StatusEffect>();
     public Monster monster;
     public CardManager cardmanager;
     public int attack;
     public int health = 40;
+    public int shield = 0;
     public string monsterfunctionname;
     public bool isMine;
     public bool myTurn;
@@ -41,7 +44,6 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     {
         TurnManager.OnTurnStarted -= OnTurnStarted;   
     }
-
     void OnTurnStarted(bool myTurn)
     {
         if (isBossOrEmpty)
@@ -64,6 +66,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         this.monster = monster;
         health = int.Parse(healthTMP.text); //¾Æ¸¶ ¶È°°Àº monsterSO¸¦ ¸¸µé¾î¼­ ¸ó½ºÅÍ¸¦ °ü¸®ÇÒµí
         attack = int.Parse(attackTMP.text);
+        shield = int.Parse(shieldTMP.text);
         monsterfunctionname = this.monster.monsterfunctionname;
 
         this.monster = monster;
@@ -110,6 +113,15 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     {
         return int.Parse(attackTMP.text);
     }
+    public int GetShieldTMP()      //SerializeField·Î ÀÎÇÑ º¸È£¼öÁØÀ¸·Î ÀÎÇØ °ªÀ» º¸³»´Â ±â´É
+    {
+        return int.Parse(shieldTMP.text);
+    }
+
+    public void SetShieldTMP()
+    {
+        shieldTMP.text = shield.ToString();
+    }
     public int GetLiveCount()
     {
         return liveCount;
@@ -150,18 +162,29 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         {
             // °¢ Player °ÔÀÓ ¿ÀºêÁ§Æ®¿¡¼­ TMP_Text ÄÄÆ÷³ÍÆ®¸¦ Ã£½À´Ï´Ù.
             TMP_Text playerhealthTMP = playerObject.GetComponentInChildren<TMP_Text>();
-            if (playerhealthTMP != null)
+            TMP_Text playershieldTMP = playerObject.GetComponentInChildren<TMP_Text>();
+            if (playerhealthTMP != null && playershieldTMP != null)
             {
                 // ÇöÀç HealthTMPÀÇ °ªÀ» °¡Á®¿Í¼­ int·Î º¯È¯
                 int currentHealth = int.Parse(playerhealthTMP.text);
-
-                if (health >= 5 && liveCount > 3)
+                int currentShield = int.Parse(playershieldTMP.text);
+                if (health >= 5 && liveCount > 3)   //Ã¼·ÂÀÌ 5 ÀÌ»ó, ÅÏ¼ö 3 ÃÊ°ú
                 {
                     int random = UnityEngine.Random.Range(0, 10);
                     if (random < 5)
                     {
-                        playerEntity.health -= 4;
-                        currentHealth = playerEntity.health;
+                        if(playerEntity.shield > 0)
+                        {
+                            playerEntity.shield -= 4;
+                            currentShield = playerEntity.shield;
+                            playerEntity.SetShieldTMP();
+                        }
+                        else
+                        {
+                            playerEntity.health -= 4;
+                            currentHealth = playerEntity.health;
+                        }
+
                     }
                     else
                     {
@@ -169,11 +192,19 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
                         currentHealth = playerEntity.health;
                     }
                 }
-                else if (health >= 5)
+                else if (health >= 5)   //Ã¼·Â 5 ÀÌ»ó Á¶°Ç
                 {
-                    // -5¸¦ ÇÏ°í °ª º¯°æ
-                    playerEntity.health -= 5;
-                    currentHealth = playerEntity.health;
+                    if (playerEntity.shield > 0)
+                    {
+                        Debug.Log("½¯µå ±ð´ÂÁß");
+                        playerEntity.shield -= 5;
+                        playerEntity.SetShieldTMP();
+                    }
+                    else
+                    {
+                        playerEntity.health -= 5;
+                        currentHealth = playerEntity.health;
+                    }
                 }
                 else if (health < 5)
                 {
@@ -205,4 +236,106 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         }
     }
     #endregion MonsterPattern
+
+    #region MakeEffect
+    public void MakeAttackUp(int damage, int count)
+    {
+        StatusEffect newEffect = new StatusEffect();
+        newEffect.SetPowerUp(damage, count);
+        myStatusEffect.Add(newEffect);
+    }
+
+    public void MakeAttackDown(int damage, int count)
+    {
+        StatusEffect newEffect = new StatusEffect();
+        newEffect.SetPowerDown(damage, count);
+        myStatusEffect.Add(newEffect);
+    }
+
+    public void MakeShield(int amount, int turn)
+    {
+        StatusEffect newEffect = new StatusEffect();
+        newEffect.SetShield(amount, turn);
+        myStatusEffect.Add(newEffect);
+        shield += amount;
+        SetShieldTMP();
+    }
+    #endregion
+    public int GetAllAttackUpEffect()   //°ø°Ý·Â Áõ°¡ È¿°ú °¡Á®¿À±â
+    {
+        int result = 0;
+        foreach(StatusEffect obj in myStatusEffect)
+        {
+            result += obj.GetAllAttackUp();
+        }
+        return result;
+    }
+
+    public int GetAllAttackDownEffect()   //°ø°Ý·Â °¨¼Ò È¿°ú °¡Á®¿À±â
+    {
+        int result = 0;
+        foreach (StatusEffect obj in myStatusEffect)
+        {
+            result += obj.GetAllAttackDown();
+        }
+        return result;
+    }
+}
+
+class StatusEffect
+{
+    public int powerUp; //°ø°Ý·Â Áõ°¡
+    public int powerUpCount;    //°ø°Ý·Â Áõ°¡ È½¼ö
+    public bool ispowerUp = false;
+    public int powerDown; //°ø°Ý·Â Áõ°¡
+    public int powerDownCount;    //°ø°Ý·Â Áõ°¡ È½¼ö
+    public bool ispowerDown = false;
+    public int shield;
+    public int shieldturn;
+    public bool isshield = false;
+
+    #region PowerUp
+    public void SetPowerUp(int amount, int count)
+    {
+        powerUp = amount;
+        powerUpCount = count;
+        ispowerUp = true;
+    }
+
+    public int GetAllAttackUp()
+    {
+        if (ispowerUp)
+        {
+            return powerUp;
+        }
+        return 0;
+    }
+    #endregion
+
+    #region PowerDown
+    public void SetPowerDown(int amount, int count)
+    {
+        powerDown = amount;
+        powerDownCount = count;
+        ispowerDown = true;
+    }
+
+    public int GetAllAttackDown()
+    {
+        if (ispowerDown)
+        {
+            return powerDown;
+        }
+        return 0;
+    }
+    #endregion
+
+    #region Shield
+    public void SetShield(int amount, int turn)
+    {
+        shield = amount;
+        shieldturn = turn;
+        isshield = true;
+    }
+    #endregion
 }
