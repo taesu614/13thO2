@@ -7,14 +7,14 @@ using DG.Tweening;
 
 public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´Ù¸¥ monsterSO¸¦ ¸¸µê
 {
-    private Dictionary<string, Action> monsterPatterns = new Dictionary<string, Action>();
+    private Dictionary<string, Action> monsterPatterns = new Dictionary<string, Action>();  //¹öÇÁ Á¦°Å ½Ã ¼±ÀÔ ¼±Ãâ ¹æ½ÄÀ¸·Î ¿¹»óµÇ¾î Å¥·Î ¼³Á¤
     [SerializeField] SpriteRenderer entity;
     [SerializeField] SpriteRenderer charater;
     [SerializeField] TMP_Text healthTMP;
     [SerializeField] TMP_Text attackTMP;
     [SerializeField] TMP_Text shieldTMP;
 
-    List<StatusEffect> myStatusEffect = new List<StatusEffect>();
+    Queue<StatusEffect> myStatusEffect = new Queue<StatusEffect>();
     public Monster monster;
     public CardManager cardmanager;
     public int attack;
@@ -33,6 +33,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     public Vector3 originPos;
     public int liveCount = 0;
     public int poisonCount = 0;
+    public bool canplay = true;
 
     void Start()
     {
@@ -242,23 +243,30 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     {
         StatusEffect newEffect = new StatusEffect();
         newEffect.SetPowerUp(damage, count);
-        myStatusEffect.Add(newEffect);
+        myStatusEffect.Enqueue(newEffect);
     }
 
     public void MakeAttackDown(int damage, int count)
     {
         StatusEffect newEffect = new StatusEffect();
         newEffect.SetPowerDown(damage, count);
-        myStatusEffect.Add(newEffect);
+        myStatusEffect.Enqueue(newEffect);
     }
 
     public void MakeShield(int amount, int turn)
     {
         StatusEffect newEffect = new StatusEffect();
         newEffect.SetShield(amount, turn);
-        myStatusEffect.Add(newEffect);
+        myStatusEffect.Enqueue(newEffect);
         shield += amount;
         SetShieldTMP();
+    }
+
+    public void MakeSleep(int turn)
+    {
+        StatusEffect newEffect = new StatusEffect();
+        newEffect.SetSleep(turn);
+        myStatusEffect.Enqueue(newEffect);
     }
     #endregion
     public int GetAllAttackUpEffect()   //°ø°Ý·Â Áõ°¡ È¿°ú °¡Á®¿À±â
@@ -280,6 +288,18 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         }
         return result;
     }
+
+    public void GetAllCC()
+    {
+        foreach (StatusEffect obj in myStatusEffect)
+        {
+            if(obj.GetSleep())
+            {
+                Debug.Log("You are sleep");
+                canplay = false;
+            }
+        }
+    }
 }
 
 class StatusEffect
@@ -293,6 +313,8 @@ class StatusEffect
     public int shield;
     public int shieldturn;
     public bool isshield = false;
+    public int sleepcount;
+    public bool issleep = false;
 
     #region PowerUp
     public void SetPowerUp(int amount, int count)
@@ -336,6 +358,23 @@ class StatusEffect
         shield = amount;
         shieldturn = turn;
         isshield = true;
+    }
+    #endregion
+
+    #region Sleep
+    public void SetSleep(int count)  //¼ö¸é »ý¼º
+    {
+        sleepcount = count;
+        issleep = true;
+    }
+
+    public bool GetSleep()
+    {
+        if(issleep)
+        {
+            return true;
+        }
+        return false;
     }
     #endregion
 }

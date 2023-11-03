@@ -47,6 +47,7 @@ public class CardFunctionManager : MonoBehaviour
         cardEffects["TestBuffAttackDown"] = TestBuffAttackDown;
         cardEffects["TestAttack"] = TestAttack;
         cardEffects["TestBuffShield"] = TestBuffShield;
+        cardEffects["TestSleep"] = TestSleep;
     }
     //단일 적 gameobj 가져오는 함수
     public void GetEnemy(GameObject targetObj)
@@ -268,6 +269,12 @@ public class CardFunctionManager : MonoBehaviour
         Attack("anything", 5, "1");
     }
 
+    private void TestSleep()
+    {
+        FindPlayer();
+        player.MakeSleep(2);
+    }
+
     private void Encore()
     {
         CardManager.Inst.SetIntrusionEncore();
@@ -307,6 +314,10 @@ public class CardFunctionManager : MonoBehaviour
         {
             case "anything":
                 //데미지 계산 과정
+                if(target == null)  //임시용 타겟이 없는 경우는 CardManager에서 수정해야함
+                {
+                    break;
+                }
                 Debug.Log(target);
                 FindPlayer();
                 damage += player.GetAllAttackUpEffect();    //모든 공격력 증가 효과 가져와서 적용

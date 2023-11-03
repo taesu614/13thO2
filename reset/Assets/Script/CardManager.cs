@@ -31,6 +31,7 @@ public class CardManager : MonoBehaviour
     List<Item> itemBuffer;
     Card selectCard;    //선택된 카드 담음
     CardFunctionManager cardfuction;
+    public Entity player;
     public CostManager costManager;
     bool isMyCardDrag;
     bool onMyCardArea;
@@ -202,96 +203,102 @@ public class CardManager : MonoBehaviour
 
     public void CardMouseDown() //카드 사용 중 마우스 누를 때
     {
-        if (eCardState != ECardState.CanMouseDrag)
+        if(player.canplay)
         {
-            return;    
-        }
-        if(selectCard.cardtype =="Intrusion")   //클릭 시 현재 난입 개수, 중복 확인 용도
-        {
-            if (IsFullList())
-            {
-                GameManager.Inst.Notification("난입은 최대 5개다.");
-                return;
-            }
-            if (IsIntrusionDuplication(selectCard.functionname))
-            {
-                GameManager.Inst.Notification("중복된 난입은 허용하지 않는다.");
-                return;
-            }
-                
-        }
-        if (costManager.CompareCost(selectCard))    //코스트 비교
-        {   
-            isMyCardDrag = true;
-            if(onMyCardArea)
+            if (eCardState != ECardState.CanMouseDrag)
             {
                 return;
             }
+            if (selectCard.cardtype == "Intrusion")   //클릭 시 현재 난입 개수, 중복 확인 용도
+            {
+                if (IsFullList())
+                {
+                    GameManager.Inst.Notification("난입은 최대 5개다.");
+                    return;
+                }
+                if (IsIntrusionDuplication(selectCard.functionname))
+                {
+                    GameManager.Inst.Notification("중복된 난입은 허용하지 않는다.");
+                    return;
+                }
 
+            }
+            if (costManager.CompareCost(selectCard))    //코스트 비교
+            {
+                isMyCardDrag = true;
+                if (onMyCardArea)
+                {
+                    return;
+                }
+
+            }
+            GameManager.Inst.Notification("코스트가 부족하다");
         }
-        GameManager.Inst.Notification("코스트가 부족하다");
     }
 
     public void CardMouseUp()   //마우스를 뗄 때 카드 사용
     {
-        isMyCardDrag = false;
-
-        if (eCardState != ECardState.CanMouseDrag)
-            return;
-        if (selectCard.cardtype == "Intrusion")
+        if(player.canplay)
         {
-            if (IsFullList())
-            {
-                return;
-            }
-            if(IsIntrusionDuplication(selectCard.functionname))
-            {
-                return;
-            }
+            isMyCardDrag = false;
 
-        }
-
-        if (costManager.CompareCost(selectCard))
-        {
-            if (onMyCardArea)
+            if (eCardState != ECardState.CanMouseDrag)
+                return;
+            if (selectCard.cardtype == "Intrusion")
             {
-            }
-            else
-            {
-                bool isObjectin = false;
-                GameObject[] monster = GameObject.FindGameObjectsWithTag("Monster");
-                GameObject[] player = GameObject.FindGameObjectsWithTag("Player");
-                GameObject[] entity = monster.Concat(player).ToArray();
-                if(selectCard.selectable)   //선택 가능한지 여부
+                if (IsFullList())
                 {
-                    foreach(GameObject obj in entity)
-                    {
-                        if (IsMouseCollidingWithObject(obj))
-                        {
-                            cardfuction.SetTarget(obj);
-                            isObjectin = true;
-                            break;
-                        }
-                    }
+                    return;
+                }
+                if (IsIntrusionDuplication(selectCard.functionname))
+                {
+                    return;
+                }
+
+            }
+
+            if (costManager.CompareCost(selectCard))
+            {
+                if (onMyCardArea)
+                {
                 }
                 else
                 {
-                    //어차피 전체피해이므로
-                }
-                {
-                    isObjectin = true;
-                }
-                if(isObjectin)
-                {
-                    CostManager.Inst.SubtractCost(selectCard);
-                    CostManager.Inst.ShowCost();
-                    UseCard();
-                    IntrusionConditionCheck();
-                    EntityManager.Inst.FindDieEntity();
-                    TryPutCard(true);
-                    EntityManager.Inst.CheckBuffDebuff();
-                }
+                    bool isObjectin = false;
+                    GameObject[] monster = GameObject.FindGameObjectsWithTag("Monster");
+                    GameObject[] player = GameObject.FindGameObjectsWithTag("Player");
+                    GameObject[] entity = monster.Concat(player).ToArray();
+                    if (selectCard.selectable)   //선택 가능한지 여부
+                    {
+                        foreach (GameObject obj in entity)
+                        {
+                            if (IsMouseCollidingWithObject(obj))
+                            {
+                                cardfuction.SetTarget(obj);
+                                isObjectin = true;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //어차피 전체피해이므로
+                    }
+                    {
+                        isObjectin = true;
+                    }
+                    if (isObjectin)
+                    {
+                        CostManager.Inst.SubtractCost(selectCard);
+                        CostManager.Inst.ShowCost();
+                        UseCard();
+                        IntrusionConditionCheck();
+                        EntityManager.Inst.FindDieEntity();
+                        TryPutCard(true);
+                        EntityManager.Inst.CheckBuffDebuff();
+                    }
 
+                }
             }
         }
     }

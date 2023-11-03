@@ -22,6 +22,8 @@ public class TurnManager : MonoBehaviour
     public bool myTurn;
     public int nowTurn = 0;
 
+    public Entity playerentity;
+
     enum ETurnMode { Random, My, Other }    //턴 수 정하는 부분 적 선제공격 가능성으로 삭제하지 않음
     WaitForSeconds delay05 = new WaitForSeconds(0.5f);
     WaitForSeconds delay07 = new WaitForSeconds(0.7f);
@@ -67,6 +69,7 @@ public class TurnManager : MonoBehaviour
         FaceOnOff();
         if (myTurn)
         {
+            playerentity.GetAllCC();
             costManager.CostSet();
             costManager.ShowCost();
             GameManager.Inst.Notification("나의 턴");

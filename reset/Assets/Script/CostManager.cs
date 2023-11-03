@@ -10,6 +10,10 @@ public class CostManager : MonoBehaviour
     [SerializeField] TMP_Text gcostTMP;
     [SerializeField] TMP_Text bcostTMP;
     public static CostManager Inst { get; private set; }
+    public GameObject playermaskprafab;
+    public Transform playerposition;
+    public GameObject player;
+
     void Awake() => Inst = this;
     private int mycost = 0;
     private int hasmycost;
@@ -69,5 +73,53 @@ public class CostManager : MonoBehaviour
         {
             bcost++;
         }
+    }
+    public void GetMyStarMask(string name)
+    {
+        Entity playerentityscript = player.GetComponent<Entity>();
+        switch (name)
+        {
+            case "sheep":
+                if(CompareRGB(name, rcost, gcost, bcost))
+                {
+                    SpawnMask(name);
+                    playerentityscript.MakeAttackUp(3, 9999);
+                    playerentityscript.MakeShield(5, 3);
+                }
+                break;
+            case "bull":
+                if (CompareRGB(name, rcost, gcost, bcost))
+                {
+                    SpawnMask(name);
+                }
+                break;
+            default:
+                Debug.Log("fail");
+                break;
+        }
+    }
+    private bool CompareRGB(string name, int r, int g, int b)   //RGB 코스트 비교용 메서드
+    {
+        switch(name)    //이름에 따라서 스위치문 발동 - 직관성 향상 및 속도 향상을 위해 if 대신 스위치문 사용
+        {
+            case "sheep":
+                if (r >= 5 && g >= 2 && b >= 3)
+                {
+                    return true;
+                }
+                break;
+            case "bull":
+                return true;
+        }
+        return false;
+    }
+
+    private void SpawnMask(string name)
+    {
+        Vector3 spawnposition = new Vector3(playerposition.position.x + 0.25f, playerposition.position.y + 0.25f, playerposition.position.z);    //플레이어 위치를 기준 0.25f 0.25f에 생성하기 위함
+        GameObject mask = Instantiate(playermaskprafab, spawnposition, Quaternion.identity);    //프리팹 생성 기본 기능
+        Mask mymask = playermaskprafab.GetComponent<Mask>();    //프리팹에서 Mask스크립트를 가져와서 
+        mymask.ChangeStarMaskImage(name);                       //이미지를 변경하기 위함
+        mask.transform.SetParent(playerposition);
     }
 }
