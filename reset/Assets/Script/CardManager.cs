@@ -238,13 +238,13 @@ public class CardManager : MonoBehaviour
 
     public void CardMouseUp()   //마우스를 뗄 때 카드 사용
     {
-        if(player.canplay)
+        if(player.canplay)  //카드 사용 행동 가능한지 체크 (ex: 기절)
         {
             isMyCardDrag = false;
 
             if (eCardState != ECardState.CanMouseDrag)
                 return;
-            if (selectCard.cardtype == "Intrusion")
+            if (selectCard.cardtype == "Intrusion")//난입 관련
             {
                 if (IsFullList())
                 {
@@ -255,9 +255,9 @@ public class CardManager : MonoBehaviour
                     return;
                 }
 
-            }
+            }   
 
-            if (costManager.CompareCost(selectCard))
+            if (costManager.CompareCost(selectCard))//코스트 비교
             {
                 if (onMyCardArea)
                 {
@@ -265,9 +265,9 @@ public class CardManager : MonoBehaviour
                 else
                 {
                     bool isObjectin = false;
-                    GameObject[] monster = GameObject.FindGameObjectsWithTag("Monster");
-                    GameObject[] player = GameObject.FindGameObjectsWithTag("Player");
-                    GameObject[] entity = monster.Concat(player).ToArray();
+                    GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+                    GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+                    GameObject[] entity = monsters.Concat(players).ToArray();
                     if (selectCard.selectable)   //선택 가능한지 여부
                     {
                         foreach (GameObject obj in entity)
@@ -280,22 +280,47 @@ public class CardManager : MonoBehaviour
                             }
                         }
                     }
-                    else
-                    {
-                        //어차피 전체피해이므로
-                    }
+                    else if(!selectCard.selectable)  //전체피해이므로 오브젝트가 들어가있다 가정
                     {
                         isObjectin = true;
                     }
-                    if (isObjectin)
+                    else   //타겟이 설정되지 않거나, 전체 피해가 아닌 경우
                     {
-                        CostManager.Inst.SubtractCost(selectCard);
-                        CostManager.Inst.ShowCost();
-                        UseCard();
-                        IntrusionConditionCheck();
-                        EntityManager.Inst.FindDieEntity();
-                        TryPutCard(true);
-                        EntityManager.Inst.CheckBuffDebuff();
+                        isObjectin = false;
+                    }
+                    if (isObjectin) //본격적인 카드 기능 실행, false라면 실행되지 않으므로 카드 사용 안됨
+                    {
+                        if(player.issleep)  //수면 상태에서 
+                        {
+                            if(player.GetSleep())   //수면 효과까지 발동하여 참이 됐다면
+                            {
+                                CostManager.Inst.SubtractCost(selectCard);
+                                CostManager.Inst.ShowCost();
+                                IntrusionConditionCheck();
+                                TryPutCard(true);
+                            }
+                            else
+                            {
+                                CostManager.Inst.SubtractCost(selectCard);
+                                CostManager.Inst.ShowCost();
+                                UseCard();
+                                IntrusionConditionCheck();
+                                EntityManager.Inst.FindDieEntity();
+                                TryPutCard(true);
+                                EntityManager.Inst.CheckBuffDebuff();
+                            }
+                        }
+                        else
+                        {
+                            CostManager.Inst.SubtractCost(selectCard);
+                            CostManager.Inst.ShowCost();
+                            UseCard();
+                            IntrusionConditionCheck();
+                            EntityManager.Inst.FindDieEntity();
+                            TryPutCard(true);
+                            EntityManager.Inst.CheckBuffDebuff();
+                        }
+
                     }
 
                 }

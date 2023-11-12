@@ -18,9 +18,9 @@ public class CostManager : MonoBehaviour
     private int mycost = 0;
     private int hasmycost;
     private bool can;
-    int rcost = 0;
-    int gcost = 0;
-    int bcost = 0;
+    int rcost = 10;
+    int gcost = 10;
+    int bcost = 10;
 
     public void ShowCost()
     {
@@ -38,7 +38,7 @@ public class CostManager : MonoBehaviour
         hasmycost = mycost;
     }
 
-    public void CostSetNewCost(int cost)
+    public void CostSetNewCost(int cost)    //코스트를 원하는 코스트(int cost)로 설정
     {
         hasmycost = cost;
         ShowCost();
@@ -77,25 +77,34 @@ public class CostManager : MonoBehaviour
     public void GetMyStarMask(string name)
     {
         Entity playerentityscript = player.GetComponent<Entity>();
-        switch (name)
+        if(playerentityscript.hasmask)
         {
-            case "sheep":
-                if(CompareRGB(name, rcost, gcost, bcost))
-                {
-                    SpawnMask(name);
-                    playerentityscript.MakeAttackUp(3, 9999);
-                    playerentityscript.MakeShield(5, 3);
-                }
-                break;
-            case "bull":
-                if (CompareRGB(name, rcost, gcost, bcost))
-                {
-                    SpawnMask(name);
-                }
-                break;
-            default:
-                Debug.Log("fail");
-                break;
+            Debug.Log("You have mask");
+        }
+        else
+        {
+            switch (name)
+            {
+                case "sheep":
+                    if (CompareRGB(name, rcost, gcost, bcost))
+                    {
+                        SpawnMask(name);
+                        playerentityscript.MakeAttackUp(3, 9999);
+                        playerentityscript.MakeShield(5, 3);
+                        playerentityscript.MakeImmuneSleep(3);
+                        playerentityscript.hasmask = true;
+                    }
+                    break;
+                case "bull":
+                    if (CompareRGB(name, rcost, gcost, bcost))
+                    {
+                        SpawnMask(name);
+                    }
+                    break;
+                default:
+                    Debug.Log("fail");
+                    break;
+            }
         }
     }
     private bool CompareRGB(string name, int r, int g, int b)   //RGB 코스트 비교용 메서드
@@ -105,6 +114,10 @@ public class CostManager : MonoBehaviour
             case "sheep":
                 if (r >= 5 && g >= 2 && b >= 3)
                 {
+                    rcost = rcost - 5;
+                    gcost = gcost - 2;
+                    bcost = bcost - 3;
+                    ShowCost();
                     return true;
                 }
                 break;

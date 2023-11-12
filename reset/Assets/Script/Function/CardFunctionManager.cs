@@ -22,10 +22,13 @@ public class CardFunctionManager : MonoBehaviour
     CardManager cardManager;
     PlayerManager playerManager;
 
-    GameObject target;
-    GameObject[] monster;
+    GameObject findtarget;
+    Entity target;
+    GameObject[] findmonsters;
     GameObject findplayer;
     Entity player;
+    Entity[] monsters;
+    Entity targetentity;
     bool isRushUsed = false;
 
     // Start is called before the first frame update
@@ -35,8 +38,8 @@ public class CardFunctionManager : MonoBehaviour
         cardEffects["Counter"] = Counter;
         cardEffects["Vaccination"] = Vaccination;
         cardEffects["StageAccident"] = StageAccident;
-        cardEffects["PenOfTruepenny"] = PenOfTruepenny;
-        cardEffects["Sortie"] = Sortie;
+        //cardEffects["PenOfTruepenny"] = PenOfTruepenny;
+        //cardEffects["Sortie"] = Sortie;
         cardEffects["Boomerang"] = Boomerang;
         cardEffects["Rush"] = Rush;
         cardEffects["Moon"] = Moon;
@@ -47,14 +50,16 @@ public class CardFunctionManager : MonoBehaviour
         cardEffects["TestBuffAttackDown"] = TestBuffAttackDown;
         cardEffects["TestAttack"] = TestAttack;
         cardEffects["TestBuffShield"] = TestBuffShield;
+        cardEffects["TestFaint"] = TestFaint;
         cardEffects["TestSleep"] = TestSleep;
+        cardEffects["TestImmuneSleep"] = TestImmuneSleep;
     }
     //단일 적 gameobj 가져오는 함수
-    public void GetEnemy(GameObject targetObj)
-    {
-        target = targetObj;
-        Debug.Log("확인");
-    }
+    //public void GetEnemy(GameObject targetObj)
+    //{
+    //    target = targetObj;
+    //    Debug.Log("확인");
+    //}
 
     // 카드 액션,난입,연출별로 region다시 설정 할 것
     #region CardEffects
@@ -99,7 +104,7 @@ public class CardFunctionManager : MonoBehaviour
             healthTMP.text = currentHealth.ToString();
         }
     }
-    private void PenOfTruepenny() //정직한 자의 펜촉 고정피해 TrueDamage라 설정 따로 함수를 만들어서 고정피해 전용 데미지계산 적용
+    /*private void PenOfTruepenny() //정직한 자의 펜촉 고정피해 TrueDamage라 설정 따로 함수를 만들어서 고정피해 전용 데미지계산 적용
     {
         Debug.Log("정직한 자의 펜촉!!");
         GameObject monsterObject = target;
@@ -113,8 +118,8 @@ public class CardFunctionManager : MonoBehaviour
             currentHealth -= 12;
             healthTMP.text = currentHealth.ToString();
         }
-    }
-    private void Sortie() //돌격
+    }*/
+    /*private void Sortie() //돌격
     {
         Debug.Log("돌격!!");
         GameObject monsterObject = target;
@@ -129,7 +134,8 @@ public class CardFunctionManager : MonoBehaviour
             healthTMP.text = currentHealth.ToString();
         }
         ResetTarget();
-    }
+    }*/
+
     private void Rush() // 기세몰이
     {
         Debug.Log("기세몰이!!");
@@ -258,7 +264,7 @@ public class CardFunctionManager : MonoBehaviour
         Debug.Log("버프 생성");
     }
 
-    private void TestBuffShield()
+    private void TestBuffShield()   
     {
         FindPlayer();
         player.MakeShield(10, 5);
@@ -269,10 +275,19 @@ public class CardFunctionManager : MonoBehaviour
         Attack("anything", 5, "1");
     }
 
-    private void TestSleep()
+    private void TestFaint()    //플레이어 수면 
     {
-        FindPlayer();
-        player.MakeSleep(2);
+        Faint("anything", 3);
+    }
+
+    private void TestSleep()    //플레이어 수면 
+    {
+        Sleep("anything", 3);
+    }
+
+    private void TestImmuneSleep()  //플레이어 수면 면역
+    {
+        ImmuneSleep("anything", 3);
     }
 
     private void Encore()
@@ -306,30 +321,19 @@ public class CardFunctionManager : MonoBehaviour
 
     //메서드 유틸리티
     #region method
-    
+    //버프가 아닌 모든 메서드의 넘길 매개변수는
+    //타겟, 수치, 지속시간(혹은 횟수), 기타 내용들 순서
     public void Attack(string targetcount, int damage, string type)   //대상에게 피해를 n 줍니다
     {                                   //targetcount(anything: 단일 아무나, enemy:적, player: 플레이어, all:전체, enemyall: 적 전체 
                                         //damage(피해량)
         switch (targetcount)            //type 고정피해 등의 여부
         {
             case "anything":
-                //데미지 계산 과정
-                if(target == null)  //임시용 타겟이 없는 경우는 CardManager에서 수정해야함
-                {
-                    break;
-                }
-                Debug.Log(target);
                 FindPlayer();
                 damage += player.GetAllAttackUpEffect();    //모든 공격력 증가 효과 가져와서 적용
                 damage -= player.GetAllAttackDownEffect();
-                Debug.Log(damage);
-                TMP_Text healthTMP = target.GetComponentInChildren<TMP_Text>();
-                Entity mytarget = target.GetComponent<Entity>();
-                // 현재 HealthTMP의 값을 가져와서 int로 변환
-                int currentHealth = int.Parse(healthTMP.text);
-                currentHealth -= damage;
-                mytarget.health -= damage;
-                healthTMP.text = currentHealth.ToString();
+                target.health -= damage;
+                target.SetHealthTMP();
                 ResetTarget();
         //target.GetComponents<Entity>();
         break;
@@ -343,12 +347,70 @@ public class CardFunctionManager : MonoBehaviour
                 break;
         }      
     }
+
+    public void Faint(string targetcount, int turn)
+    {
+        switch (targetcount)            
+        {
+            case "anything":
+                target.MakeFaint(turn);
+                break;
+            case "enemy":
+                break;
+            case "player":
+                break;
+            case "all":
+                break;
+            case "enemyall":
+                break;
+        }
+    }
+
+    public void Sleep(string targetcount, int turn)
+    {
+        switch (targetcount)
+        {
+            case "anything":
+                target.MakeSleep(turn);
+                break;
+            case "enemy":
+                break;
+            case "player":
+                break;
+            case "all":
+                break;
+            case "enemyall":
+                break;
+        }
+    }
+
+    public void ImmuneSleep(string targetcount, int turn)
+    {
+        switch (targetcount)
+        {
+            case "anything":
+                Debug.Log(target);
+                target.MakeImmuneSleep(turn);
+                break;
+            case "enemy":
+                break;
+            case "player":
+                FindPlayer();
+                player.MakeImmuneSleep(turn);
+                break;
+            case "all":
+                break;
+            case "enemyall":
+                break;
+        }
+    }
     #endregion
 
     #region methodUtils
-    public void SetTarget(GameObject gameobject)
+    public void SetTarget(GameObject gameobject)    //카드매니저를 통해 찾은 게임 오브젝트의 엔티티 추출
     {
-        target = gameobject;
+        findtarget = gameobject;
+        target = findtarget.GetComponent<Entity>();
     }
 
     private void ResetTarget()
@@ -356,12 +418,17 @@ public class CardFunctionManager : MonoBehaviour
         target = null;
     }
 
-    private void FindAllMonster()   //Monster 태그를 가진 모든 게임 오브젝트 찾기
+    private void FindAllMonster()   //Monster 태그를 가진 모든 게임 오브젝트 찾아 엔티티 추출
     {
-        monster = GameObject.FindGameObjectsWithTag("Monster");
+        findmonsters = GameObject.FindGameObjectsWithTag("Monster");
+        monsters = new Entity[findmonsters.Length];
+        for(int i = 0; i < findmonsters.Length; i++)
+        {
+            monsters[i] = findmonsters[i].GetComponent<Entity>();
+        }
     }
 
-    private void FindPlayer()   //플레이어 태그를 가진 게임 오브젝트 찾기
+    private void FindPlayer()   //플레이어 태그를 가진 게임 오브젝트 찾아 엔티티 추출
     {
         findplayer = GameObject.FindGameObjectWithTag("Player");
         player = findplayer.GetComponent<Entity>();

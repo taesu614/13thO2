@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
+using Random = UnityEngine.Random;  //·£´ý »ç¿ëÀ» À§ÇÔ
 
 public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´Ù¸¥ monsterSO¸¦ ¸¸µê
 {
@@ -34,6 +35,8 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     public int liveCount = 0;
     public int poisonCount = 0;
     public bool canplay = true;
+    public bool issleep = false;
+    public bool hasmask = false;
 
     void Start()
     {
@@ -117,6 +120,11 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     public int GetShieldTMP()      //SerializeField·Î ÀÎÇÑ º¸È£¼öÁØÀ¸·Î ÀÎÇØ °ªÀ» º¸³»´Â ±â´É
     {
         return int.Parse(shieldTMP.text);
+    }
+
+    public void SetHealthTMP()  //Ã¼·ÂÀ» health·Î ¼³Á¤
+    {
+        healthTMP.text = health.ToString();
     }
 
     public void SetShieldTMP()
@@ -241,6 +249,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     #region MakeEffect
     public void MakeAttackUp(int damage, int count)
     {
+        Debug.Log("Effect - Attack Up");
         StatusEffect newEffect = new StatusEffect();
         newEffect.SetPowerUp(damage, count);
         myStatusEffect.Enqueue(newEffect);
@@ -248,6 +257,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
 
     public void MakeAttackDown(int damage, int count)
     {
+        Debug.Log("Effect - Attack Down");
         StatusEffect newEffect = new StatusEffect();
         newEffect.SetPowerDown(damage, count);
         myStatusEffect.Enqueue(newEffect);
@@ -255,6 +265,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
 
     public void MakeShield(int amount, int turn)
     {
+        Debug.Log("Effect - Shield");
         StatusEffect newEffect = new StatusEffect();
         newEffect.SetShield(amount, turn);
         myStatusEffect.Enqueue(newEffect);
@@ -262,10 +273,28 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         SetShieldTMP();
     }
 
-    public void MakeSleep(int turn)
+    public void MakeFaint(int turn) //±âÀý »ý¼º
     {
+        Debug.Log("Effect - Faint");
+        StatusEffect newEffect = new StatusEffect();
+        newEffect.SetFaint(turn);
+        myStatusEffect.Enqueue(newEffect);
+    }
+
+    public void MakeSleep(int turn) //¼ö¸é »ý¼º
+    {
+        Debug.Log("Effect - Sleep");
         StatusEffect newEffect = new StatusEffect();
         newEffect.SetSleep(turn);
+        myStatusEffect.Enqueue(newEffect);
+        issleep = true;
+    }
+
+    public void MakeImmuneSleep(int turn)   //¼ö¸é ¸é¿ª »ý¼º
+    {
+        Debug.Log("Effect - Immnue Sleep");
+        StatusEffect newEffect = new StatusEffect();
+        newEffect.SetImmuneSleep(turn);
         myStatusEffect.Enqueue(newEffect);
     }
     #endregion
@@ -293,34 +322,53 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     {
         foreach (StatusEffect obj in myStatusEffect)
         {
-            if(obj.GetSleep())
+            if(obj.GetFaint())
             {
-                Debug.Log("You are sleep");
+                Debug.Log("You are faint");
                 canplay = false;
             }
         }
+    }
+
+    public bool GetSleep()  //ÀÓ½Ã¿ë
+    {
+        int sleep = Random.Range(0, 10);    //0~9ÀÇ ³­¼ö
+        foreach (StatusEffect obj in myStatusEffect)
+        {
+            if (obj.GetImmuneSleep())
+            {
+                Debug.Log("I can't sleep");
+                sleep = 100;
+                break;
+            }
+        }
+        Debug.Log(sleep);
+        if (sleep < 7)   //0,1,2,3,4,5,6 = 70% = ½ÇÆÐ
+        {
+            Debug.Log("I sleep");
+            return true;
+        }
+        Debug.Log("I don't sleep");
+        return false;
     }
 }
 
 class StatusEffect
 {
-    public int powerUp; //°ø°Ý·Â Áõ°¡
-    public int powerUpCount;    //°ø°Ý·Â Áõ°¡ È½¼ö
     public bool ispowerUp = false;
-    public int powerDown; //°ø°Ý·Â Áõ°¡
-    public int powerDownCount;    //°ø°Ý·Â Áõ°¡ È½¼ö
     public bool ispowerDown = false;
-    public int shield;
-    public int shieldturn;
-    public bool isshield = false;
-    public int sleepcount;
-    public bool issleep = false;
-
+    public bool isshield = false;   //½¯µå Á¸Àç ¿©ºÎ
+    public bool isfaint = false;    //±âÀý Á¸Àç ¿©ºÎ
+    public bool issleep = false;    //¼ö¸é Á¸Àç ¿©ºÎ
+    public bool isimmunesleep = false;
+    public int effectamount;    //È¿°úÀÇ ¾ç
+    public int effectcount;   //È½¼ö
+    public int effectturn;    //Áö¼Ó ÅÏ ¼ö
     #region PowerUp
     public void SetPowerUp(int amount, int count)
     {
-        powerUp = amount;
-        powerUpCount = count;
+        effectamount = amount;
+        effectcount = count;
         ispowerUp = true;
     }
 
@@ -328,7 +376,7 @@ class StatusEffect
     {
         if (ispowerUp)
         {
-            return powerUp;
+            return effectamount;
         }
         return 0;
     }
@@ -337,8 +385,8 @@ class StatusEffect
     #region PowerDown
     public void SetPowerDown(int amount, int count)
     {
-        powerDown = amount;
-        powerDownCount = count;
+        effectamount = amount;
+        effectcount = count;
         ispowerDown = true;
     }
 
@@ -346,7 +394,7 @@ class StatusEffect
     {
         if (ispowerDown)
         {
-            return powerDown;
+            return effectamount;
         }
         return 0;
     }
@@ -355,23 +403,57 @@ class StatusEffect
     #region Shield
     public void SetShield(int amount, int turn)
     {
-        shield = amount;
-        shieldturn = turn;
+        effectamount = amount;
+        effectturn = turn;
         isshield = true;
     }
     #endregion
 
-    #region Sleep
-    public void SetSleep(int count)  //¼ö¸é »ý¼º
+    #region Faint
+    public void SetFaint(int turn)  //¼ö¸é »ý¼º
     {
-        sleepcount = count;
-        issleep = true;
+        effectturn = turn;
+        isfaint = true;
     }
 
-    public bool GetSleep()
+    public bool GetFaint()  //ÇØ´ç À§Ä¡¿¡¼­ ¼ö¸é ¸é¿ª Ã¼Å©
     {
-        if(issleep)
+        if(isfaint)
         {
+            return true;
+        }
+        return false;
+    }
+    #endregion
+
+    #region Sleep
+    public void SetSleep(int turn)
+    {
+        effectturn = turn;
+    }
+
+    /*public bool GetSleep()  //»ç¿ëÇÒ ¶§ canplay¸¦ ¹Ù·Î ¼³Á¤ÇÔ
+    {
+        int sleep = Random.Range(0, 10);    //0~9ÀÇ ³­¼ö
+        Debug.Log(sleep);
+        if(sleep < 7)   //0,1,2,3,4,5,6 = 70% = ½ÇÆÐ
+        {
+            return false;
+        }
+        return true;
+    }*/
+
+    public void SetImmuneSleep(int turn)
+    {
+        effectturn = turn;
+        isimmunesleep = true;
+    }
+
+    public bool GetImmuneSleep()    
+    {
+        if (isimmunesleep)
+        {
+            Debug.Log(isimmunesleep);
             return true;
         }
         return false;

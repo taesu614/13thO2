@@ -105,6 +105,11 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
         foreach(GameObject entityObject in entities)
         {
             Entity selectEntity = entityObject.GetComponent<Entity>();
+            selectEntity.GetAllCC();    //엔티티에게서 CC효과 불러옴
+            if(selectEntity.canplay == false)
+            {
+                continue;
+            }
             // selectEntity가 여전히 null인 경우, 기본 동작 수행
             if (selectEntity != null)
             {
