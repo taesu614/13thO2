@@ -353,8 +353,8 @@ public class CardManager : MonoBehaviour
     {
         if (isEnlarge)
         {
-            Vector3 enlargePos = new Vector3(card.originPRS.pos.x, -3.0f, -0.1f);
-            card.MoveTransform(new PRS(enlargePos, Utils.QI, Vector3.one * 0.1f), false);
+            Vector3 enlargePos = new Vector3(card.originPRS.pos.x, -3.5f, -0.1f);
+            card.MoveTransform(new PRS(enlargePos, Utils.QI, Vector3.one * 0.075f), false);
         }
         else
             card.MoveTransform(card.originPRS, false);

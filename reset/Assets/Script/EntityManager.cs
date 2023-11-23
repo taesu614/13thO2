@@ -7,6 +7,9 @@ using TMPro;
 public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
 {
     public static EntityManager Inst { get; private set; }
+    public delegate void EntityEvent(); //델리게이트 선언
+    public static event EntityEvent EventEntitySpawn;   //몬스터 생성됨 알림용
+    public static event EntityEvent EventEntityDestroy; //몬스터 파괴됨 알림용
     private void Awake()
     {
         Inst = this; // 싱글톤 인스턴스 설정
@@ -77,6 +80,7 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
         var entityObject = Instantiate(entityPrefab, new Vector3(4.3f + distance, -1.5f, 0), Quaternion.identity);
         var monster = entityObject.GetComponent<Entity>();
         monster.Setup(PopMonster());
+        EventEntitySpawn(); //이벤트 몬스터 스폰 알림
     }
 
     void OnDestroy()
@@ -152,6 +156,7 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
             }
             else
             {
+                EventEntityDestroy();   //몬스터 파괴 알림
                 otherEntites.Remove(selectEntity);
                 Destroy(selectEntity.gameObject);
                 entities = GameObject.FindGameObjectsWithTag("Monster");

@@ -374,15 +374,19 @@ MonoBehaviour:
     cost: 0
     colorimg: {fileID: 0}
     costcolor: {fileID: 0}
+    cardtype: 
     color: 0
     sprite: {fileID: 0}
     active: 
     percent: 0
+    selectable: 0
   originPRS:
     pos: {x: 0, y: 0, z: 0}
     rot: {x: 0, y: 0, z: 0, w: 0}
     scale: {x: 0, y: 0, z: 0}
   functionname: 
+  cardtype: 
+  selectable: 0
 --- !u!114 &5911291124298497491
 MonoBehaviour:
   m_ObjectHideFlags: 0
