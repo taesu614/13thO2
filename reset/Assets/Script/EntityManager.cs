@@ -41,9 +41,25 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
     void Start()
     {
         SetupMonsterBuffer();
+        SetPlayer();
         AddEntity(0);
         AddEntity(2.5f);
         TurnManager.OnTurnStarted += OnTurnStarted;
+    }
+
+    void SetPlayer()
+    {
+        GameObject savedata = GameObject.Find("SaveData");
+        if(!savedata)   //실행 편하게 하려고 만든 곳 제출 전 지울 것
+        {
+            savedata = GameObject.Find("willdelete");
+        }
+        SaveData playerdata = savedata.GetComponent<SaveData>();    //전투 시작 전 저장된 데이터
+        GameObject player = GameObject.Find("MyPlayer");
+        Entity playernow = player.GetComponent<Entity>();           //게임상에 보여질 데이터, 전투 후 설정될 데이터  
+
+        playernow.health = playerdata.GetPlayerHealth();
+        playernow.SetHealthTMP();
     }
 
     void SetupMonsterBuffer()    //스테이지를 구성한다 한들  하급 상급 엘리트 보스 4가지 틀에서 랜덤으로 정해지지 않을까 해서 일단 만들어봄

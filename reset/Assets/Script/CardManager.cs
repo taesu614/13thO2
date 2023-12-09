@@ -17,8 +17,9 @@ public class CardManager : MonoBehaviour
         Inst = this; // 싱글톤 인스턴스 설정
         cardfuction = GetComponent<CardFunctionManager>(); // CardFunction 컴포넌트 가져오기
         //cardfuction.SetCardManager(this); // CardFunctionManager 클래스에 CardManager 인스턴스 주입
+        GameObject save = GameObject.Find("SaveData");
+        savedata = save.GetComponent<SaveData>();
     }
-
     [SerializeField] ItemSO itemSO;
     [SerializeField] GameObject cardPrefab;
     [SerializeField] List<Card> myCards;
@@ -28,7 +29,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] Transform myCardRight;
     [SerializeField] ECardState eCardState;
     //[SerializeField] Item item;   //왜 넣었던거지
-    List<Item> itemBuffer;
+    private List<Item> itemBuffer;
     Card selectCard;    //선택된 카드 담음
     CardFunctionManager cardfuction;
     public Entity player;
@@ -39,9 +40,14 @@ public class CardManager : MonoBehaviour
     int myPutCount; //엔티티 스폰
     bool intrusionencore = false;
     bool intrusioncounter = false;
+    SaveData savedata;
 
     private List<string> intrusionList = new List<string>();
 
+    public List<Item> GetItemBuffer()
+    {
+        return itemBuffer;
+    }
     public Item PopItem()   //맨앞의 카드 빼는 용도
     {
         if (itemBuffer.Count == 0)
@@ -53,12 +59,14 @@ public class CardManager : MonoBehaviour
     }
     void SetupItemBuffer()  //카드 순서 랜덤으로 바뀌게 하는 용도
     {
+        //GameObject SaveDataCard = GameObject.Find("SaveData");
+        //ItemSO itemSO = Resources.Load<ItemSO>("ItemSO/ItemSO");
+
         itemBuffer = new List<Item>();
-        for(int i = 0; i < itemSO.items.Length; i++)
+        for(int i = 0; i < savedata.GetPlayerDeck().Count; i++)
         {
-            Item item = itemSO.items[i];
-            for (int j = 0; j < item.percent; j++)
-                itemBuffer.Add(item);
+            Item item = savedata.GetPlayerDeck()[i];
+            itemBuffer.Add(item);
         }    
 
         for (int i = 0; i < itemBuffer.Count; i++ )

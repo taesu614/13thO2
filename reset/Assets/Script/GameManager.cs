@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 //치트 ui 랭킹 게임오버
 public class GameManager : MonoBehaviour
@@ -42,6 +42,10 @@ public class GameManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Keypad5))
         {
             EntityManager.Inst.SpawnEntity(true, monster, Vector3.zero);
+        }
+        if(Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            SceneManager.LoadScene("SampleScene");
         }
     }
     

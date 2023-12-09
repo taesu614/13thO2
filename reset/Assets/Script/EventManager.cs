@@ -2,12 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class EventManager : MonoBehaviour   //옵저버 역할
 {
     private int MonsterCount = 0;
     private int PlayerCount = 0;    //임시
     //Enable() : Start()와 비슷한 용도나 활성화 될 때마다 호출 됨
+
+    private void Start()
+    {
+    }
     void OnEnable()
     {
         EntityManager.EventEntitySpawn += CheckMonster;
@@ -33,9 +38,16 @@ public class EventManager : MonoBehaviour   //옵저버 역할
     {
         MonsterCount--;
         Debug.Log("몬스터 파괴");
-        if (MonsterCount  <= 0)
+        if (MonsterCount <= 0)
         {
-            Debug.Log("승리");
+            //게임 종료 후 데이터 저장 - 늘어날 코드 분량 생각해서 정리할것
+            GameObject savedata = GameObject.Find("SaveData");
+            SaveData playerdata = savedata.GetComponent<SaveData>();
+            GameObject player = GameObject.Find("MyPlayer");
+            Entity playernow = player.GetComponent<Entity>();
+
+            playerdata.SetPlayerHealth(playernow.health);
+            SceneManager.LoadScene("SampleScene");
         }
     }
 }

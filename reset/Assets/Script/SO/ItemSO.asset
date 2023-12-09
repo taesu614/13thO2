@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ItemSO
   m_EditorClassIdentifier: 
   items:
-  - name: "\uBC84\uD504 \uD14C\uC2A4\uD2B8 \uCE74\uB4DC"
+  - name: "\uBC84\uD504 \uD14C\uC2A4\uD2B8 \uCE74\uB4DC(\uACF5\uACA9\uB825 \uC99D\uAC00)"
     functionname: TestBuffAttackUp
     cost: 0
     colorimg: {fileID: 21300000, guid: 1932e45efee00d24d960577d7fffe146, type: 3}
@@ -22,19 +22,21 @@ MonoBehaviour:
     color: 82
     sprite: {fileID: 0}
     active: "\uACF5\uACA9\uB825\uC774 5 \uC99D\uAC00\uD569\uB2C8\uB2E4(2\uD68C)"
-    percent: 0
+    percent: 2
     selectable: 0
+    identifier: 100010000
   - name: "\uACF5\uACA9 \uD14C\uC2A4\uD2B8 \uCE74\uB4DC"
     functionname: TestAttack
     cost: 0
     colorimg: {fileID: 21300000, guid: 1932e45efee00d24d960577d7fffe146, type: 3}
-    costcolor: {fileID: 0}
-    cardtype: Production
+    costcolor: {fileID: 21300000, guid: f563fc1c34c8b7245920cc36376ce737, type: 3}
+    cardtype: Action
     color: 82
     sprite: {fileID: 0}
     active: "\uC120\uD0DD\uD55C \uB300\uC0C1\uC5D0\uAC8C \uD53C\uD574\uB97C 5 \uC90D\uB2C8\uB2E4"
-    percent: 1
+    percent: 2
     selectable: 1
+    identifier: 100000001
   - name: "\uBC84\uD504 \uD14C\uC2A4\uD2B8 \uCE74\uB4DC(\uACF5\uACA9\uB825 \uAC10\uC18C)"
     functionname: TestBuffAttackDown
     cost: 0
@@ -44,49 +46,54 @@ MonoBehaviour:
     color: 66
     sprite: {fileID: 0}
     active: "\uACF5\uACA9\uB825\uC774 3 \uAC10\uC18C\uD569\uB2C8\uB2E4(2\uD68C)"
-    percent: 0
+    percent: 2
     selectable: 0
+    identifier: 100210002
   - name: "\uBC84\uD504 \uD14C\uC2A4\uD2B8 \uCE74\uB4DC(\uC274\uB4DC)"
     functionname: TestBuffShield
     cost: 0
     colorimg: {fileID: 21300000, guid: 9b532bb1122a1f74aade2b1676bf5f5e, type: 3}
-    costcolor: {fileID: 21300000, guid: f6fcf700a3199074a89018a6a05e4330, type: 3}
+    costcolor: {fileID: 21300000, guid: 2a2196063c47b384993a31b5751d2cdd, type: 3}
     cardtype: Production
     color: 71
     sprite: {fileID: 0}
     active: "\uBCF4\uD638\uB9C9\uC744 10 \uC5BB\uC2B5\uB2C8\uB2E4(3\uD134)"
-    percent: 0
+    percent: 2
     selectable: 0
+    identifier: 100110003
   - name: "\uBC84\uD504 \uD14C\uC2A4\uD2B8 \uCE74\uB4DC(\uAE30\uC808)"
     functionname: TestFaint
     cost: 0
     colorimg: {fileID: 21300000, guid: 9b532bb1122a1f74aade2b1676bf5f5e, type: 3}
-    costcolor: {fileID: 21300000, guid: f6fcf700a3199074a89018a6a05e4330, type: 3}
+    costcolor: {fileID: 21300000, guid: 2a2196063c47b384993a31b5751d2cdd, type: 3}
     cardtype: Production
     color: 71
     sprite: {fileID: 0}
     active: "\uB300\uC0C1\uC774 \uAE30\uC808\uD569\uB2C8\uB2E4"
-    percent: 0
+    percent: 2
     selectable: 1
+    identifier: 100110004
   - name: "\uBC84\uD504 \uD14C\uC2A4\uD2B8 \uCE74\uB4DC(\uC218\uBA74)"
     functionname: TestSleep
     cost: 0
     colorimg: {fileID: 21300000, guid: 9b532bb1122a1f74aade2b1676bf5f5e, type: 3}
-    costcolor: {fileID: 0}
+    costcolor: {fileID: 21300000, guid: 2a2196063c47b384993a31b5751d2cdd, type: 3}
     cardtype: Production
     color: 71
     sprite: {fileID: 0}
     active: "\uB300\uC0C1\uC774 \uC7A0\uC5D0 \uB4E6\uB2C8...Zzz....."
-    percent: 0
+    percent: 2
     selectable: 1
+    identifier: 100110005
   - name: "\uBC84\uD504 \uD14C\uC2A4\uD2B8 \uCE74\uB4DC(\uC218\uBA74 \uBA74\uC5ED)"
     functionname: TestImmuneSleep
     cost: 0
     colorimg: {fileID: 21300000, guid: c009dc7060777c04caa73218ec30f193, type: 3}
-    costcolor: {fileID: 0}
+    costcolor: {fileID: 21300000, guid: f6e52d910c52a3d44bbbf8ef21853986, type: 3}
     cardtype: Production
     color: 66
     sprite: {fileID: 0}
     active: "\uB300\uC0C1\uC774 \uC218\uBA74\uC5D0 \uBA74\uC5ED\uC774 \uB429\uB2C8\uB2E4"
-    percent: 0
+    percent: 2
     selectable: 1
+    identifier: 100210006
