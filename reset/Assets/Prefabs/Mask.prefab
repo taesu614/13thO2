@@ -84,7 +84,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5.72, y: 6.1}
+  m_Size: {x: 1.5, y: 1.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -102,5 +102,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99f64b8a6896b72459c90f01347b7d6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sheep: {fileID: 21300000, guid: fcfa1ceac5c64b742b666ba8f8706cd9, type: 3}
-  bull: {fileID: 21300000, guid: cc75ee61bdd68ea4ea3a961e57263b28, type: 3}
+  Sheep: {fileID: 21300000, guid: fcfa1ceac5c64b742b666ba8f8706cd9, type: 3}
+  Bull: {fileID: 21300000, guid: b4f61d52f39e2c646ab5ce04de4ed4f7, type: 3}

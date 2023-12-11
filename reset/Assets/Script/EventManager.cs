@@ -47,7 +47,7 @@ public class EventManager : MonoBehaviour   //옵저버 역할
             Entity playernow = player.GetComponent<Entity>();
 
             playerdata.SetPlayerHealth(playernow.health);
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("LobiScene");
         }
     }
 }

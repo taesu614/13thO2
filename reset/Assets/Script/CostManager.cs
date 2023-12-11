@@ -16,8 +16,11 @@ public class CostManager : MonoBehaviour
     public GameObject RBottle;
     public GameObject GBottle;
     public GameObject BBottle;
+    public GameObject ConstellationButton;
     public Sprite[] img; 
     public Sprite[] rgbimg;
+    public Sprite Sheepcant;
+    public Sprite Sheepcan;    //시간이 없어서 임시로 public 선언
 
     List<GameObject> RPrefabList = new List<GameObject>();
     List<GameObject> GPrefabList = new List<GameObject>();
@@ -108,7 +111,7 @@ public class CostManager : MonoBehaviour
         {
             switch (name)
             {
-                case "sheep":
+                case "Sheep":
                     if (CompareRGB(name, rcost, gcost, bcost))
                     {
                         SpawnMask(name);
@@ -118,7 +121,7 @@ public class CostManager : MonoBehaviour
                         playerentityscript.hasmask = true;
                     }
                     break;
-                case "bull":
+                case "Bull":
                     if (CompareRGB(name, rcost, gcost, bcost))
                     {
                         SpawnMask(name);
@@ -168,13 +171,14 @@ public class CostManager : MonoBehaviour
         return false;
     }
 
-    private void SpawnMask(string name)
+    private void SpawnMask(string conname)
     {
         Vector3 spawnposition = new Vector3(playerposition.position.x + 0.25f, playerposition.position.y + 0.25f, playerposition.position.z);    //플레이어 위치를 기준 0.25f 0.25f에 생성하기 위함
         GameObject mask = Instantiate(playermaskprafab, spawnposition, Quaternion.identity);    //프리팹 생성 기본 기능
         Mask mymask = playermaskprafab.GetComponent<Mask>();    //프리팹에서 Mask스크립트를 가져와서 
-        mymask.ChangeStarMaskImage(name);                       //이미지를 변경하기 위함
+        mymask.ChangeStarMaskImage(conname);                       //이미지를 변경하기 위함
         mask.transform.SetParent(playerposition);
+        OpenConstellationButton(conname);
     }
 
     void SetCostSprite(int num)
@@ -238,6 +242,17 @@ public class CostManager : MonoBehaviour
                 Image bspriterenderer = bcost.GetComponent<Image>();
                 bspriterenderer.sprite = rgbimg[2];
                 BPrefabList.Add(bcost);
+                break;
+        }
+    }
+
+    void OpenConstellationButton(string conname)
+    {
+        switch(conname)
+        {
+            case "Sheep":
+                Image consprite = ConstellationButton.GetComponent<Image>();
+                consprite.sprite = Sheepcan;
                 break;
         }
     }

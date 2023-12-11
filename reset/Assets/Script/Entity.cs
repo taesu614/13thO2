@@ -227,6 +227,7 @@ public class Entity : MonoBehaviour //해당 내용을 통해 별자리 생성 계획 그래서 �
                 }
 
                 playerhealthTMP.text = currentHealth.ToString();
+                playerEntity.SetHealthTMP();
 
             }
             else
