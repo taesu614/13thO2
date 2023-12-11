@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Mask : MonoBehaviour
 {
-    public Sprite sheep;
-    public Sprite bull;
+    public Sprite Sheep;
+    public Sprite Bull;
 
     private SpriteRenderer spriteRenderer;
 
@@ -15,11 +15,11 @@ public class Mask : MonoBehaviour
 
         switch (name)
         {
-            case "sheep":
-                spriteRenderer.sprite = sheep;
+            case "Sheep":
+                spriteRenderer.sprite = Sheep;
                 break;
-            case "bull":
-                spriteRenderer.sprite = bull;
+            case "Bull":
+                spriteRenderer.sprite = Bull;
                 break;
             default:
                 Debug.Log("NoneMask");

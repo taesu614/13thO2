@@ -46,6 +46,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemSO: {fileID: 11400000, guid: d7aea8733362e364fbc27bc12a60f310, type: 2}
   cardPrefab: {fileID: 3066829457061674036, guid: 80b37393cc88a8a489db9b1f0abb9d23, type: 3}
-  deckui: {fileID: 3574768570782750417, guid: 8ded91118187e424d9acab1819f37af6, type: 3}
-  content: {fileID: 3574768570782750421, guid: 8ded91118187e424d9acab1819f37af6, type: 3}
+  deckui: {fileID: 0}
+  content: {fileID: 0}
   cardnameuiprefab: {fileID: 2108391491262426336, guid: c0f32cbf399fef44188aced3137001fc, type: 3}

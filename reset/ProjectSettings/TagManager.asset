@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Monster
+  - Button1
+  - Button2
+  - Constellation
+  - Button3
   layers:
   - Default
   - TransparentFX
@@ -14,7 +18,7 @@ TagManager:
   - UI
   - MyCardArea
   - Entity
-  - 
+  - ButtonNotInUI
   - 
   - 
   - 

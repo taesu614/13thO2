@@ -18,7 +18,21 @@ public class CardManager : MonoBehaviour
         cardfuction = GetComponent<CardFunctionManager>(); // CardFunction 컴포넌트 가져오기
         //cardfuction.SetCardManager(this); // CardFunctionManager 클래스에 CardManager 인스턴스 주입
         GameObject save = GameObject.Find("SaveData");
-        savedata = save.GetComponent<SaveData>();
+        if(save == null)
+        {
+            itemBuffer = new List<Item>();
+            for (int i = 0; i < itemSO.items.Length; i++)
+            {
+                Item item = itemSO.items[i];
+                itemBuffer.Add(item);
+            }
+        }
+
+        else
+        {
+            savedata = save.GetComponent<SaveData>();
+        }
+        
     }
     [SerializeField] ItemSO itemSO;
     [SerializeField] GameObject cardPrefab;
@@ -33,6 +47,7 @@ public class CardManager : MonoBehaviour
     Card selectCard;    //선택된 카드 담음
     CardFunctionManager cardfuction;
     public Entity player;
+    public CardList cardList; //UI를 위한 스크립트 가져오기 위함
     public CostManager costManager;
     bool isMyCardDrag;
     bool onMyCardArea;
@@ -61,13 +76,32 @@ public class CardManager : MonoBehaviour
     {
         //GameObject SaveDataCard = GameObject.Find("SaveData");
         //ItemSO itemSO = Resources.Load<ItemSO>("ItemSO/ItemSO");
-
-        itemBuffer = new List<Item>();
-        for(int i = 0; i < savedata.GetPlayerDeck().Count; i++)
+        if (savedata == null || savedata.GetPlayerDeck().Count == 0)    //덱이 비워져있을 때 기본 2장씩 사용하도록 설정
         {
-            Item item = savedata.GetPlayerDeck()[i];
-            itemBuffer.Add(item);
-        }    
+            itemBuffer = new List<Item>();
+            for (int i = 0; i < itemSO.items.Length; i++)
+            {
+                Item item = itemSO.items[i];
+                itemBuffer.Add(item);
+                if (i == 1)
+                {
+                    for(int j = 0; j < 5; j++)
+                    {
+                        itemBuffer.Add(item);
+                    }
+                }
+            }
+        }
+        else
+        {
+            itemBuffer = new List<Item>();
+              for(int i = 0; i < savedata.GetPlayerDeck().Count; i++)
+                 {
+                     Item item = savedata.GetPlayerDeck()[i];
+                     itemBuffer.Add(item);
+                 }
+        }
+          
 
         for (int i = 0; i < itemBuffer.Count; i++ )
         {
@@ -124,7 +158,7 @@ public class CardManager : MonoBehaviour
    void CardAlignment()  // 카드 정렬
     {
         List<PRS> originCardPRSs = new List<PRS>();
-        originCardPRSs = RoundAlignment(myCardLeft, myCardRight, myCards.Count, 0.5f, Vector3.one * 0.05f);  //맨 끝 사이즈 수정 시 카드 사이즈 변경됨
+        originCardPRSs = RoundAlignment(myCardLeft, myCardRight, myCards.Count, 0.5f, Vector3.one * 0.3f);  //맨 끝 사이즈 수정 시 카드 사이즈 변경됨
         for (int i = 0; i < myCards.Count; i++)
         {
             var targetCard = myCards[i];
@@ -189,6 +223,7 @@ public class CardManager : MonoBehaviour
     {
         if (cardfuction != null)
         {
+            cardList.AddCard(selectCard.item);
             GetSelectCardType(selectCard.cardtype, selectCard.functionname);
             cardfuction.UseSelectCard(selectCard.functionname);
         }
@@ -201,16 +236,24 @@ public class CardManager : MonoBehaviour
             return;
 
         selectCard = card;
+        SetMessage(card, true);
         EnlargeCard(true, card);
     }
 
+    
+
     public void CardMouseExit(Card card)    //카드 위에 마우스를 뗄 때(사용 상태 X) 
     {
+        Transform message = card.transform;
+        Transform messagetransform = message.Find("Message");
+        CardMessage cardmessage = messagetransform.GetComponent<CardMessage>();
+        SetMessage(card, false);
         EnlargeCard(false, card);
     }
 
     public void CardMouseDown() //카드 사용 중 마우스 누를 때
     {
+
         if(player.canplay)
         {
             if (eCardState != ECardState.CanMouseDrag)
@@ -338,6 +381,7 @@ public class CardManager : MonoBehaviour
 
     void CardDrag() //카드 드래그 중일 때
     {
+        SetMessage(selectCard, false);
         if (!onMyCardArea)
         {
             selectCard.MoveTransform(new PRS(Utils.MousePos, Utils.QI, selectCard.originPRS.scale), false);
@@ -362,7 +406,7 @@ public class CardManager : MonoBehaviour
         if (isEnlarge)
         {
             Vector3 enlargePos = new Vector3(card.originPRS.pos.x, -3.5f, -0.1f);
-            card.MoveTransform(new PRS(enlargePos, Utils.QI, Vector3.one * 0.075f), false);
+            card.MoveTransform(new PRS(enlargePos, Utils.QI, Vector3.one * 0.45f), false);
         }
         else
             card.MoveTransform(card.originPRS, false);
@@ -477,5 +521,13 @@ public class CardManager : MonoBehaviour
         }
 
         return false; // 충돌하지 않은 경우
+    }
+
+    void SetMessage(Card card, bool isDrag)
+    {
+        Transform message = card.transform;
+        Transform messagetransform = message.Find("Message");
+        CardMessage cardmessage = messagetransform.GetComponent<CardMessage>();
+        cardmessage.ShowCardMessage(isDrag);
     }
 }

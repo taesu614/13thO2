@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce06d1931bc3a92419d0d0e6950ea5fa, type: 3}
+  m_Name: New Character Database
+  m_EditorClassIdentifier: 
+  character:
+  - characterName: sheep
+    characterSprite: {fileID: 21300000, guid: 7bd4f533774481945b71c5c61f02c987, type: 3}
+  - characterName: grass
+    characterSprite: {fileID: 21300000, guid: 5fc095cf41ddffa44a0eb13feaa557dc, type: 3}
+  - characterName: hero
+    characterSprite: {fileID: 21300000, guid: 87e89110d476271409b815e0db1d3acf, type: 3}
+  - characterName: cow
+    characterSprite: {fileID: 21300000, guid: a2037bb78cbb7fa4c8d9ec45cb4e8ce7, type: 3}

@@ -14,12 +14,15 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     [SerializeField] TMP_Text healthTMP;
     [SerializeField] TMP_Text attackTMP;
     [SerializeField] TMP_Text shieldTMP;
+    [SerializeField] GameObject hpline;
 
     Queue<StatusEffect> myStatusEffect = new Queue<StatusEffect>();
     public Monster monster;
     public CardManager cardmanager;
     public int attack;
+    public int maxhealth = 40;
     public int health = 40;
+    float hppercent;
     public int shield = 0;
     public string monsterfunctionname;
     public bool isMine;
@@ -68,6 +71,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     public void Setup(Monster monster)
     {
         this.monster = monster;
+        maxhealth = monster.maxhealth;
         health = int.Parse(healthTMP.text); //¾Æ¸¶ ¶È°°Àº monsterSO¸¦ ¸¸µé¾î¼­ ¸ó½ºÅÍ¸¦ °ü¸®ÇÒµí
         attack = int.Parse(attackTMP.text);
         shield = int.Parse(shieldTMP.text);
@@ -125,6 +129,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     public void SetHealthTMP()  //Ã¼·ÂÀ» health·Î ¼³Á¤
     {
         healthTMP.text = health.ToString();
+        hpline.transform.localScale = new Vector3(1 - (float)health/maxhealth, 0.65f, 1f);
     }
 
     public void SetShieldTMP()

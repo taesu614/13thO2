@@ -8,6 +8,7 @@ public class SaveData : MonoBehaviour
     List<Item> cardlist = new List<Item>();
     List<Item> deck = new List<Item>();
     List<int> cardcount = new List<int>();
+    string constellation = "Sheep"; //기본값을 sheep으로
     // Start is called before the first frame update
     private static SaveData instance;   //싱글톤으로 설정
     private int playerhealth = 300;
@@ -61,5 +62,16 @@ public class SaveData : MonoBehaviour
     public int GetPlayerHealth()
     {
         return playerhealth;
+    }
+
+    public void SetPlayerConstellation(string name) 
+    {
+        constellation = name;
+        Debug.Log(constellation);
+    }
+
+    public string GetPlayerConstellation()
+    {
+        return constellation;
     }
 }

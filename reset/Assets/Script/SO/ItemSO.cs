@@ -12,7 +12,7 @@ public class Item   //카드 관련으로 꾸미는 곳
     public Sprite costcolor;
     public string cardtype;
     public char color;   //R:R G:G B:B
-    public Sprite sprite;
+    //public Sprite sprite;
     public string active;
     public float percent;
     public bool selectable;

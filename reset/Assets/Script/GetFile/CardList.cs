@@ -27,10 +27,20 @@ public class CardList : MonoBehaviour
         FreshSlot();
     }
 
+    private void Start()
+    {
+        for (int i = 0; i < items.Count && i < slots.Length; i++)
+        {
+            slots[i].item = items[i];
+            slots[i].item = null;
+        }
+    }
+
     public void FreshSlot()
     {
-        items = cardManager.GetItemBuffer();
+        //items = cardManager.GetItemBuffer();
         int i = 0;
+        Debug.Log(items);
         for(;i <items.Count && i< slots.Length;i++) {
             slots[i].item = items[i];
             if (items[i] == null ) {
@@ -65,6 +75,12 @@ public class CardList : MonoBehaviour
         {
             items[i] = cardManager.GetItemBuffer()[i];
         }
+        FreshSlot();
+    }
+
+    public void ClearItems()
+    {
+        items.Clear();
         FreshSlot();
     }
 }

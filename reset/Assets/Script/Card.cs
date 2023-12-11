@@ -21,13 +21,14 @@ public class Card : MonoBehaviour
     public string functionname;
     public string cardtype;
     public bool selectable;
+    public bool isdrag = false;
 
     public void Setup(Item item, bool isMine)
     {
         this.item = item;
         colorimg.sprite = this.item.colorimg;
         costcolor.sprite = this.item.costcolor;
-        character.sprite = this.item.sprite;
+        //character.sprite = this.item.sprite;
         nameTMP.text = this.item.name;
         costTMP.text = this.item.cost.ToString();
         acitveTMP.text = this.item.active;

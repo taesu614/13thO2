@@ -8,6 +8,16 @@ public class Slot : MonoBehaviour
     [SerializeField] Image image;
 
     private Item _item;
+    private void Start()
+    {
+
+    }
+
+    public void ResetImage()
+    {
+        print("카드 이미지 삭제");
+        this.GetComponent<Image>().sprite = null;
+    }
     public Item item
     {
         get { return _item; }
