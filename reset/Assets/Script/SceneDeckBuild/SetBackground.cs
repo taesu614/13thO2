@@ -71,13 +71,13 @@ public class SetBackground : MonoBehaviour
         switch(name)
         {
             case "Sheep":
-                speech = "양이 한마리 양이 두마리 양이 세마리...Zzz..";
+                speech = "양이 한마리 양이 두마리 양이 세마리...Zzz..R3 G1 B2 보호막 5 증가, 공격력 3 증가, 수면 면역";
                 break;
             case "Goat":
-                speech = "유일무이, 언터쳐블, GOAT. 대단합니다, GOAT. 감사합니다, GOAT. 숭배합니다, GOAT. 수고하셨습니다, GOAT. 아 그저... GOAT 당신의 헌신과 열정이 또다시 팀을 승리로 이끌었습니다.";
+                speech = "유일무이, 언터쳐블, GOAT. 대단합니다, GOAT. 감사합니다, GOAT. 숭배합니다, GOAT. 수고하셨습니다, GOAT. 아 그저... GOAT 당신의 헌신과 열정이 또다시 팀을 승리로 이끌었습니다.R0 G1 B2 보호막 30 증가";
                 break;
             case "Sagittarius":
-                speech = "캡틴은 적수가 안돼요";
+                speech = "노루...약해요...R3 G0 B0 공격력 7 증가, 약한 노루답게 녹용 성능은 확실합니다";
                 break;
             default:
                 speech = "죽은 자는 말이 없다.";

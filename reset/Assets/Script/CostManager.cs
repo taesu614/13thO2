@@ -146,8 +146,8 @@ public class CostManager : MonoBehaviour
                 case "Sagittarius":
                     if (CompareRGB(conname, rcost, gcost, bcost))
                     {
-                        playerentityscript.MakeAttackUp(5, 9999);
-                        playerentityscript.MakeShield(5, 3);
+                        playerentityscript.MakeAttackUp(7, 9999);
+                        //playerentityscript.MakeShield(5, 3);
                         SpawnMask(conname);
                     }
                     break;
@@ -162,11 +162,11 @@ public class CostManager : MonoBehaviour
         switch(name)    //이름에 따라서 스위치문 발동 - 직관성 향상 및 속도 향상을 위해 if 대신 스위치문 사용
         {
             case "Sheep":
-                if (r >= 5 && g >= 2 && b >= 3)
+                if (r >= 3 && g >= 1 && b >= 2)
                 {
-                    RCostCompare(5);
-                    GCostCompare(2);
-                    BCostCompare(3);
+                    RCostCompare(3);
+                    GCostCompare(1);
+                    BCostCompare(2);
                     ShowCost();
                     return true;
                 }
@@ -174,19 +174,19 @@ public class CostManager : MonoBehaviour
             case "Bull":
                 return true;
             case "Goat":
-                if (r >= 0 && g >= 3 && b >= 5)
+                if (r >= 0 && g >= 1 && b >= 2)
                 {
                     RCostCompare(0);
-                    GCostCompare(3);
-                    BCostCompare(5);
+                    GCostCompare(1);
+                    BCostCompare(2);
                     ShowCost();
                     return true;
                 }
                 break;
             case "Sagittarius":
-                if (r >= 5 && g >= 0 && b >= 0)
+                if (r >= 3 && g >= 0 && b >= 0)
                 {
-                    RCostCompare(5);
+                    RCostCompare(3);
                     GCostCompare(0);
                     BCostCompare(0);
                     ShowCost();

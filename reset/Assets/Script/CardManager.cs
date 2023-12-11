@@ -267,12 +267,12 @@ public class CardManager : MonoBehaviour
             {
                 if (IsFullList())
                 {
-                    GameManager.Inst.Notification("난입은 최대 5개다.");
+                    GameManager.Inst.Notification("난입은 최대 5개입니다.");
                     return;
                 }
                 if (IsIntrusionDuplication(selectCard.functionname))
                 {
-                    GameManager.Inst.Notification("중복된 난입은 허용하지 않는다.");
+                    GameManager.Inst.Notification("중복된 난입은 허용하지 않습니다.");
                     return;
                 }
 
@@ -286,7 +286,8 @@ public class CardManager : MonoBehaviour
                 }
 
             }
-            GameManager.Inst.Notification("코스트가 부족하다");
+            else if(!costManager.CompareCost(selectCard))
+                GameManager.Inst.Notification("코스트가 부족합니다");
         }
     }
 

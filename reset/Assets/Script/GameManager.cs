@@ -43,10 +43,10 @@ public class GameManager : MonoBehaviour
         {
             EntityManager.Inst.SpawnEntity(true, monster, Vector3.zero);
         }
-        if(Input.GetKeyDown(KeyCode.Keypad0))
-        {
-            SceneManager.LoadScene("SampleScene");
-        }
+        //if(Input.GetKeyDown(KeyCode.Keypad0))
+        //{
+        //    SceneManager.LoadScene("SampleScene");
+        //}
     }
     
     public void StartGame()
