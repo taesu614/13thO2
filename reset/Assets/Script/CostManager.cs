@@ -19,8 +19,10 @@ public class CostManager : MonoBehaviour
     public GameObject ConstellationButton;
     public Sprite[] img; 
     public Sprite[] rgbimg;
-    public Sprite Sheepcant;
-    public Sprite Sheepcan;    //시간이 없어서 임시로 public 선언
+    public Sprite Goatcant;
+    public Sprite Goatcan;    //시간이 없어서 임시로 public 선언
+    SaveData savedata;
+    string conname;
 
     List<GameObject> RPrefabList = new List<GameObject>();
     List<GameObject> GPrefabList = new List<GameObject>();
@@ -38,6 +40,11 @@ public class CostManager : MonoBehaviour
     int gcost = 0;
     int bcost = 0;
 
+    private void Start()
+    {
+        savedata = GameObject.Find("SaveData").transform.GetComponent<SaveData>();
+        conname = savedata.GetPlayerConstellation();
+    }
     public void ShowCost()
     {
         costTMP.text = hasmycost.ToString();
@@ -100,8 +107,9 @@ public class CostManager : MonoBehaviour
             bcost++;
         }
     }
-    public void GetMyStarMask(string name)
+    public void GetMyStarMask()
     {
+        Debug.Log(conname);
         Entity playerentityscript = player.GetComponent<Entity>();
         if(playerentityscript.hasmask)
         {
@@ -109,12 +117,12 @@ public class CostManager : MonoBehaviour
         }
         else
         {
-            switch (name)
+            switch (conname)
             {
                 case "Sheep":
-                    if (CompareRGB(name, rcost, gcost, bcost))
+                    if (CompareRGB(conname, rcost, gcost, bcost))
                     {
-                        SpawnMask(name);
+                        SpawnMask(conname);
                         playerentityscript.MakeAttackUp(3, 9999);
                         playerentityscript.MakeShield(5, 3);
                         playerentityscript.MakeImmuneSleep(3);
@@ -122,9 +130,25 @@ public class CostManager : MonoBehaviour
                     }
                     break;
                 case "Bull":
-                    if (CompareRGB(name, rcost, gcost, bcost))
+                    if (CompareRGB(conname, rcost, gcost, bcost))
                     {
-                        SpawnMask(name);
+                        SpawnMask(conname);
+                    }
+                    break;
+                case "Goat":
+                    if (CompareRGB(conname, rcost, gcost, bcost))
+                    {
+                        //playerentityscript.MakeAttackUp(0, 9999);
+                        playerentityscript.MakeShield(30, 3);
+                        SpawnMask(conname);
+                    }
+                    break;
+                case "Sagittarius":
+                    if (CompareRGB(conname, rcost, gcost, bcost))
+                    {
+                        playerentityscript.MakeAttackUp(5, 9999);
+                        playerentityscript.MakeShield(5, 3);
+                        SpawnMask(conname);
                     }
                     break;
                 default:
@@ -140,42 +164,84 @@ public class CostManager : MonoBehaviour
             case "Sheep":
                 if (r >= 5 && g >= 2 && b >= 3)
                 {
-                    rcost = rcost - 5;
-                    for(int i = 0; i < 5; i++)
-                    {
-                        GameObject prefabToRemove = RPrefabList[RPrefabList.Count - 1];
-                        RPrefabList.RemoveAt(RPrefabList.Count - 1);
-                        Destroy(prefabToRemove);
-                    }
-                    gcost = gcost - 2;
-                    for (int i = 0; i < 2; i++)
-                    {
-                        GameObject prefabToRemove = GPrefabList[GPrefabList.Count - 1];
-                        GPrefabList.RemoveAt(GPrefabList.Count - 1);
-                        Destroy(prefabToRemove);
-                    }
-                    bcost = bcost - 3;
-                    for (int i = 0; i < 3; i++)
-                    {
-                        GameObject prefabToRemove = BPrefabList[BPrefabList.Count - 1];
-                        BPrefabList.RemoveAt(BPrefabList.Count - 1);
-                        Destroy(prefabToRemove);
-                    }
+                    RCostCompare(5);
+                    GCostCompare(2);
+                    BCostCompare(3);
                     ShowCost();
                     return true;
                 }
                 break;
             case "Bull":
                 return true;
+            case "Goat":
+                if (r >= 0 && g >= 3 && b >= 5)
+                {
+                    RCostCompare(0);
+                    GCostCompare(3);
+                    BCostCompare(5);
+                    ShowCost();
+                    return true;
+                }
+                break;
+            case "Sagittarius":
+                if (r >= 5 && g >= 0 && b >= 0)
+                {
+                    RCostCompare(5);
+                    GCostCompare(0);
+                    BCostCompare(0);
+                    ShowCost();
+                    return true;
+                }
+                break;
         }
         return false;
     }
 
+    void RCostCompare(int cost)
+    {
+        rcost = rcost - cost;
+        for (int i = 0; i < cost; i++)
+        {
+            if (RPrefabList.Count == 0)
+                break;
+            GameObject prefabToRemove = RPrefabList[RPrefabList.Count - 1];
+            RPrefabList.RemoveAt(RPrefabList.Count - 1);
+            Destroy(prefabToRemove);
+        }
+    }
+
+    void GCostCompare(int cost)
+    {
+        gcost = gcost - cost;
+        for (int i = 0; i < cost; i++)
+        {
+            if (GPrefabList.Count == 0)
+                break;
+            GameObject prefabToRemove = GPrefabList[GPrefabList.Count - 1];
+            GPrefabList.RemoveAt(GPrefabList.Count - 1);
+            Destroy(prefabToRemove);
+        }
+    }
+
+    void BCostCompare(int cost)
+    {
+        bcost = bcost - 3;
+        for (int i = 0; i < 3; i++)
+        {
+            if (BPrefabList.Count == 0)
+                break;
+            GameObject prefabToRemove = BPrefabList[BPrefabList.Count - 1];
+            BPrefabList.RemoveAt(BPrefabList.Count - 1);
+            Destroy(prefabToRemove);
+        }
+    }
+
     private void SpawnMask(string conname)
     {
+
         Vector3 spawnposition = new Vector3(playerposition.position.x + 0.25f, playerposition.position.y + 0.25f, playerposition.position.z);    //플레이어 위치를 기준 0.25f 0.25f에 생성하기 위함
         GameObject mask = Instantiate(playermaskprafab, spawnposition, Quaternion.identity);    //프리팹 생성 기본 기능
-        Mask mymask = playermaskprafab.GetComponent<Mask>();    //프리팹에서 Mask스크립트를 가져와서 
+        Mask mymask = mask.GetComponent<Mask>();    //프리팹에서 Mask스크립트를 가져와서 
         mymask.ChangeStarMaskImage(conname);                       //이미지를 변경하기 위함
         mask.transform.SetParent(playerposition);
         OpenConstellationButton(conname);
@@ -246,13 +312,13 @@ public class CostManager : MonoBehaviour
         }
     }
 
-    void OpenConstellationButton(string conname)
+    void OpenConstellationButton(string conname)    //별자리 활성화 시 바꾸는 용도
     {
         switch(conname)
         {
-            case "Sheep":
+            case "Goat":
                 Image consprite = ConstellationButton.GetComponent<Image>();
-                consprite.sprite = Sheepcan;
+                consprite.sprite = Goatcan;
                 break;
         }
     }

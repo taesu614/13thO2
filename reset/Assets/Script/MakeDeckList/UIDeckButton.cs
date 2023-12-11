@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UIDeckButton : MonoBehaviour
 {
-    public Item item;
+    public Item itemname;
     [SerializeField] Image coloruiimage;
     [SerializeField] TMP_Text nameTMP;
     [SerializeField] TMP_Text costTMP;
@@ -16,7 +16,7 @@ public class UIDeckButton : MonoBehaviour
     DeckUIManager deckuimanager;
     // Start is called before the first frame update
     void Start()
-    {
+    { 
         GameObject save = GameObject.Find("SaveData");
         savedata = save.transform.GetComponent<SaveData>();
         GameObject deckui = GameObject.Find("DeckUIManager");
@@ -25,6 +25,7 @@ public class UIDeckButton : MonoBehaviour
 
     public void Setup(Item item)
     {
+        this.itemname = item;
         nameTMP.text = item.name;
         costTMP.text = item.cost.ToString();
         identifier = item.identifier;
@@ -48,6 +49,7 @@ public class UIDeckButton : MonoBehaviour
 
     public void Remove()
     {
-        deckuimanager.RemoveCard(item);
+        Debug.Log(itemname.name);
+        deckuimanager.RemoveCard(itemname);
     }
 }

@@ -24,11 +24,12 @@ public class UICardButton : MonoBehaviour
     public bool selectable;
     public int identifier;
     SaveData savedata;
-    public DeckUIManager deckuimanager;
+    DeckUIManager deckuimanager;
     private void Start()
     {
         GameObject save = GameObject.Find("SaveData");
         savedata = save.transform.GetComponent<SaveData>();
+        deckuimanager = GameObject.Find("DeckUIManager").GetComponent<DeckUIManager>();
     }
     public void Setup(Item item)    //Card.cs를 복붙하고 수정한 코드 -기능: 카드 세팅
     {

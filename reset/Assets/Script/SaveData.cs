@@ -11,7 +11,8 @@ public class SaveData : MonoBehaviour
     string constellation = "Sheep"; //기본값을 sheep으로
     // Start is called before the first frame update
     private static SaveData instance;   //싱글톤으로 설정
-    private int playerhealth = 300;
+    private int playermaxhelath = 100;
+    private int playerhealth = 100;
     private void Awake()
     {
         if (instance == null)   //씬 전환 시 생성을 막는 용도
@@ -57,6 +58,18 @@ public class SaveData : MonoBehaviour
     public void SetPlayerHealth(int a)
     {
         playerhealth = a;
+        if (a > playermaxhelath)
+            playerhealth = playermaxhelath;
+    }
+
+    public void SetPlayerMaxHealth(int a)
+    {
+        playermaxhelath = a;
+    }
+    
+    public int GetPlayerMaxHealth()
+    {
+        return playermaxhelath;
     }
 
     public int GetPlayerHealth()
@@ -64,7 +77,12 @@ public class SaveData : MonoBehaviour
         return playerhealth;
     }
 
-    public void SetPlayerConstellation(string name) 
+    public float GetPlayerHealthPercent()
+    {
+        return (float)playerhealth / playermaxhelath;
+    }
+
+    public void SetPlayerConstellation(string name)     //설정한 별자리 저장
     {
         constellation = name;
         Debug.Log(constellation);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
 {
@@ -35,11 +36,15 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
 
     Entity selectEntity;
     Entity targetPickEntity;
+    GameObject myplayer;
+    Entity myplayerentity;
     WaitForSeconds delay1 = new WaitForSeconds(1);
     List<Monster> monsterBuffer;
 
     void Start()
     {
+        myplayer = GameObject.Find("MyPlayer");
+        myplayerentity = myplayer.GetComponent<Entity>();
         SetupMonsterBuffer();
         SetPlayer();
         AddEntity(0);
@@ -59,6 +64,7 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
         Entity playernow = player.GetComponent<Entity>();           //게임상에 보여질 데이터, 전투 후 설정될 데이터  
 
         playernow.health = playerdata.GetPlayerHealth();
+        playernow.maxhealth = playerdata.GetPlayerMaxHealth();
         playernow.SetHealthTMP();
     }
 
@@ -115,6 +121,13 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
     private void Update()
     {
         ShowTargetPicker(ExistTargetPickEntity);
+        if(myplayerentity.health<0)
+        {
+            Destroy(myplayer);
+            SceneManager.LoadScene("Press2StartScene");
+        }
+
+
     }
 
     IEnumerator AICo()  //적 턴 시작시 AI 코루틴 시작됨

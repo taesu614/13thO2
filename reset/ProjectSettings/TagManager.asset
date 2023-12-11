@@ -9,6 +9,7 @@ TagManager:
   - Button2
   - Constellation
   - Button3
+  - DeckListName
   layers:
   - Default
   - TransparentFX

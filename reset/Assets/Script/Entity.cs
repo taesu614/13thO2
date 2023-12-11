@@ -128,6 +128,8 @@ public class Entity : MonoBehaviour //해당 내용을 통해 별자리 생성 계획 그래서 �
 
     public void SetHealthTMP()  //체력을 health로 설정
     {
+        if (health >= maxhealth)
+            health = maxhealth;
         healthTMP.text = health.ToString();
         hpline.transform.localScale = new Vector3(1 - (float)health/maxhealth, 0.65f, 1f);
     }

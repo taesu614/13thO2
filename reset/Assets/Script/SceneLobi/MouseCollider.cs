@@ -26,7 +26,7 @@ public class MouseCollider : MonoBehaviour
             if (hit.collider != null && hit.collider.CompareTag("Button1"))
             {
                 // ButtonNotInUI 레이어에 적용된 Collider와 충돌하고, Door 태그를 가진 게임 오브젝트가 클릭되었을 때 실행할 코드
-                PresstoStart("BattleScene");
+                PresstoStart("MapScene");
             }
             if (hit.collider != null && hit.collider.CompareTag("Button2"))
             {

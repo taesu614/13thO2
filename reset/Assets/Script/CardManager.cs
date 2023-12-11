@@ -253,7 +253,10 @@ public class CardManager : MonoBehaviour
 
     public void CardMouseDown() //카드 사용 중 마우스 누를 때
     {
-
+        if(selectCard == null)
+        {
+            return;
+        }
         if(player.canplay)
         {
             if (eCardState != ECardState.CanMouseDrag)
@@ -289,6 +292,10 @@ public class CardManager : MonoBehaviour
 
     public void CardMouseUp()   //마우스를 뗄 때 카드 사용
     {
+        if(selectCard == null)
+        {
+            return;
+        }
         if(player.canplay)  //카드 사용 행동 가능한지 체크 (ex: 기절)
         {
             isMyCardDrag = false;

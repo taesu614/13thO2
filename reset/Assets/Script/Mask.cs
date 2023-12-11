@@ -4,22 +4,35 @@ using UnityEngine;
 
 public class Mask : MonoBehaviour
 {
-    public Sprite Sheep;
-    public Sprite Bull;
+    public Sprite sheep;
+    public Sprite bull;
+    public Sprite goat;
+    public Sprite sagittarius;
 
     private SpriteRenderer spriteRenderer;
 
-    public void ChangeStarMaskImage(string name)
+    private void Start()
+    {
+        
+    }
+
+    public void ChangeStarMaskImage(string conname)
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-
-        switch (name)
+        switch (conname)
         {
             case "Sheep":
-                spriteRenderer.sprite = Sheep;
+                spriteRenderer.sprite = sheep;
                 break;
             case "Bull":
-                spriteRenderer.sprite = Bull;
+                spriteRenderer.sprite = bull;
+                break;
+            case "Goat":
+                spriteRenderer.sprite = goat;
+                Debug.Log(conname);
+                break;
+            case "Sagittarius":
+                spriteRenderer.sprite = sagittarius;
                 break;
             default:
                 Debug.Log("NoneMask");
