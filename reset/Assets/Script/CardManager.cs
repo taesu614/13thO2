@@ -17,8 +17,8 @@ public class CardManager : MonoBehaviour
         Inst = this; // 싱글톤 인스턴스 설정
         cardfuction = GetComponent<CardFunctionManager>(); // CardFunction 컴포넌트 가져오기
         //cardfuction.SetCardManager(this); // CardFunctionManager 클래스에 CardManager 인스턴스 주입
-        GameObject save = GameObject.Find("SaveData");
-        if(save == null)
+        GameObject save = GameObject.Find("SaveData");  //삭제될 일 없는 파일 SaveData를 통해 저장할 데이터 불러옴
+        if(save == null)    //바로 실행할 때 대비하는 용도
         {
             itemBuffer = new List<Item>();
             for (int i = 0; i < itemSO.items.Length; i++)
@@ -27,7 +27,6 @@ public class CardManager : MonoBehaviour
                 itemBuffer.Add(item);
             }
         }
-
         else
         {
             savedata = save.GetComponent<SaveData>();

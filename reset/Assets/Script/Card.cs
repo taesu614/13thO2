@@ -23,7 +23,7 @@ public class Card : MonoBehaviour
     public bool selectable;
     public bool isdrag = false;
 
-    public void Setup(Item item, bool isMine)
+    public void Setup(Item item, bool isMine)   //SO파일을 통해 카드 상태 설정
     {
         this.item = item;
         colorimg.sprite = this.item.colorimg;

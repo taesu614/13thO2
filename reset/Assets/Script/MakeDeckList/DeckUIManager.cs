@@ -27,11 +27,12 @@ public class DeckUIManager : MonoBehaviour
     }
     private void Start()
     {
-        //savedata = GameObject.Find("SaveData").GetComponent<SaveData>();
+        savedata = GameObject.Find("SaveData").GetComponent<SaveData>();
         deckuicanvas = deckui.GetComponent<Canvas>();
         cardlistpanel = GameObject.Find("CardListPanel");
         test = new BinarySearchTree();
         deckui.SetActive(false);
+        savedata.ResetCardList();
     }
 
     public bool IsUIOpen()

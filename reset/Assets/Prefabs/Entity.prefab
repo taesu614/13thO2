@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 450917853628769068}
   - component: {fileID: 4813262734420682624}
   - component: {fileID: 1069155028505121248}
+  - component: {fileID: 4833073455484404791}
   m_Layer: 7
   m_Name: ShieldTMP
   m_TagString: Untagged
@@ -121,7 +122,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.6, y: 28.3}
+  m_AnchoredPosition: {x: -1.2, y: 20.3}
   m_SizeDelta: {x: 1.5608, y: 0.8246}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &4813262734420682624
@@ -213,8 +214,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 7
-  m_fontSizeBase: 7
+  m_fontSize: 5
+  m_fontSizeBase: 5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -258,6 +259,23 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 4813262734420682624}
   m_maskType: 0
+--- !u!114 &4833073455484404791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 525696489317959546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16cff9a23c4fa749a85254dccf5b8c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backRenderers:
+  - {fileID: 0}
+  middleRenderers:
+  - {fileID: 4813262734420682624}
+  sortingLayerName: 
 --- !u!1 &737616424471909081
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,7 +288,6 @@ GameObject:
   - component: {fileID: 8686270784617509395}
   - component: {fileID: 897443476875653768}
   - component: {fileID: 8875967805005744813}
-  - component: {fileID: 4148291011227122554}
   m_Layer: 7
   m_Name: Entity
   m_TagString: Monster
@@ -390,6 +407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entity: {fileID: 8686270784617509395}
   charater: {fileID: 7084461899566804033}
+  shieldimg: {fileID: 0}
   healthTMP: {fileID: 4657553434280404868}
   attackTMP: {fileID: 4734321391002400042}
   shieldTMP: {fileID: 1069155028505121248}
@@ -406,7 +424,7 @@ MonoBehaviour:
   cardmanager: {fileID: 0}
   attack: 0
   maxhealth: 40
-  health: 0
+  health: 40
   shield: 0
   monsterfunctionname: 
   isMine: 0
@@ -423,24 +441,6 @@ MonoBehaviour:
   canplay: 1
   issleep: 0
   hasmask: 0
---- !u!114 &4148291011227122554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 737616424471909081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c16cff9a23c4fa749a85254dccf5b8c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  backRenderers:
-  - {fileID: 7084461899566804033}
-  middleRenderers:
-  - {fileID: 3713477569749644246}
-  - {fileID: 5781874301824331500}
-  sortingLayerName: Entity
 --- !u!1 &2321095582304823339
 GameObject:
   m_ObjectHideFlags: 0

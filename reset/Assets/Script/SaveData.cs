@@ -26,6 +26,12 @@ public class SaveData : MonoBehaviour
         }
     }
 
+    public void ResetCardList() //저장된 카드 리스트 초기화
+    {
+        Debug.Log("초기화 완료");
+        cardlist.Clear();
+    }
+
     public void InputCardInDeck(Item name)
     {
         cardlist.Add(name);

@@ -53,6 +53,9 @@ public class CardFunctionManager : MonoBehaviour
         cardEffects["TestFaint"] = TestFaint;
         cardEffects["TestSleep"] = TestSleep;
         cardEffects["TestImmuneSleep"] = TestImmuneSleep;
+        cardEffects["ImsiCard1"] = ImsiCard1;
+        cardEffects["ImsiCard2"] = ImsiCard2;
+        cardEffects["ImsiCard3"] = ImsiCard3;
     }
     //단일 적 gameobj 가져오는 함수
     //public void GetEnemy(GameObject targetObj)
@@ -290,6 +293,28 @@ public class CardFunctionManager : MonoBehaviour
         ImmuneSleep("anything", 3);
     }
 
+
+    private void ImsiCard1()    //임시 카드 1, 피해 7, 카드 2장 뽑음
+    {
+        Attack("anything", 7, "1");
+        TurnManager.OnAddCard.Invoke(true);
+        TurnManager.OnAddCard.Invoke(true);
+    }
+
+    private void ImsiCard2()
+    {
+        FindPlayer();
+        player.MakeShield(5, 5);
+        Attack("anything", 5, "1");
+    }
+
+    private void ImsiCard3()
+    {
+        Attack("all", 5, "1");
+        FindPlayer();
+        player.MakeShield(10, 5);
+    }
+
     private void Encore()
     {
         CardManager.Inst.SetIntrusionEncore();
@@ -336,12 +361,23 @@ public class CardFunctionManager : MonoBehaviour
                 target.SetHealthTMP();
                 ResetTarget();
         //target.GetComponents<Entity>();
-        break;
+                break;
             case "enemy":
                 break;
             case "player":
                 break;
             case "all":
+                FindPlayer();
+                FindAllMonster();
+                damage += player.GetAllAttackUpEffect();    //모든 공격력 증가 효과 가져와서 적용
+                damage -= player.GetAllAttackDownEffect();
+                player.health -= damage;
+                player.SetHealthTMP();
+                foreach(Entity A in monsters)
+                {
+                    A.health -= damage;
+                    A.SetHealthTMP();
+                }
                 break;
             case "enemyall":
                 break;

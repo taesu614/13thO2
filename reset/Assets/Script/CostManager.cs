@@ -21,7 +21,8 @@ public class CostManager : MonoBehaviour
     public Sprite[] rgbimg;
     public Sprite Goatcant;
     public Sprite Goatcan;    //시간이 없어서 임시로 public 선언
-    SaveData savedata;
+    GameObject savedata;
+    SaveData save;
     string conname;
 
     List<GameObject> RPrefabList = new List<GameObject>();
@@ -40,12 +41,20 @@ public class CostManager : MonoBehaviour
     int gcost = 0;
     int bcost = 0;
 
-    private void Start()
+    private void Start()    
     {
-        savedata = GameObject.Find("SaveData").transform.GetComponent<SaveData>();
-        conname = savedata.GetPlayerConstellation();
+        savedata = GameObject.Find("SaveData");
+        if (savedata == null)    //바로 실행할 때 대비하는 용도 - 기본값: Sheep
+        {
+            conname = "Sheep";
+        }
+        else
+        {
+            save = savedata.transform.GetComponent<SaveData>();
+            conname = save.GetPlayerConstellation();    //별자리 가져오는 곳
+        }
     }
-    public void ShowCost()
+    public void ShowCost()  //코스트 표기용 - ex: 코스트값 변화시키고, 코스트 숫자 변경
     {
         costTMP.text = hasmycost.ToString();
         rcostTMP.text = rcost.ToString();
@@ -82,7 +91,7 @@ public class CostManager : MonoBehaviour
         return can;
     }
 
-    public void SubtractCost(Card card)
+    public void SubtractCost(Card card) //코스트 얻는 기능
     {
         hasmycost -= card.item.cost;
         if(card.item.color == 'R')
@@ -107,9 +116,9 @@ public class CostManager : MonoBehaviour
             bcost++;
         }
     }
-    public void GetMyStarMask()
+    public void GetMyStarMask() //Button에서 사용, 마스크 착용 기능
     {
-        Debug.Log(conname);
+        //Debug.Log(conname);
         Entity playerentityscript = player.GetComponent<Entity>();
         if(playerentityscript.hasmask)
         {
@@ -197,7 +206,7 @@ public class CostManager : MonoBehaviour
         return false;
     }
 
-    void RCostCompare(int cost)
+    void RCostCompare(int cost) //R코스트 소모
     {
         rcost = rcost - cost;
         for (int i = 0; i < cost; i++)
@@ -210,7 +219,7 @@ public class CostManager : MonoBehaviour
         }
     }
 
-    void GCostCompare(int cost)
+    void GCostCompare(int cost) //G코스트 소모
     {
         gcost = gcost - cost;
         for (int i = 0; i < cost; i++)
@@ -223,7 +232,7 @@ public class CostManager : MonoBehaviour
         }
     }
 
-    void BCostCompare(int cost)
+    void BCostCompare(int cost) //B코스트 소모
     {
         bcost = bcost - 3;
         for (int i = 0; i < 3; i++)
@@ -236,7 +245,7 @@ public class CostManager : MonoBehaviour
         }
     }
 
-    private void SpawnMask(string conname)
+    private void SpawnMask(string conname)  //마스크 착용 기능
     {
 
         Vector3 spawnposition = new Vector3(playerposition.position.x + 0.25f, playerposition.position.y + 0.25f, playerposition.position.z);    //플레이어 위치를 기준 0.25f 0.25f에 생성하기 위함
@@ -247,7 +256,7 @@ public class CostManager : MonoBehaviour
         OpenConstellationButton(conname);
     }
 
-    void SetCostSprite(int num)
+    void SetCostSprite(int num) //코스트 스프라이트 적용하는 기능
     {
         switch(num)
         {
@@ -287,7 +296,7 @@ public class CostManager : MonoBehaviour
         }
     }
 
-    public void SetRGBSprite(char rgb)
+    public void SetRGBSprite(char rgb)  //RGB스프라이트 이미지 추가하는 기능
     {
         switch(rgb)
         {

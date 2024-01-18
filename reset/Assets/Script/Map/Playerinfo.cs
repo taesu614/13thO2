@@ -18,6 +18,7 @@ public class Playerinfo : MonoBehaviour
         hpwhite.transform.localScale = new Vector3(1-savedata.GetPlayerHealthPercent(),1f,1f);
         if(savedata.GetPlayerHealth() <= 0)
         {
+            Destroy(GameObject.Find("SaveData"));
             SceneManager.LoadScene("Press2StartScene");
         }
     }
