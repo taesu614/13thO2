@@ -35,15 +35,6 @@ public class CardFunctionManager : MonoBehaviour
     void Start()
     {
         // 카드 이름과 기능을 매칭하여 Dictionary에 저장
-        cardEffects["Counter"] = Counter;
-        cardEffects["Vaccination"] = Vaccination;
-        cardEffects["StageAccident"] = StageAccident;
-        //cardEffects["PenOfTruepenny"] = PenOfTruepenny;
-        //cardEffects["Sortie"] = Sortie;
-        cardEffects["Boomerang"] = Boomerang;
-        cardEffects["Rush"] = Rush;
-        cardEffects["Moon"] = Moon;
-        cardEffects["TheHangedMan"] = TheHangedMan;
         //cardEffects["TheDevil"] = () => TheDevil (myscore); // 람다식 사용 예시
         cardEffects["Encore"] = Encore;
         cardEffects["TestBuffAttackUp"] = TestBuffAttackUp;
@@ -53,9 +44,12 @@ public class CardFunctionManager : MonoBehaviour
         cardEffects["TestFaint"] = TestFaint;
         cardEffects["TestSleep"] = TestSleep;
         cardEffects["TestImmuneSleep"] = TestImmuneSleep;
-        cardEffects["ImsiCard1"] = ImsiCard1;
-        cardEffects["ImsiCard2"] = ImsiCard2;
-        cardEffects["ImsiCard3"] = ImsiCard3;
+
+        cardEffects["SharpNib"] = SharpNib;  // 날카로운 펜촉
+        cardEffects["Firestick"] = Firestick;  // 불꽃 스틱
+        cardEffects["Mousefire"] = Mousefire;  // 쥐불놀이
+        cardEffects["CtrlZ"] = CtrlZ; // 되돌리기
+        cardEffects["Gradation"] = Gradation; // 그라데이션
     }
     //단일 적 gameobj 가져오는 함수
     //public void GetEnemy(GameObject targetObj)
@@ -67,190 +61,12 @@ public class CardFunctionManager : MonoBehaviour
     // 카드 액션,난입,연출별로 region다시 설정 할 것
     #region CardEffects
 
-    private void Counter() //반격
-    {
-        CardManager.Inst.SetIntrusionCounter();
-    }
-
-    private void Vaccination() //예방 주사
-    {
-        Debug.Log("예방 주사!");
-        TMP_Text playerHealthTMP = GameObject.Find("MyPlayer").GetComponentInChildren<TMP_Text>();
-        if (playerHealthTMP != null)
-        {
-            int currentPlayerHealth = int.Parse(playerHealthTMP.text);
-            currentPlayerHealth -= 2;
-            playerHealthTMP.text = currentPlayerHealth.ToString();
-        }
-        else
-            Debug.LogWarning("HealthTMP not found in the Player GameObject.");
-
-        //방어력 버프와 면역 함수 사용 따로 스크립트 만들기
-
-
-    }
-    private void StageAccident() //우당탕탕 무대 사고!!
-    {
-        Debug.Log("우당탕탕 무대 사고!!");
-        GameObject monsterObject = GameObject.FindGameObjectWithTag("Monster");
-        TMP_Text healthTMP = monsterObject.GetComponentInChildren<TMP_Text>();
-        if (healthTMP != null)
-        {
-            // 현재 HealthTMP의 값을 가져와서 int로 변환
-            int currentHealth = int.Parse(healthTMP.text);
-
-
-            currentHealth = Mathf.RoundToInt(currentHealth / 2); //절반으로 나눈뒤 반올림
-
-            //제압상태 부여 함수 들어갈 곳
-
-            healthTMP.text = currentHealth.ToString();
-        }
-    }
-    /*private void PenOfTruepenny() //정직한 자의 펜촉 고정피해 TrueDamage라 설정 따로 함수를 만들어서 고정피해 전용 데미지계산 적용
-    {
-        Debug.Log("정직한 자의 펜촉!!");
-        GameObject monsterObject = target;
-        TMP_Text healthTMP = monsterObject.GetComponentInChildren<TMP_Text>();
-        if (healthTMP != null)
-        {
-            // 현재 HealthTMP의 값을 가져와서 int로 변환
-            int currentHealth = int.Parse(healthTMP.text);
-
-            // -12를 하고 값 변경 여기에 고정피해 함수 들어감
-            currentHealth -= 12;
-            healthTMP.text = currentHealth.ToString();
-        }
-    }*/
-    /*private void Sortie() //돌격
-    {
-        Debug.Log("돌격!!");
-        GameObject monsterObject = target;
-        TMP_Text healthTMP = monsterObject.GetComponentInChildren<TMP_Text>();
-        if (healthTMP != null)
-        {
-            // 현재 HealthTMP의 값을 가져와서 int로 변환
-            int currentHealth = int.Parse(healthTMP.text);
-
-            // -8를 하고 값 변경
-            currentHealth -= 5;
-            healthTMP.text = currentHealth.ToString();
-        }
-        ResetTarget();
-    }*/
-
-    private void Rush() // 기세몰이
-    {
-        Debug.Log("기세몰이!!");
-        GameObject[] monsterObjects = GameObject.FindGameObjectsWithTag("Monster");
-        GameObject targetMonsterObject = monsterObjects[0];
-        foreach (GameObject monsterObject in monsterObjects)
-        {
-            if (int.Parse(targetMonsterObject.GetComponentInChildren<TMP_Text>().text) >
-                int.Parse(monsterObject.GetComponentInChildren<TMP_Text>().text))
-            {
-                targetMonsterObject = monsterObject;
-            }
-        }
-
-        TMP_Text healthTMP = targetMonsterObject.GetComponentInChildren<TMP_Text>();
-        if (healthTMP != null)
-        {
-            // 현재 HealthTMP의 값을 가져와서 int로 변환
-            int currentHealth = int.Parse(healthTMP.text);
-
-            // -8를 하고 값 변경
-            currentHealth -= 8;
-            healthTMP.text = currentHealth.ToString();
-
-            if (isRushUsed)
-            {
-                isRushUsed = false;
-            }
-            else if (currentHealth < 0)
-            {
-                if (!isRushUsed)
-                    Debug.Log("한번더!");
-                //Rush(); 여기서 버그가 걸려서 일단 디버그로만 해놨음
-            }
-        }
-        else
-        {
-            Debug.LogWarning("HealthTMP not found in the Monster GameObject.");
-        }
-
-
-    }
-    private void Boomerang() //부메랑
-    {
-        GameObject[] monsterObjects = GameObject.FindGameObjectsWithTag("Monster");
-
-        Debug.Log("부메랑!!");
-
-        foreach (GameObject monsterObject in monsterObjects)
-        {
-            // 각 Monster 게임 오브젝트에서 TMP_Text 컴포넌트를 찾습니다.
-            TMP_Text healthTMP = monsterObject.GetComponentInChildren<TMP_Text>();
-
-            if (healthTMP != null)
-            {
-                // 현재 HealthTMP의 값을 가져와서 int로 변환
-                int currentHealth = int.Parse(healthTMP.text);
-
-                // -8를 하고 값 변경
-                currentHealth -= 8;
-                healthTMP.text = currentHealth.ToString();
-            }
-            else
-            {
-                Debug.LogWarning("HealthTMP not found in the Monster GameObject.");
-            }
-        }
-        //플레이어 체력 회복 방법은 ^^위와^^ 같음
-        TMP_Text playerHealthTMP = GameObject.Find("MyPlayer").GetComponentInChildren<TMP_Text>();
-        if (playerHealthTMP != null)
-        {
-            int currentPlayerHealth = int.Parse(playerHealthTMP.text);
-            currentPlayerHealth += 4;
-            playerHealthTMP.text = currentPlayerHealth.ToString();
-        }
-        else
-            Debug.LogWarning("HealthTMP not found in the Player GameObject.");
-
-    }
-    // 예시로 만든 메서드들
-    private void Moon()
+    private void Moon() //코스트 회복이 쓸 일은 있을거 같아 얘는 남김 
     {
         //달, TheMoon, 코스트를 1 얻습니다
         int cost = int.Parse(costTMP.text);
         cost++;
         costManager.CostSetNewCost(cost);
-    }
-
-    private void TheHangedMan()
-    {
-        // Monster 태그를 가진 모든 게임 오브젝트를 찾습니다.
-        GameObject[] monsterObjects = GameObject.FindGameObjectsWithTag("Monster");
-        
-        foreach (GameObject monsterObject in monsterObjects)
-        {
-            // 각 Monster 게임 오브젝트에서 TMP_Text 컴포넌트를 찾습니다.
-            TMP_Text healthTMP = monsterObject.GetComponentInChildren<TMP_Text>();
-
-            if (healthTMP != null)
-            {
-                // 현재 HealthTMP의 값을 가져와서 int로 변환
-                int currentHealth = int.Parse(healthTMP.text);
-
-                // -5를 하고 값 변경
-                currentHealth -= 5;
-                healthTMP.text = currentHealth.ToString();
-            }
-            else
-            {
-                Debug.LogWarning("HealthTMP not found in the Monster GameObject.");
-            }
-        }
     }
 
     private void TestBuffAttackUp() //버프 테스트용 카드
@@ -275,7 +91,7 @@ public class CardFunctionManager : MonoBehaviour
 
     private void TestAttack()   //선택한 대상에게 피해를 5 줍니다
     {
-        Attack("anything", 5, "1");
+        Attack("anything", 5, "normal");
     }
 
     private void TestFaint()    //플레이어 수면 
@@ -294,32 +110,59 @@ public class CardFunctionManager : MonoBehaviour
     }
 
 
-    private void ImsiCard1()    //임시 카드 1, 피해 7, 카드 2장 뽑음
+    private void ImsiCard1()    //카드 드로우에 대한 내용이 있어 임시로 놔둠
     {
-        Attack("anything", 7, "1");
+        Attack("anything", 7, "normal");
         TurnManager.OnAddCard.Invoke(true);
         TurnManager.OnAddCard.Invoke(true);
     }
 
-    private void ImsiCard2()
-    {
-        FindPlayer();
-        player.MakeShield(5, 5);
-        Attack("anything", 5, "1");
-    }
-
-    private void ImsiCard3()
-    {
-        Attack("all", 5, "1");
-        FindPlayer();
-        player.MakeShield(10, 5);
-    }
-
-    private void Encore()
+    private void Encore()       //난입 관련이라 안건드리는게 낫다 판단되어 남김
     {
         CardManager.Inst.SetIntrusionEncore();
     }
 
+    private void SharpNib()  // 날카로운 펜촉
+    {
+        Attack("anything", 7, "piercing");
+        ResetTarget();  //모든 공격 기능 종료 후 타겟을 리셋해야 대상 지정안해도 카드가 사용되는 상황 방지됨
+    }
+
+
+    private void Firestick()  // 불꽃 막대
+    {
+        int randNum = UnityEngine.Random.Range(1, 3);
+
+        for (int i = 0; i < randNum; i++)
+        {
+            Attack("anything", 2, "normal");
+        }
+        ResetTarget();  //모든 공격 기능 종료 후 타겟을 리셋해야 대상 지정안해도 카드가 사용되는 상황 방지됨
+    }
+
+    private void Mousefire()  // 쥐불 놀이
+    {
+        int randNum = UnityEngine.Random.Range(1, 4);
+
+        for (int i = 0; i < randNum; i++)
+        {
+            Attack("all", 3, "normal");
+        }
+        ResetTarget();  //모든 공격 기능 종료 후 타겟을 리셋해야 대상 지정안해도 카드가 사용되는 상황 방지됨
+    }
+
+    private void Gradation()    //그라데이션
+    {
+
+        //costManager.AddRGBCost('R');
+        //costManager.AddRGBCost('G');
+        //costManager.AddRGBCost('B');
+    }
+
+    private void CtrlZ()
+    {
+        // 적당히 봐보니까 entity에서 몬스터패턴쪽에서 데미지 계산할 때 고려해서 과거 체력 보내봐야될듯
+    }
     #endregion
 
     #region IntrusionEffects
@@ -349,39 +192,78 @@ public class CardFunctionManager : MonoBehaviour
     //버프가 아닌 모든 메서드의 넘길 매개변수는
     //타겟, 수치, 지속시간(혹은 횟수), 기타 내용들 순서
     public void Attack(string targetcount, int damage, string type)   //대상에게 피해를 n 줍니다
-    {                                   //targetcount(anything: 단일 아무나, enemy:적, player: 플레이어, all:전체, enemyall: 적 전체 
-                                        //damage(피해량)
-        switch (targetcount)            //type 고정피해 등의 여부
+    {                                                                  //모든 공격력 증가 효과 가져와서 적용
+        FindPlayer();      //기본적인 계산                                             //targetcount(anything: 단일 아무나, enemy:적, player: 플레이어, all:전체, enemyall: 적 전체 
+        damage += player.GetAllAttackUpEffect();                        //damage(피해량)
+        damage -= player.GetAllAttackDownEffect();                      //type (normal: 통상 공격, piercing: 관통 공격(보호막에 관계없이 체력에 직접적으로 공격))
+
+        switch (type)
         {
-            case "anything":
-                FindPlayer();
-                damage += player.GetAllAttackUpEffect();    //모든 공격력 증가 효과 가져와서 적용
-                damage -= player.GetAllAttackDownEffect();
-                target.health -= damage;
-                target.SetHealthTMP();
-                ResetTarget();
-        //target.GetComponents<Entity>();
-                break;
-            case "enemy":
-                break;
-            case "player":
-                break;
-            case "all":
-                FindPlayer();
-                FindAllMonster();
-                damage += player.GetAllAttackUpEffect();    //모든 공격력 증가 효과 가져와서 적용
-                damage -= player.GetAllAttackDownEffect();
-                player.health -= damage;
-                player.SetHealthTMP();
-                foreach(Entity A in monsters)
+            case "normal":
+                switch (targetcount)
                 {
-                    A.health -= damage;
-                    A.SetHealthTMP();
+                    case "anything":
+                        NormalDamage(target, damage);
+                        target.SetHealthTMP();
+                        target.SetShieldTMP();
+                        break;
+                    case "enemy":
+                        break;
+                    case "player":
+                        NormalDamage(player, damage);
+                        break;
+                    case "all":
+                        FindAllMonster();
+                        foreach (Entity nowmonster in monsters)
+                        {
+                            NormalDamage(nowmonster, damage);
+                        }
+                        NormalDamage(player, damage);
+                        break;
+                    case "enemyall":
+                        FindAllMonster();
+                        foreach (Entity nowmonster in monsters)
+                        {
+                            NormalDamage(nowmonster, damage);
+                        }
+                        break;
                 }
                 break;
-            case "enemyall":
+            case "piercing":
+                switch (targetcount)
+                {
+                    case "anything":
+                        target.health -= damage;
+                        target.SetHealthTMP();
+                        //target.GetComponents<Entity>();
+                        break;
+                    case "enemy":
+                        break;
+                    case "player":
+                        player.health -= damage;
+                        player.SetHealthTMP();
+                        break;
+                    case "all":
+                        FindAllMonster();
+                        foreach (Entity nowmonster in monsters)
+                        {
+                            nowmonster.health -= damage;
+                            nowmonster.SetHealthTMP();
+                        }
+                        player.health -= damage;
+                        player.SetHealthTMP();
+                        break;
+                    case "enemyall":
+                        FindAllMonster();
+                        foreach (Entity nowmonster in monsters)
+                        {
+                            nowmonster.health -= damage;
+                            nowmonster.SetHealthTMP();
+                        }
+                        break;
+                }
                 break;
-        }      
+        }
     }
 
     public void Faint(string targetcount, int turn)
@@ -468,6 +350,23 @@ public class CardFunctionManager : MonoBehaviour
     {
         findplayer = GameObject.FindGameObjectWithTag("Player");
         player = findplayer.GetComponent<Entity>();
+    }
+
+    private void NormalDamage(Entity entity, int damage)
+    {
+        if (entity.shield >= damage)
+        {
+            entity.shield -= damage;
+            entity.SetShieldTMP();
+        }
+        else
+        {
+            damage = damage - entity.shield;
+            entity.health -= damage;
+            entity.shield = 0;
+            entity.SetHealthTMP();
+            entity.SetShieldTMP();
+        }
     }
     #endregion
 }
