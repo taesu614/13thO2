@@ -91,29 +91,66 @@ public class CostManager : MonoBehaviour
         return can;
     }
 
+    public void AddRGBCost(int color)  // RGBCost를 하나씩 추가하는 메소드
+    {
+        switch (color)
+        {
+            case 'R':
+                if (rcost >= 5)
+                    return;
+                SetRGBSprite('R');
+                rcost++;
+                break;
+
+            case 'G':
+                if (gcost >= 5)
+                    return;
+                SetRGBSprite('G');
+                gcost++;
+                break;
+
+            case 'B':
+                if (bcost >= 5)
+                    return;
+                SetRGBSprite('B');
+                bcost++;
+                break;
+        }
+
+    }
+
     public void SubtractCost(Card card) //코스트 얻는 기능
     {
         hasmycost -= card.item.cost;
         if(card.item.color == 'R')
         {
-            if (rcost >= 5)
-                return;
-            SetRGBSprite('R');
-            rcost++;
+            for (int i = 0; i < card.item.cost; i++)
+            {
+                if (rcost >= 5)
+                    return;
+                SetRGBSprite('R');
+                rcost++;
+            }
         }
         else if(card.item.color == 'G')
         {
-            if (gcost >= 5)
-                return;
-            SetRGBSprite('G');
-            gcost++;
+            for (int i = 0; i < card.item.cost; i++)
+            {
+                if (gcost >= 5)
+                    return;
+                SetRGBSprite('G');
+                gcost++;
+            }
         }
         else if(card.item.color == 'B')
         {
-            if (bcost >= 5)
-                return;
-            SetRGBSprite('B');
-            bcost++;
+            for (int i = 0; i < card.item.cost; i++)
+            {
+                if (bcost >= 5)
+                    return;
+                SetRGBSprite('B');
+                bcost++;
+            }
         }
     }
     public void GetMyStarMask() //Button에서 사용, 마스크 착용 기능

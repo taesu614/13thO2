@@ -154,9 +154,9 @@ public class CardFunctionManager : MonoBehaviour
     private void Gradation()    //그라데이션
     {
 
-        //costManager.AddRGBCost('R');
-        //costManager.AddRGBCost('G');
-        //costManager.AddRGBCost('B');
+        costManager.AddRGBCost('R');
+        costManager.AddRGBCost('G');
+        costManager.AddRGBCost('B');
     }
 
     private void CtrlZ()
