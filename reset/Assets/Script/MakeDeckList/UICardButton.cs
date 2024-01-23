@@ -66,8 +66,9 @@ public class UICardButton : MonoBehaviour
     }
     public void InputCard()
     {
-        savedata.InputCardInDeck(item);
-        deckuimanager.MakeCardNameUI(item);
+        //savedata.InputCardInDeck(item);
+        deckuimanager.AddCard(item);
+        //deckuimanager.MakeCardNameUI(item);
         //Debug.Log(item.name);
     }
 }

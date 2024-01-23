@@ -7,10 +7,8 @@ public class DeckUIManager : MonoBehaviour
 {
     [SerializeField] ItemSO itemSO;
     [SerializeField] GameObject cardPrefab;
-    BinarySearchTree test;
     List<GameObject> cardnamePrefabslist = new List<GameObject>();  //리스트로 프리팹을 전체 삭제하도록 하는 용도
-    private List<Item> itemBuffer = new List<Item>();
-    Queue<Item> testqueue = new Queue<Item>();
+    private List<Item> mydecklisttemp = new List<Item>();   //덱 리스트 임시 저장소(이곳을 가지고 놀다 최종적으로 생성된 덱을itemBuffer에 넣음)
     public GameObject deckui;
     public RectTransform content;
     public GameObject cardnameuiprefab;
@@ -30,7 +28,6 @@ public class DeckUIManager : MonoBehaviour
         savedata = GameObject.Find("SaveData").GetComponent<SaveData>();
         deckuicanvas = deckui.GetComponent<Canvas>();
         cardlistpanel = GameObject.Find("CardListPanel");
-        test = new BinarySearchTree();
         deckui.SetActive(false);
         savedata.ResetCardList();
     }
@@ -45,7 +42,7 @@ public class DeckUIManager : MonoBehaviour
         {
             deckui.SetActive(true);
             //itemBuffer = new List<Item>();
-            for(int i = 0; i<itemSO.items.Length; i++)  //ItemSO에서 카드 데이터 불러옴
+            for (int i = 0; i < itemSO.items.Length; i++)  //ItemSO에서 카드 데이터 불러옴 - 전체 카드 데이터
             {
                 Item item = itemSO.items[i];
                 var cardObject = Instantiate(cardPrefab, cardlistpanel.transform);
@@ -77,216 +74,75 @@ public class DeckUIManager : MonoBehaviour
     }
 
 
-    public void MakeCardNameUI(Item item)
+    private void MakeCardNameUI()
     {
-        test.Insert(item);
         //itemBuffer = new List<Item>();
-        testqueue.Clear();
-        test.InorderTraversal(testqueue);
-        Debug.Log(testqueue.Count);
-        Debug.Log(test.Search(item));
-        SortCard();
-
-    }
-
-    void SortCard()
-    {
         Debug.Log(cardnamePrefabslist.Count);
-        foreach (var prefab in cardnamePrefabslist)
+        foreach (var prefab in cardnamePrefabslist) //덱의 리스트를 보여주는 프리팹 제거
         {
             Destroy(prefab);
         }
         cardnamePrefabslist.Clear();
-        foreach (Item A in testqueue)      //정렬 관련
+        SortDeck();
+        foreach (Item A in mydecklisttemp)      //UI표시 관련
         {
-            GameObject content = GameObject.Find("Content");
+            GameObject content = GameObject.Find("Content");    //Content 자식이 덱임
             var newcardname = Instantiate(cardnameuiprefab, content.transform);  //카드 이름 프리팹 생성
             uideckbutton = newcardname.GetComponent<UIDeckButton>();
-            uideckbutton.Setup(A);
+            uideckbutton.Setup(A);          //덱의 UI를 생성하는 기능
             cardnamePrefabslist.Add(newcardname);
             RectTransform rectTransform = newcardname.GetComponent<RectTransform>();
             rectTransform.anchoredPosition = new Vector2(0, 0);
         }
     }
 
+    public void AddCard(Item item)
+    {
+        mydecklisttemp.Add(item);
+        MakeCardNameUI();
+    }
+
+    private void SortDeck()   //정렬 관련
+    {
+        int n = mydecklisttemp.Count;
+        for (int i = 1; i < n; ++i)
+        {
+            Item key = mydecklisttemp[i];
+            int j = i - 1;
+
+            // key보다 큰 원소들을 오른쪽으로 이동
+            while (j >= 0 && mydecklisttemp[j].identifier > key.identifier)
+            {
+                mydecklisttemp[j + 1] = mydecklisttemp[j];
+                j = j - 1;
+            }
+
+            // key를 적절한 위치에 삽입
+            mydecklisttemp[j + 1] = key;
+        }
+    }
+
     public void RemoveCard(Item item)
     {
         //itemBuffer = new List<Item>();
-
-        test.ResetTree();
-        Debug.Log("FinishDelete");
-        testqueue.Clear();
-        test.InorderTraversal(testqueue);
-        Debug.Log(testqueue.Count);
-        SortCard();
-    }
-    public void Test(Item itemname)
-    {
-        Debug.Log(test.Search(itemname));
-    }
-}
-//아직 제작중임
-#region binarySearchTree    
-//사용한 사이트 https://gamemakerslab.tistory.com/30
-public class BinarySearchTree
-{
-    public class Node
-    {
-        public Item item;
-        public Node Left;
-        public Node Right;
-
-        public Node(Item itemname)
+        foreach (Item A in mydecklisttemp)
         {
-            item = itemname;
-            Left = null;
-            Right = null;
+            if (item.identifier == A.identifier)
+            {
+                mydecklisttemp.Remove(A);
+                Debug.Log("RemoveCard");
+                Debug.Log(mydecklisttemp.Count);
+                break;
+            }
         }
+        MakeCardNameUI();
     }
 
-    public Node Root;
-
-    public BinarySearchTree()
+    public void SaveDeck()
     {
-        Root = null;
-    }
-
-    public void Insert(Item item)
-    {
-        Debug.Log(item.name);
-        Root = InsertRecursively(Root, item);
-    }
-
-    private Node InsertRecursively(Node node, Item itemname)
-    {
-        if (node == null)
+        foreach(Item A in mydecklisttemp)
         {
-            Debug.Log(itemname.name);
-            node = new Node(itemname);
-            return node;
-        }
-
-        if (itemname.identifier <= node.item.identifier)
-        {
-            node.Left = InsertRecursively(node.Left, itemname);
-        }
-        else if (itemname.identifier > node.item.identifier)
-        {
-            node.Right = InsertRecursively(node.Right, itemname);
-        }
-
-        return node;
-    }
-
-    public bool Search(Item itemname)
-    {
-        return SearchRecursively(Root, itemname) != null;
-    }
-
-    private Node SearchRecursively(Node node, Item itemname)
-    {
-        if (node == null || node.item.identifier == itemname.identifier)
-        {
-            return node;
-        }
-
-        if (itemname.identifier < node.item.identifier)
-        {
-            return SearchRecursively(node.Left, itemname);
-        }
-
-        return SearchRecursively(node.Right, itemname);
-    }
-
-    // 삭제 연산
-    public void Delete(Item itemname)
-    {
-        Root = DeleteRecursively(Root, itemname);
-    }
-
-    private Node DeleteRecursively(Node node, Item itemname)
-    {
-        Debug.Log(node);
-        if(node == null)
-        {
-            return node;
-        }
-        else if (itemname.identifier == node.item.identifier)
-        {
-            Debug.Log(node.item.name);
-            node = DeleteNode(node);
-            return node;
-        }
-        else if(itemname.identifier < node.item.identifier)
-        {
-            Debug.Log(node.item.name);
-            node.Left = DeleteRecursively(node.Left, itemname);
-            return node;
-        }
-        else
-        {
-            Debug.Log(node.item.name);
-            node.Right = DeleteRecursively(node.Right, itemname);
-            return node;
-        }
-    }
-
-    Node DeleteNode(Node node)
-    {
-        if(node.Left == null && node.Right == null)     //못찾은 경우
-        {
-            return null;
-        }
-        else if(node.Left == null)  
-        {
-            return node.Right;  //왼자식만
-        }
-        else if(node.Right == null)
-        {
-            return node.Left;   //오른자식만
-        }
-        else            //두 자식 모두 있음
-        {
-            (int minItem, Node newRight) = DeleteMinItem(node.Right);
-            node.item.identifier = minItem;
-            node.Right = newRight;
-            return node;
-        }
-    }
-
-    (int, Node) DeleteMinItem(Node node)
-    {
-        if (node.Left == null)
-            return (node.item.identifier, node.Right);
-        else
-        {
-            (int minItem, Node newLeft) = DeleteMinItem(node.Left);
-            node.Left = newLeft;
-            return (minItem, node);
-        }
-    }
-
-    public void ResetTree()
-    {
-        Root = null;
-    }
-
-    // 순회 연산
-    public void InorderTraversal(Queue<Item> deck)
-    {
-        InorderTraversalRecursively(Root, deck);
-        Debug.Log("finish line");
-    }
-
-    private void InorderTraversalRecursively(Node node, Queue<Item> deck)
-    {
-        if (node != null)
-        {
-            InorderTraversalRecursively(node.Left, deck);
-            Debug.Log(node.item.name);
-            deck.Enqueue(node.item);
-            InorderTraversalRecursively(node.Right, deck);
+            savedata.InputCardInDeck(A);
         }
     }
 }
-#endregion
