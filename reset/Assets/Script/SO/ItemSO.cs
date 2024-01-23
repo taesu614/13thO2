@@ -15,6 +15,7 @@ public class Item   //카드 관련으로 꾸미는 곳
     public int rarity;   //카드 등급
     //public Sprite sprite;
     public string reward;   //보상 위치 여부 - 모험보상, 상점 등
+    public int price;
     public string active;
     public float percent;
     public bool selectable;
