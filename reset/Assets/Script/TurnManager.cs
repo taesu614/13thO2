@@ -81,7 +81,7 @@ public class TurnManager : MonoBehaviour
         OnAddCard?.Invoke(myTurn);
         yield return delay07;
         isLoading = false;
-        OnTurnStarted?.Invoke(myTurn);
+        OnTurnStarted?.Invoke(myTurn);  //적의 턴 관련 - EntityManager - OnTurnStarted
     }
 
     public void EndTrun()

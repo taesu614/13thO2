@@ -47,7 +47,7 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
         myplayerentity = myplayer.GetComponent<Entity>();
         SetupMonsterBuffer();
         SetPlayer();
-        AddEntity(0);
+        AddEntity(0);       //향후 좌표 외 이미지와 패턴 관련해서도 수정할 것
         AddEntity(2.5f);
         TurnManager.OnTurnStarted += OnTurnStarted;
     }
@@ -110,7 +110,7 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
         TurnManager.OnTurnStarted -= OnTurnStarted;   
     }
 
-    void OnTurnStarted(bool myTurn)
+    void OnTurnStarted(bool myTurn) //적의 행동 관련 내용
     {
         AttackableReset(myTurn);
 
@@ -121,7 +121,7 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
     private void Update()
     {
         ShowTargetPicker(ExistTargetPickEntity);
-        if(myplayerentity.health<=0)
+        if(myplayerentity.health<=0)    //임시용
         {
             Destroy(myplayer);
             Destroy(GameObject.Find("SaveData"));
@@ -148,7 +148,6 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
             if (selectEntity != null)
             {
                 yield return delay1;
-
                 selectEntity.ExecutePattern(selectEntity.monsterfunctionname);
                 //공격로직
             }

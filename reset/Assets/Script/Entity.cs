@@ -11,14 +11,18 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     private Dictionary<string, Action> monsterPatterns = new Dictionary<string, Action>();  //¹öÇÁ Á¦°Å ½Ã ¼±ÀÔ ¼±Ãâ ¹æ½ÄÀ¸·Î ¿¹»óµÇ¾î Å¥·Î ¼³Á¤
     [SerializeField] SpriteRenderer entity;
     [SerializeField] SpriteRenderer charater;
+    [SerializeField] SpriteRenderer patternUI;
     [SerializeField] TMP_Text healthTMP;
     [SerializeField] TMP_Text attackTMP;
     [SerializeField] TMP_Text shieldTMP;
     [SerializeField] GameObject hpline;
+    [SerializeField] Sprite AttackUI;
+    [SerializeField] Sprite ShieldUI;
+    [SerializeField] Sprite EffectUI;
+    [SerializeField] Sprite WhatUI;
 
     Queue<StatusEffect> myStatusEffect = new Queue<StatusEffect>();
     public Monster monster;
-    public CardManager cardmanager;
     public int attack;
     public int maxhealth = 40;
     public int health = 40;
@@ -41,10 +45,17 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     public bool issleep = false;
     public bool hasmask = false;
 
+    private int pattern;
+    private string patternname;
+    private bool isfirst = true;   //Ã¹ÅÏ¿¡ UI¼³Á¤À» À§ÇØ¼­ ¸¸µç À§Ä¡
+    private int addtionpattern = 0;
+
     void Start()
     {
-        TurnManager.OnTurnStarted += OnTurnStarted;
         monsterPatterns["Snail"] = () => SnailPattern();
+        monsterPatterns["Hcoronatus"] = () => HcoronatusPattern();
+        pattern = Random.Range(0,10);
+        ExecutePattern(monsterfunctionname);    //isfirst¸¦ ÀÌ¿ëÇØ¼­ Ã³À½¿¡ »ç¿ëÇÒ ÆÐÅÏÀ» Á¤ÇÏ°Ô ÇØ µÒ 
     }
 
     void OnDestroy()
@@ -72,14 +83,15 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     {
         this.monster = monster;
         maxhealth = monster.maxhealth;
-        health = int.Parse(healthTMP.text); //¾Æ¸¶ ¶È°°Àº monsterSO¸¦ ¸¸µé¾î¼­ ¸ó½ºÅÍ¸¦ °ü¸®ÇÒµí
+        health = monster.health;
         attack = int.Parse(attackTMP.text);
-        shield = int.Parse(shieldTMP.text);
+        shield = monster.shield;
         monsterfunctionname = this.monster.monsterfunctionname;
 
         this.monster = monster;
         charater.sprite = this.monster.sprite;
         healthTMP.text = this.monster.health.ToString();
+        shieldTMP.text = this.monster.shield.ToString();
         attackTMP.text = this.monster.attack.ToString();
     }
 
@@ -168,83 +180,125 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
 
 
     #region MonsterPattern
-
+    #region Snail
     private void SnailPattern()
     {
-        // Player ÅÂ±×¸¦ °¡Áø ¸ðµç °ÔÀÓ ¿ÀºêÁ§Æ®¸¦ Ã£½À´Ï´Ù.
-        Entity playerEntity = GameObject.Find("MyPlayer").GetComponent<Entity>();
-        GameObject[] playerObjects = GameObject.FindGameObjectsWithTag("Player");
-        foreach (GameObject playerObject in playerObjects)
+        if (isfirst)
         {
-            // °¢ Player °ÔÀÓ ¿ÀºêÁ§Æ®¿¡¼­ TMP_Text ÄÄÆ÷³ÍÆ®¸¦ Ã£½À´Ï´Ù.
-            TMP_Text playerhealthTMP = playerObject.GetComponentInChildren<TMP_Text>();
-            TMP_Text playershieldTMP = playerObject.GetComponentInChildren<TMP_Text>();
-            if (playerhealthTMP != null && playershieldTMP != null)
+            isfirst = false;
+        }
+        else
+        {
+            int damage = 8;
+            damage += GetAllAttackUpEffect();
+            damage -= GetAllAttackDownEffect();
+            switch (patternname)
             {
-                // ÇöÀç HealthTMPÀÇ °ªÀ» °¡Á®¿Í¼­ int·Î º¯È¯
-                int currentHealth = int.Parse(playerhealthTMP.text);
-                int currentShield = int.Parse(playershieldTMP.text);
-                if (health >= 5 && liveCount > 3)   //Ã¼·ÂÀÌ 5 ÀÌ»ó, ÅÏ¼ö 3 ÃÊ°ú
-                {
-                    int random = UnityEngine.Random.Range(0, 10);
-                    if (random < 5)
-                    {
-                        if(playerEntity.shield > 0)
-                        {
-                            playerEntity.shield -= 4;
-                            currentShield = playerEntity.shield;
-                            playerEntity.SetShieldTMP();
-                        }
-                        else
-                        {
-                            playerEntity.health -= 4;
-                            currentHealth = playerEntity.health;
-                        }
-
-                    }
-                    else
-                    {
-                        playerEntity.health -= 8;
-                        currentHealth = playerEntity.health;
-                    }
-                }
-                else if (health >= 5)   //Ã¼·Â 5 ÀÌ»ó Á¶°Ç
-                {
-                    if (playerEntity.shield > 0)
-                    {
-                        Debug.Log("½¯µå ±ð´ÂÁß");
-                        playerEntity.shield -= 5;
-                        playerEntity.SetShieldTMP();
-                    }
-                    else
-                    {
-                        playerEntity.health -= 5;
-                        currentHealth = playerEntity.health;
-                    }
-                }
-                else if (health < 5)
-                {
-                    Debug.Log("¸Íµ¶");
-                    playerEntity.poisonCount = 1;
-                }
-
-                playerhealthTMP.text = currentHealth.ToString();
-                playerEntity.SetHealthTMP();
-
-            }
-            else
-            {
-                Debug.LogWarning("HealthTMP not found in the Player GameObject.");
+                case "attack":
+                    CardFunctionManager.Inst.Attack("player", damage, "normal", "monster");
+                    break;
+                case "effect":
+                    //¹Ì¿Ï¼º - µ¶ 
+                    break;
+                case "shield":
+                    MakeShield(4, 1);
+                    break;
+                default:
+                    break;
             }
         }
+
+        pattern = Random.Range(0, 10);   //¸¶Áö¸· ÆÐÅÏ ¼³Á¤
+        switch (pattern)
+        {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                patternname = "attack"; //ÀÌÈÄ ÀÌ¹ÌÁö º¯°æ
+                patternUI.sprite = AttackUI;
+                break;
+            case 5:
+            case 6:
+                patternname = "effect";
+                patternUI.sprite = EffectUI;
+                break;
+            case 7:
+            case 8:
+            case 9:
+                patternname = "shield";
+                patternUI.sprite = ShieldUI;
+                break;
+        }
+        Debug.Log(patternname);
     }
+    #endregion  Hcoronatus  ³­»ï±Í°¡ ¹ºÁö ¸ô¶ó¼­ ³­ÃÊ»ç¸¶±Í·Î ÀÓ½Ã´ëÃ¼
+
+    private void HcoronatusPattern()
+    {
+        if(isfirst)
+        {
+            isfirst = false;
+        }
+        else
+        {
+            int damage = 5;
+            damage += GetAllAttackUpEffect();
+            damage -= GetAllAttackDownEffect();
+            switch (patternname)
+            {
+                case "attack":
+                    CardFunctionManager.Inst.Attack("player", damage, "normal", "monster");
+                    CardFunctionManager.Inst.Attack("player", damage, "normal", "monster");
+                    break;
+                case "effect":
+                    MakeAttackUp(2, 2);
+                    break;
+                case "shield":
+                    MakeShield(10, 1);
+                    Debug.Log("This monster make Shield");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        pattern = Random.Range(0,10);   //¸¶Áö¸· ÆÐÅÏ ¼³Á¤
+        switch(pattern)
+        {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                patternname = "attack"; //ÀÌÈÄ ÀÌ¹ÌÁö º¯°æ
+                patternUI.sprite = AttackUI;
+                break;
+            case 5:
+            case 6:
+                patternname = "effect";
+                patternUI.sprite = EffectUI;
+                break;
+            case 7:
+            case 8:
+            case 9:
+                patternname = "shield";
+                patternUI.sprite = ShieldUI;
+                break;
+        }
+        Debug.Log(patternname);
+    }
+    #endregion
+
+    #region Utils
 
     // ¸ó½ºÅÍ ÆÐÅÏ ½ÇÇà ¸Þ¼­µå
     public void ExecutePattern(string patternName)
     {
         if (monsterPatterns.TryGetValue(patternName, out Action monsterPattern))
         {
-            // ÇØ´ç Ä«µåÀÇ ±â´É ½ÇÇà
+            // ÇØ´ç ¸ó½ºÅÍÀÇ ±â´É ½ÇÇà
             monsterPattern();
         }
         else
@@ -252,7 +306,8 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
             Debug.Log("MonsterPattern not found.");
         }
     }
-    #endregion MonsterPattern
+
+    #endregion
 
     #region MakeEffect
     public void MakeAttackUp(int damage, int count)
@@ -305,6 +360,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         newEffect.SetImmuneSleep(turn);
         myStatusEffect.Enqueue(newEffect);
     }
+
     #endregion
     public int GetAllAttackUpEffect()   //°ø°Ý·Â Áõ°¡ È¿°ú °¡Á®¿À±â
     {

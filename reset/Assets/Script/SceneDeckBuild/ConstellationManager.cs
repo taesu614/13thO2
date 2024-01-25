@@ -48,13 +48,13 @@ public class ConstellationManager : MonoBehaviour
         }
     }
 
-    public void LeftMoveConstellation()
+    public void RightMoveConstellation()
     {
         GameObject starttoend = constellationqueue.Dequeue();
         constellationqueue.Enqueue(starttoend); //앞에걸 뒤로 밈
         SetConstellation(constellationqueue);
     }
-    public void RightMoveConstellation()
+    public void LeftMoveConstellation()
     {
         for(int i = 0; i < constellationqueue.Count - 1; i++)
         {

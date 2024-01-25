@@ -6,7 +6,7 @@ using TMPro;
 public class CardFunctionManager : MonoBehaviour
 {
     private Dictionary<string, Action> cardEffects = new Dictionary<string, Action>();
-
+    public static CardFunctionManager Inst { get; private set; }
     //예상되는 변수들 모음
     [SerializeField] TMP_Text costTMP;  //계산에 쓰일 것이므로 num = int.Parse(costTMP); 해둘것
     [SerializeField] TMP_Text rcostTMP;
@@ -31,6 +31,10 @@ public class CardFunctionManager : MonoBehaviour
     Entity targetentity;
     bool isRushUsed = false;
 
+    private void Awake()
+    {
+        Inst = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -191,12 +195,14 @@ public class CardFunctionManager : MonoBehaviour
     #region method
     //버프가 아닌 모든 메서드의 넘길 매개변수는
     //타겟, 수치, 지속시간(혹은 횟수), 기타 내용들 순서
-    public void Attack(string targetcount, int damage, string type)   //대상에게 피해를 n 줍니다
+    public void Attack(string targetcount, int damage, string type, string user = "player")   //대상에게 피해를 n 줍니다
     {                                                                  //모든 공격력 증가 효과 가져와서 적용
         FindPlayer();      //기본적인 계산                                             //targetcount(anything: 단일 아무나, enemy:적, player: 플레이어, all:전체, enemyall: 적 전체 
-        damage += player.GetAllAttackUpEffect();                        //damage(피해량)
-        damage -= player.GetAllAttackDownEffect();                      //type (normal: 통상 공격, piercing: 관통 공격(보호막에 관계없이 체력에 직접적으로 공격))
-
+        if(user == "player")    //몬스터에게도 사용되므로 기준이 플레이어야 몬스터냐에 따라 달라질 것
+        {
+            damage += player.GetAllAttackUpEffect();                        //damage(피해량)
+            damage -= player.GetAllAttackDownEffect();                      //type (normal: 통상 공격, piercing: 관통 공격(보호막에 관계없이 체력에 직접적으로 공격))
+        }
         switch (type)
         {
             case "normal":

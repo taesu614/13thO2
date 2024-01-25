@@ -52,7 +52,7 @@ public class DragCamera : MonoBehaviour
         float cameraHalfWidth = cameraHalfHeight * Camera.main.aspect;
 
         clampedPosition.x = Mathf.Clamp(transform.position.x, cameraBounds.bounds.min.x + cameraHalfWidth, cameraBounds.bounds.max.x - cameraHalfWidth);
-        clampedPosition.y = Mathf.Clamp(transform.position.y, cameraBounds.bounds.min.y + cameraHalfHeight, cameraBounds.bounds.max.y - cameraHalfHeight);
+        clampedPosition.y = Mathf.Clamp(transform.position.y, cameraBounds.bounds.min.y - cameraHalfHeight, cameraBounds.bounds.max.y + cameraHalfHeight);
 
         transform.position = clampedPosition;
     }

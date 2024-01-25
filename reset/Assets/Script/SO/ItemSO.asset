@@ -160,7 +160,7 @@ MonoBehaviour:
     functionname: Gradation
     cost: 0
     colorimg: {fileID: 21300000, guid: bf31a3e98478f504f96f93cdc130e88e, type: 3}
-    costcolor: {fileID: 21300000, guid: 5d251bdcb5871b645886581078fb6d5f, type: 3}
+    costcolor: {fileID: 21300000, guid: 74773374773ea6d4b8a2653b5cfd1572, type: 3}
     cardtype: Production
     color: 71
     rarity: 1

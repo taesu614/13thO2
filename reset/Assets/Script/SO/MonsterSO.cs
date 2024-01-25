@@ -12,6 +12,7 @@ public class Monster    //몬스터 관련으로 꾸미는곳 몬스터 기능 설정시 등급_몬스�
     public int maxhealth;
     public int health;
     public int attack;
+    public int shield;
     public float percent;
 }
 
