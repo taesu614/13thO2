@@ -86,6 +86,19 @@ public class TurnManager : MonoBehaviour
 
     public void EndTrun()
     {
+        if(myTurn)
+        {
+            playerentity.CheckEffect();
+        }
+        else
+        {
+            GameObject[] entities = GameObject.FindGameObjectsWithTag("Monster");
+            foreach(GameObject A in entities)
+            {
+                Entity monster = A.GetComponent<Entity>();
+                monster.CheckEffect();
+            }
+        }
         myTurn = !myTurn;
         //EntityManager.Inst.DamagedReset();
         StartCoroutine(StartTurnCo());

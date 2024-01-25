@@ -21,7 +21,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     [SerializeField] Sprite EffectUI;
     [SerializeField] Sprite WhatUI;
 
-    Queue<StatusEffect> myStatusEffect = new Queue<StatusEffect>();
+    List<StatusEffect> myStatusEffect = new List<StatusEffect>();
     public Monster monster;
     public int attack;
     public int maxhealth = 40;
@@ -315,7 +315,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         Debug.Log("Effect - Attack Up");
         StatusEffect newEffect = new StatusEffect();
         newEffect.SetPowerUp(damage, count);
-        myStatusEffect.Enqueue(newEffect);
+        myStatusEffect.Add(newEffect);
     }
 
     public void MakeAttackDown(int damage, int count)
@@ -323,7 +323,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         Debug.Log("Effect - Attack Down");
         StatusEffect newEffect = new StatusEffect();
         newEffect.SetPowerDown(damage, count);
-        myStatusEffect.Enqueue(newEffect);
+        myStatusEffect.Add(newEffect);
     }
 
     public void MakeShield(int amount, int turn)
@@ -331,7 +331,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         Debug.Log("Effect - Shield");
         StatusEffect newEffect = new StatusEffect();
         newEffect.SetShield(amount, turn);
-        myStatusEffect.Enqueue(newEffect);
+        myStatusEffect.Add(newEffect);
         shield += amount;
         SetShieldTMP();
     }
@@ -341,7 +341,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         Debug.Log("Effect - Faint");
         StatusEffect newEffect = new StatusEffect();
         newEffect.SetFaint(turn);
-        myStatusEffect.Enqueue(newEffect);
+        myStatusEffect.Add(newEffect);
     }
 
     public void MakeSleep(int turn) //¼ö¸é »ý¼º
@@ -349,7 +349,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         Debug.Log("Effect - Sleep");
         StatusEffect newEffect = new StatusEffect();
         newEffect.SetSleep(turn);
-        myStatusEffect.Enqueue(newEffect);
+        myStatusEffect.Add(newEffect);
         issleep = true;
     }
 
@@ -358,7 +358,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         Debug.Log("Effect - Immnue Sleep");
         StatusEffect newEffect = new StatusEffect();
         newEffect.SetImmuneSleep(turn);
-        myStatusEffect.Enqueue(newEffect);
+        myStatusEffect.Add(newEffect);
     }
 
     #endregion
@@ -381,7 +381,27 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         }
         return result;
     }
-
+    public bool GetSleep()  //ÀÓ½Ã¿ë
+        {
+            int sleep = Random.Range(0, 10);    //0~9ÀÇ ³­¼ö
+            foreach (StatusEffect obj in myStatusEffect)
+            {
+                if (obj.GetImmuneSleep())
+                {
+                    Debug.Log("I can't sleep");
+                    sleep = 100;
+                    break;
+                }
+            }
+            Debug.Log(sleep);
+            if (sleep < 7)   //0,1,2,3,4,5,6 = 70% = ½ÇÆÐ
+            {
+                Debug.Log("I sleep");
+                return true;
+            }
+            Debug.Log("I don't sleep");
+            return false;
+        }
     public void GetAllCC()
     {
         foreach (StatusEffect obj in myStatusEffect)
@@ -390,34 +410,25 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
             {
                 Debug.Log("You are faint");
                 canplay = false;
-            }
-        }
-    }
-
-    public bool GetSleep()  //ÀÓ½Ã¿ë
-    {
-        int sleep = Random.Range(0, 10);    //0~9ÀÇ ³­¼ö
-        foreach (StatusEffect obj in myStatusEffect)
-        {
-            if (obj.GetImmuneSleep())
-            {
-                Debug.Log("I can't sleep");
-                sleep = 100;
                 break;
             }
         }
-        Debug.Log(sleep);
-        if (sleep < 7)   //0,1,2,3,4,5,6 = 70% = ½ÇÆÐ
+    }
+
+    public void CheckEffect()
+    {
+        for(int i = myStatusEffect.Count - 1; i >= 0; i--)  //¹Ýµå½Ã ¿ª¼øÀ¸·Î Áö¿ï °Í 
         {
-            Debug.Log("I sleep");
-            return true;
+            myStatusEffect[i].DecreaseEffectTurn();
+            if(myStatusEffect[i].effectturn <= 0)
+            {
+                myStatusEffect.RemoveAt(i);
+            }
         }
-        Debug.Log("I don't sleep");
-        return false;
     }
 }
 
-class StatusEffect
+class StatusEffect  //½ºÅÃ Çü½ÄÀÇ È¿°ú´Â ¾ø¾Ø »óÅÂÀÓ
 {
     public bool ispowerUp = false;
     public bool ispowerDown = false;
@@ -425,14 +436,13 @@ class StatusEffect
     public bool isfaint = false;    //±âÀý Á¸Àç ¿©ºÎ
     public bool issleep = false;    //¼ö¸é Á¸Àç ¿©ºÎ
     public bool isimmunesleep = false;
-    public int effectamount;    //È¿°úÀÇ ¾ç
-    public int effectcount;   //È½¼ö
-    public int effectturn;    //Áö¼Ó ÅÏ ¼ö
+    public int effectamount = 0;    //È¿°úÀÇ ¾ç
+    public int effectturn = 0;    //Áö¼Ó ÅÏ ¼ö
     #region PowerUp
-    public void SetPowerUp(int amount, int count)
+    public void SetPowerUp(int amount, int turn)
     {
         effectamount = amount;
-        effectcount = count;
+        effectturn = turn;
         ispowerUp = true;
     }
 
@@ -447,10 +457,10 @@ class StatusEffect
     #endregion
 
     #region PowerDown
-    public void SetPowerDown(int amount, int count)
+    public void SetPowerDown(int amount, int turn)
     {
         effectamount = amount;
-        effectcount = count;
+        effectturn = turn;
         ispowerDown = true;
     }
 
@@ -521,6 +531,11 @@ class StatusEffect
             return true;
         }
         return false;
+    }
+
+    public void DecreaseEffectTurn()
+    {
+        effectturn--;
     }
     #endregion
 }
