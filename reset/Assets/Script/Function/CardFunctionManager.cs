@@ -48,6 +48,7 @@ public class CardFunctionManager : MonoBehaviour
         cardEffects["TestFaint"] = TestFaint;
         cardEffects["TestSleep"] = TestSleep;
         cardEffects["TestImmuneSleep"] = TestImmuneSleep;
+        cardEffects["TestPoison"] = TestPoison;
 
         cardEffects["SharpNib"] = SharpNib;  // 날카로운 펜촉
         cardEffects["Firestick"] = Firestick;  // 불꽃 스틱
@@ -111,6 +112,11 @@ public class CardFunctionManager : MonoBehaviour
     private void TestImmuneSleep()  //플레이어 수면 면역
     {
         ImmuneSleep("anything", 3);
+    }
+
+    private void TestPoison()   //독
+    {
+        Poison("anything", 4);
     }
 
 
@@ -256,7 +262,7 @@ public class CardFunctionManager : MonoBehaviour
                             nowmonster.health -= damage;
                             nowmonster.SetHealthTMP();
                         }
-                        player.health -= damage;
+                        player.health -= damage;    //플레이어 관련도 넣긴함
                         player.SetHealthTMP();
                         break;
                     case "enemyall":
@@ -321,6 +327,27 @@ public class CardFunctionManager : MonoBehaviour
             case "player":
                 FindPlayer();
                 player.MakeImmuneSleep(turn);
+                break;
+            case "all":
+                break;
+            case "enemyall":
+                break;
+        }
+    }
+
+    public void Poison(string targetcount, int turn)
+    {
+        switch (targetcount)
+        {
+            case "anything":
+                Debug.Log(target);
+                target.MakePoison(turn);
+                break;
+            case "enemy":
+                break;
+            case "player":
+                FindPlayer();
+                player.MakePoison(turn);
                 break;
             case "all":
                 break;

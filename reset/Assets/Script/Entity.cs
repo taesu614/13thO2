@@ -198,7 +198,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
                     CardFunctionManager.Inst.Attack("player", damage, "normal", "monster");
                     break;
                 case "effect":
-                    //¹Ì¿Ï¼º - µ¶ 
+                    CardFunctionManager.Inst.Poison("player", 4); 
                     break;
                 case "shield":
                     MakeShield(4, 1);
@@ -361,6 +361,14 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         myStatusEffect.Add(newEffect);
     }
 
+    public void MakePoison(int turn)
+    {
+        Debug.Log("Effect - Poison");
+        StatusEffect neweffect = new StatusEffect();
+        neweffect.SetPoison(turn);
+        myStatusEffect.Add(neweffect);
+    }
+
     #endregion
     public int GetAllAttackUpEffect()   //°ø°Ý·Â Áõ°¡ È¿°ú °¡Á®¿À±â
     {
@@ -419,6 +427,13 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     {
         for(int i = myStatusEffect.Count - 1; i >= 0; i--)  //¹Ýµå½Ã ¿ª¼øÀ¸·Î Áö¿ï °Í 
         {
+            Debug.Log(myStatusEffect[i].ispoison);
+            if (myStatusEffect[i].ispoison)  //µ¶ ¿©ºÎ
+            {
+                Debug.Log("Has Poison FFFFFFFFFFFFFFFFFFFFFFFFFFF");
+                health -= myStatusEffect[i].GetPoisonStack();
+                SetHealthTMP();
+            }
             myStatusEffect[i].DecreaseEffectTurn();
             if(myStatusEffect[i].effectturn <= 0)
             {
@@ -435,6 +450,7 @@ class StatusEffect  //½ºÅÃ Çü½ÄÀÇ È¿°ú´Â ¾ø¾Ø »óÅÂÀÓ
     public bool isshield = false;   //½¯µå Á¸Àç ¿©ºÎ
     public bool isfaint = false;    //±âÀý Á¸Àç ¿©ºÎ
     public bool issleep = false;    //¼ö¸é Á¸Àç ¿©ºÎ
+    public bool ispoison = false; //µ¶ ¿©ºÎ
     public bool isimmunesleep = false;
     public int effectamount = 0;    //È¿°úÀÇ ¾ç
     public int effectturn = 0;    //Áö¼Ó ÅÏ ¼ö
@@ -532,10 +548,23 @@ class StatusEffect  //½ºÅÃ Çü½ÄÀÇ È¿°ú´Â ¾ø¾Ø »óÅÂÀÓ
         }
         return false;
     }
+    #endregion
 
+    #region Poison
+    public void SetPoison(int turn)
+    {
+        effectturn = turn;
+        ispoison = true;
+    }
+
+    public int GetPoisonStack()
+    {
+        return effectturn;
+    }
+    #endregion
     public void DecreaseEffectTurn()
     {
         effectturn--;
     }
-    #endregion
+
 }
