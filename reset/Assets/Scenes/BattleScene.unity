@@ -1962,6 +1962,8 @@ MonoBehaviour:
   - {fileID: -1614101203, guid: 4c20593ad9a4eb8489240f6a3401cf41, type: 3}
   Goatcant: {fileID: 366779029, guid: bcb405028bc557340a4a4ef8262bb23b, type: 3}
   Goatcan: {fileID: -791342898, guid: 1a32d72774578ca4598a083106f6adc4, type: 3}
+  Sheepcant: {fileID: -1566438256, guid: 06321393e3478ae47afffe6fec2518c1, type: 3}
+  Sheepcan: {fileID: 544497686, guid: 332ba69138290ce42bf8b6c2d552ccd7, type: 3}
   playermaskprafab: {fileID: 3090788937161203841, guid: 77058fded8e7e6c4bbf5e4ad990a6357, type: 3}
   playerposition: {fileID: 15812642}
   player: {fileID: 15812641}

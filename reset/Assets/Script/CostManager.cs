@@ -21,6 +21,8 @@ public class CostManager : MonoBehaviour
     public Sprite[] rgbimg;
     public Sprite Goatcant;
     public Sprite Goatcan;    //시간이 없어서 임시로 public 선언
+    public Sprite Sheepcant;
+    public Sprite Sheepcan;
     GameObject savedata;
     SaveData save;
     string conname;
@@ -52,6 +54,27 @@ public class CostManager : MonoBehaviour
         {
             save = savedata.transform.GetComponent<SaveData>();
             conname = save.GetPlayerConstellation();    //별자리 가져오는 곳
+        }
+        SetConstellaButtoncant(conname, false);
+    }
+
+    private void SetConstellaButtoncant(string name, bool can)
+    {
+        Image consprite = ConstellationButton.GetComponent<Image>();
+        switch(name)
+        {
+            case "Sheep":
+                if (can)
+                    consprite.sprite = Sheepcan;
+                else
+                    consprite.sprite = Sheepcant;
+                break;
+            case "Goat":
+                if (can)
+                    consprite.sprite = Goatcan;
+                else
+                    consprite.sprite = Goatcant;
+                break;
         }
     }
     public void ShowCost()  //코스트 표기용 - ex: 코스트값 변화시키고, 코스트 숫자 변경
@@ -360,11 +383,14 @@ public class CostManager : MonoBehaviour
 
     void OpenConstellationButton(string conname)    //별자리 활성화 시 바꾸는 용도
     {
-        switch(conname)
+        Image consprite = ConstellationButton.GetComponent<Image>();
+        switch (conname)
         {
             case "Goat":
-                Image consprite = ConstellationButton.GetComponent<Image>();
-                consprite.sprite = Goatcan;
+                SetConstellaButtoncant("Goat", true);
+                break;
+            case "Sheep":
+                SetConstellaButtoncant("Sheep", true);
                 break;
         }
     }
