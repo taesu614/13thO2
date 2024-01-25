@@ -365,7 +365,6 @@ public class CardManager : MonoBehaviour
                                 IntrusionConditionCheck();
                                 EntityManager.Inst.FindDieEntity();
                                 TryPutCard(true);
-                                EntityManager.Inst.CheckBuffDebuff();
                             }
                         }
                         else
@@ -376,7 +375,6 @@ public class CardManager : MonoBehaviour
                             IntrusionConditionCheck();
                             EntityManager.Inst.FindDieEntity();
                             TryPutCard(true);
-                            EntityManager.Inst.CheckBuffDebuff();
                         }
 
                     }

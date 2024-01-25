@@ -46,7 +46,11 @@ public class EventManager : MonoBehaviour   //옵저버 역할
             GameObject player = GameObject.Find("MyPlayer");
             Entity playernow = player.GetComponent<Entity>();
 
+            int moneyNow = playerdata.GetPlayerMoney();
+            int plusmoney = moneyNow + 10;  // 일단 임시로 몬스터 죽이면 고정으로 10원 추가하는걸로 했습니다.
+
             playerdata.SetPlayerHealth(playernow.health);
+            playerdata.SetPlayerMoney(plusmoney);
             SceneManager.LoadScene("MapScene");
         }
     }

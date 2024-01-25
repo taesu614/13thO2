@@ -40,7 +40,6 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     public int debuffPosionInt = 0;
     public Vector3 originPos;
     public int liveCount = 0;
-    public int poisonCount = 0;
     public bool canplay = true;
     public bool issleep = false;
     public bool hasmask = false;
@@ -70,14 +69,8 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         if (isMine == myTurn)
         {
             liveCount++;
-            BuffDown(1);
         }
             
-    }
-
-    public void BuffDown(int count)  //¹öÇÁ Áö¼Ó½Ã°£À» ±ð´Â È¿°ú
-    {
-        poisonCount -= count;
     }
     public void Setup(Monster monster)
     {
@@ -162,21 +155,6 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         else
             transform.position = pos;
     }
-
-    #region Buff
-
-    public void DebuffPosion()
-    {
-        if(poisonCount > 0)    //º¸¿©Áö´Â È¿°úµµ Ãß°¡ÇØ¾ßÇÒ·Á³ª...
-        {
-            Debug.Log("test");
-            health--;
-            healthTMP.text = health.ToString();
-            return;
-        }
-    }
-
-    #endregion
 
 
     #region MonsterPattern

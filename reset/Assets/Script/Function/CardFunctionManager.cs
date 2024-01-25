@@ -40,6 +40,7 @@ public class CardFunctionManager : MonoBehaviour
     {
         // 카드 이름과 기능을 매칭하여 Dictionary에 저장
         //cardEffects["TheDevil"] = () => TheDevil (myscore); // 람다식 사용 예시
+        cardEffects["Moon"] = Moon;
         cardEffects["Encore"] = Encore;
         cardEffects["TestBuffAttackUp"] = TestBuffAttackUp;
         cardEffects["TestBuffAttackDown"] = TestBuffAttackDown;

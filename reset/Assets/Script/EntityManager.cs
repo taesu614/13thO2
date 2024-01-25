@@ -112,8 +112,6 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
 
     void OnTurnStarted(bool myTurn) //적의 행동 관련 내용
     {
-        AttackableReset(myTurn);
-
         if (!myTurn)
             StartCoroutine(AICo());
     }
@@ -350,30 +348,5 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
         targetPicker.SetActive(isShow);
         if (ExistTargetPickEntity)
             targetPicker.transform.position = targetPickEntity.transform.position;
-    }
-
-    public void AttackableReset(bool isMine)
-    {
-        var targetEntites = isMine ? myEntities : otherEntites;
-        targetEntites.ForEach(x => x.attackable = true);
-    }
-
-    public void CheckBuffDebuff()   //버프 디버프 확인
-    {
-        GameObject[] entities = GameObject.FindGameObjectsWithTag("Player");
-        foreach (GameObject entityObject in entities)
-        {
-            Entity selectEntity = entityObject.GetComponent<Entity>();
-            selectEntity.DebuffPosion();
-        }
-    }
-
-    public void DamagedReset()  //피해 여부 확인 리셋
-    {
-        Entity[] entities = GameObject.FindObjectsOfType<Entity>();
-        foreach (Entity entity in entities)
-        {
-            entity.isDamaged = false;
-        }
     }
 }
