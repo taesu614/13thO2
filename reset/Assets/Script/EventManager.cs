@@ -30,14 +30,11 @@ public class EventManager : MonoBehaviour   //옵저버 역할
     void CheckMonster() //몬스터 수 확인용
     {
         MonsterCount++;
-        Debug.Log("몬스터 생성");
-        Debug.Log(MonsterCount);
     }
 
     void DestroyMonster()
     {
         MonsterCount--;
-        Debug.Log("몬스터 파괴");
         if (MonsterCount <= 0)
         {
             //게임 종료 후 데이터 저장 - 늘어날 코드 분량 생각해서 정리할것

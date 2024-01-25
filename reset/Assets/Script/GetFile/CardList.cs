@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class CardList : MonoBehaviour
 {
-    public List<Item> items;
+    List<Item> past = new List<Item>();    //과거 리스트
 
 
     public CardManager cardManager;
@@ -24,26 +24,24 @@ public class CardList : MonoBehaviour
 
     void Awake()
     {
+        for (int i = 0; i < past.Count && i < slots.Length; i++)   //처음 시작 시 과거 리스트 비움
+        {
+            slots[i].item = past[i];
+            slots[i].item = null;
+        }
         FreshSlot();
     }
 
     private void Start()
     {
-        for (int i = 0; i < items.Count && i < slots.Length; i++)
-        {
-            slots[i].item = items[i];
-            slots[i].item = null;
-        }
     }
 
     public void FreshSlot()
     {
         //items = cardManager.GetItemBuffer();
-        int i = 0;
-        Debug.Log(items);
-        for(;i <items.Count && i< slots.Length;i++) {
-            slots[i].item = items[i];
-            if (items[i] == null ) {
+        for(int i = 0; i < past.Count && i< slots.Length;i++) {
+            slots[i].item = past[i];
+            if (past[i] == null ) {
                 slots[i].item = null;
             }
         }
@@ -55,10 +53,10 @@ public class CardList : MonoBehaviour
     public void AddCard(Item _item)
     {
         
-        if(items.Count < slots.Length)
+        if(past.Count < slots.Length)
         {
             FreshSlot();
-            items.Add(_item);
+            past.Add(_item);
             FreshSlot();
             print("카드추가!!!");
         }
@@ -73,14 +71,22 @@ public class CardList : MonoBehaviour
         print("카드 버퍼의 갯수"+cardManager.GetItemBuffer().Count);
         for(int i=0; i<cardManager.GetItemBuffer().Count;i++)
         {
-            items[i] = cardManager.GetItemBuffer()[i];
+            past[i] = cardManager.GetItemBuffer()[i];
         }
         FreshSlot();
     }
 
+    public List<Item> GetPast()
+    {
+        return past;
+    }
     public void ClearItems()
     {
-        items.Clear();
+        for (int i = 0; i < slots.Length; i++)
+        {
+            slots[i].item = null;
+        }
+        past.Clear();
         FreshSlot();
     }
 }

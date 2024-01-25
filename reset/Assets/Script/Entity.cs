@@ -209,7 +209,6 @@ public class Entity : MonoBehaviour //해당 내용을 통해 별자리 생성 계획 그래서 �
                 patternUI.sprite = ShieldUI;
                 break;
         }
-        Debug.Log(patternname);
     }
     #endregion  Hcoronatus  난삼귀가 뭔지 몰라서 난초사마귀로 임시대체
 

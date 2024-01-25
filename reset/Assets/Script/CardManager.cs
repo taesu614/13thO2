@@ -31,7 +31,7 @@ public class CardManager : MonoBehaviour
         {
             savedata = save.GetComponent<SaveData>();
         }
-        
+        cardlist = GameObject.Find("PastCard").GetComponent<CardList>();
     }
     [SerializeField] ItemSO itemSO;
     [SerializeField] GameObject cardPrefab;
@@ -55,6 +55,7 @@ public class CardManager : MonoBehaviour
     bool intrusionencore = false;
     bool intrusioncounter = false;
     SaveData savedata;
+    CardList cardlist;
 
     private List<string> intrusionList = new List<string>();
 
@@ -64,8 +65,8 @@ public class CardManager : MonoBehaviour
     }
     public Item PopItem()   //맨앞의 카드 빼는 용도
     {
-        if (itemBuffer.Count == 0)
-            SetupItemBuffer();
+        if (itemBuffer.Count == 0)  //덱이 비워져 있을 때 덱 채우는 용도
+            SetupPastBuffer();
 
         Item item = itemBuffer[0];
         itemBuffer.RemoveAt(0);
@@ -82,7 +83,7 @@ public class CardManager : MonoBehaviour
             {
                 Item item = itemSO.items[i];
                 itemBuffer.Add(item);
-                if (i == 1)
+                if (i == 1)     //공격테스트 카드 늘리는용도 - 지워도 됨
                 {
                     for(int j = 0; j < 5; j++)
                     {
@@ -94,15 +95,34 @@ public class CardManager : MonoBehaviour
         else
         {
             itemBuffer = new List<Item>();
-              for(int i = 0; i < savedata.GetPlayerDeck().Count; i++)
-                 {
-                     Item item = savedata.GetPlayerDeck()[i];
-                     itemBuffer.Add(item);
-                 }
+            for(int i = 0; i < savedata.GetPlayerDeck().Count; i++)
+               {
+                   Item item = savedata.GetPlayerDeck()[i];
+                   itemBuffer.Add(item);
+               }
         }
           
 
         for (int i = 0; i < itemBuffer.Count; i++ )
+        {
+            int rand = Random.Range(i, itemBuffer.Count);
+            Item temp = itemBuffer[i];
+            itemBuffer[i] = itemBuffer[rand];
+            itemBuffer[rand] = temp;
+        }
+    }
+
+    void SetupPastBuffer()  //과거에서 카드를 뽑아오는 용도
+    {
+        itemBuffer = new List<Item>();
+        for (int i = 0; i < cardlist.GetPast().Count; i++)
+        {
+            Item item = cardlist.GetPast()[i];
+            itemBuffer.Add(item);
+        }
+        cardlist.ClearItems();
+
+        for (int i = 0; i < itemBuffer.Count; i++)
         {
             int rand = Random.Range(i, itemBuffer.Count);
             Item temp = itemBuffer[i];
@@ -134,14 +154,24 @@ public class CardManager : MonoBehaviour
     
     void AddCard(bool isMine)
     {
-        var cardObject = Instantiate(cardPrefab, cardSpawnPoint.position, Utils.QI);
-        var card = cardObject.GetComponent<Card>();
-        card.Setup(PopItem(), isMine);
-        if(isMine)
-            myCards.Add(card);
+        if(cardlist.GetPast().Count <= 0 && itemBuffer.Count <= 0)
+        {
+
+        }
+        else
+        {
+            if(isMine)
+            {
+                var cardObject = Instantiate(cardPrefab, cardSpawnPoint.position, Utils.QI);
+                var card = cardObject.GetComponent<Card>();
+                card.Setup(PopItem(), isMine);
+                if(isMine)
+                    myCards.Add(card);
             
-        SetOriginOrder(isMine);
-        CardAlignment();
+                SetOriginOrder(isMine);
+                CardAlignment();
+            }
+        }
     }
 
     void SetOriginOrder(bool isMine)
