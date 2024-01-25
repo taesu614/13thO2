@@ -184,3 +184,17 @@ MonoBehaviour:
     percent: 2
     selectable: 1
     identifier: 101110011
+  - name: "\uB2EC"
+    functionname: Moon
+    cost: 0
+    colorimg: {fileID: 21300000, guid: 6a1e52d69da7f7c4b90e749bbba52bd0, type: 3}
+    costcolor: {fileID: 21300000, guid: 74773374773ea6d4b8a2653b5cfd1572, type: 3}
+    cardtype: Production
+    color: 71
+    rarity: 1
+    reward: Start
+    price: 0
+    active: "\uCF54\uC2A4\uD2B8\uD68D\uB4DD"
+    percent: 2
+    selectable: 0
+    identifier: 100110012
