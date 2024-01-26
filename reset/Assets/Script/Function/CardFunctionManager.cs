@@ -50,12 +50,15 @@ public class CardFunctionManager : MonoBehaviour
         cardEffects["TestSleep"] = TestSleep;
         cardEffects["TestImmuneSleep"] = TestImmuneSleep;
         cardEffects["TestPoison"] = TestPoison;
+        cardEffects["TestBurn"] = TestBurn;
+        cardEffects["TestHeal"] = TestHeal;
 
         cardEffects["SharpNib"] = SharpNib;  // 날카로운 펜촉
         cardEffects["Firestick"] = Firestick;  // 불꽃 스틱
         cardEffects["Mousefire"] = Mousefire;  // 쥐불놀이
         cardEffects["CtrlZ"] = CtrlZ; // 되돌리기
         cardEffects["Gradation"] = Gradation; // 그라데이션
+      
     }
     //단일 적 gameobj 가져오는 함수
     //public void GetEnemy(GameObject targetObj)
@@ -120,6 +123,15 @@ public class CardFunctionManager : MonoBehaviour
         Poison("anything", 4);
     }
 
+    private void TestBurn() //화상
+    {
+        Burn("anything", 6, 3);
+    }
+
+    private void TestHeal() //회복
+    {
+        Heal("anything", 10);
+    }
 
     private void ImsiCard1()    //카드 드로우에 대한 내용이 있어 임시로 놔둠
     {
@@ -203,13 +215,15 @@ public class CardFunctionManager : MonoBehaviour
     //버프가 아닌 모든 메서드의 넘길 매개변수는
     //타겟, 수치, 지속시간(혹은 횟수), 기타 내용들 순서
     public void Attack(string targetcount, int damage, string type, string user = "player")   //대상에게 피해를 n 줍니다
-    {                                                                  //모든 공격력 증가 효과 가져와서 적용
-        FindPlayer();      //기본적인 계산                                             //targetcount(anything: 단일 아무나, enemy:적, player: 플레이어, all:전체, enemyall: 적 전체 
+    {                  
+        FindPlayer();      //기본적인 계산                                              //targetcount(anything: 단일 아무나, enemy:적, player: 플레이어, all:전체, enemyall: 적 전체 
         if(user == "player")    //몬스터에게도 사용되므로 기준이 플레이어야 몬스터냐에 따라 달라질 것
         {
-            damage += player.GetAllAttackUpEffect();                        //damage(피해량)
+            damage += player.GetAllAttackUpEffect();                        //damage(피해량)모든 공격력 증가 효과 가져와서 적용
             damage -= player.GetAllAttackDownEffect();                      //type (normal: 통상 공격, piercing: 관통 공격(보호막에 관계없이 체력에 직접적으로 공격))
         }
+        if (damage < 0) //공격력 감소가 너무 늘어나 음수값이 되면 회복되는 현상 방지
+            damage = 0;
         switch (type)
         {
             case "normal":
@@ -219,8 +233,6 @@ public class CardFunctionManager : MonoBehaviour
                         NormalDamage(target, damage);
                         target.SetHealthTMP();
                         target.SetShieldTMP();
-                        break;
-                    case "enemy":
                         break;
                     case "player":
                         NormalDamage(player, damage);
@@ -274,6 +286,37 @@ public class CardFunctionManager : MonoBehaviour
                             nowmonster.SetHealthTMP();
                         }
                         break;
+                }
+                break;
+        }
+    }
+
+    public void Heal(string targetcount, int heal, Entity me = null)   //회복 - 공격력 증가, 감소 효과와는 상관 없으므로 type 없음
+    {                                                                  //적 지정 시 me를 자신을 보내게 할 것 
+        switch (targetcount)
+        {
+            case "anything":
+                NormalHeal(target, heal);
+                break;
+            case "enemy":
+                NormalHeal(me, heal);
+                break;
+            case "player":
+                NormalHeal(player, heal);
+                break;
+            case "all":
+                FindAllMonster();
+                foreach (Entity nowmonster in monsters)
+                {
+                    NormalHeal(nowmonster, heal);
+                }
+                NormalHeal(player, heal);
+                break;
+            case "enemyall":
+                FindAllMonster();
+                foreach (Entity nowmonster in monsters)
+                {
+                    NormalHeal(nowmonster, heal);
                 }
                 break;
         }
@@ -356,6 +399,27 @@ public class CardFunctionManager : MonoBehaviour
                 break;
         }
     }
+
+    public void Burn(string targetcount, int damage, int turn)
+    {
+        switch (targetcount)
+        {
+            case "anything":
+                Debug.Log(target);
+                target.MakeBurn(damage, turn);
+                break;
+            case "enemy":
+                break;
+            case "player":
+                FindPlayer();
+                player.MakeBurn(damage, turn);
+                break;
+            case "all":
+                break;
+            case "enemyall":
+                break;
+        }
+    }
     #endregion
 
     #region methodUtils
@@ -400,6 +464,17 @@ public class CardFunctionManager : MonoBehaviour
             entity.shield = 0;
             entity.SetHealthTMP();
             entity.SetShieldTMP();
+        }
+    }
+
+    private void NormalHeal(Entity target, int healamount)
+    {
+        if (!target.CheckBlockHeal())
+        {
+            target.health += healamount;
+            if (target.maxhealth < target.health)
+                target.health = target.maxhealth;
+            target.SetHealthTMP();
         }
     }
     #endregion

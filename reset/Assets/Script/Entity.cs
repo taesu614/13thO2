@@ -346,6 +346,13 @@ public class Entity : MonoBehaviour //해당 내용을 통해 별자리 생성 계획 그래서 �
         myStatusEffect.Add(neweffect);
     }
 
+    public void MakeBurn(int damage, int turn)
+    {
+        Debug.Log("Effect - Burn");
+        StatusEffect neweffect = new StatusEffect();
+        neweffect.SetBurn(damage, turn);
+        myStatusEffect.Add(neweffect);
+    }
     #endregion
     public int GetAllAttackUpEffect()   //공격력 증가 효과 가져오기
     {
@@ -404,39 +411,51 @@ public class Entity : MonoBehaviour //해당 내용을 통해 별자리 생성 계획 그래서 �
     {
         for(int i = myStatusEffect.Count - 1; i >= 0; i--)  //반드시 역순으로 지울 것 
         {
-            Debug.Log(myStatusEffect[i].ispoison);
-            if (myStatusEffect[i].ispoison)  //독 여부
+            Debug.Log(myStatusEffect[i].CheckDamageEffect());
+            if (myStatusEffect[i].CheckDamageEffect().Item1)  //지속피해 효과 여부
             {
-                Debug.Log("Has Poison FFFFFFFFFFFFFFFFFFFFFFFFFFF");
-                health -= myStatusEffect[i].GetPoisonStack();
+                health -= myStatusEffect[i].CheckDamageEffect().Item2;
                 SetHealthTMP();
             }
             myStatusEffect[i].DecreaseEffectTurn();
-            if(myStatusEffect[i].effectturn <= 0)
+            if(myStatusEffect[i].GetEffectTurn() <= 0)
             {
                 myStatusEffect.RemoveAt(i);
             }
         }
     }
+
+    public bool CheckBlockHeal()
+    {
+        foreach(StatusEffect A in myStatusEffect)
+        {
+            if (A.GetHealBlock())
+                return true;
+        }
+        return false;
+    }
 }
 
 class StatusEffect  //스택 형식의 효과는 없앤 상태임
 {
-    public bool ispowerUp = false;
-    public bool ispowerDown = false;
-    public bool isshield = false;   //쉴드 존재 여부
-    public bool isfaint = false;    //기절 존재 여부
-    public bool issleep = false;    //수면 존재 여부
-    public bool ispoison = false; //독 여부
-    public bool isimmunesleep = false;
-    public int effectamount = 0;    //효과의 양
-    public int effectturn = 0;    //지속 턴 수
+    bool ispowerUp = false;
+    bool ispowerDown = false;
+    bool isshield = false;   //쉴드 존재 여부
+    bool isfaint = false;    //기절 존재 여부
+    bool issleep = false;    //수면 존재 여부
+    bool isdamageeffect = false;    //피해를 주는지 여부
+    bool isimmunesleep = false;
+    bool canheal = true;
+    int effectamount = 0;    //효과의 양
+    int effectturn = 0;    //지속 턴 수
+    string effectname;
     #region PowerUp
     public void SetPowerUp(int amount, int turn)
     {
         effectamount = amount;
         effectturn = turn;
         ispowerUp = true;
+        effectname = "powerup";
     }
 
     public int GetAllAttackUp()
@@ -531,12 +550,30 @@ class StatusEffect  //스택 형식의 효과는 없앤 상태임
     public void SetPoison(int turn)
     {
         effectturn = turn;
-        ispoison = true;
+        isdamageeffect = true;
+    }
+    #endregion
+
+    #region Burn
+    public void SetBurn(int damage, int turn)
+    {
+        effectturn = turn;
+        effectamount = damage;
+        canheal = false;    //이게 있어야 회복 불가능 추가 가능함
+        effectname = "burn";
+    }
+    #endregion
+
+    #region impossibleHeal
+    public void SetHealBlock(int turn)
+    {
+        effectturn = turn;
+        canheal = false ;
     }
 
-    public int GetPoisonStack()
+    public bool GetHealBlock()
     {
-        return effectturn;
+        return canheal;
     }
     #endregion
     public void DecreaseEffectTurn()
@@ -544,4 +581,21 @@ class StatusEffect  //스택 형식의 효과는 없앤 상태임
         effectturn--;
     }
 
+    public int GetEffectTurn()
+    {
+        return effectturn;
+    }
+
+    public (bool, int) CheckDamageEffect()
+    {
+        switch(effectname)
+        {
+            case "poison":
+                return (true, effectturn);    
+            case "burn":
+                return (true, effectamount);
+            default:
+                return (false, 0);
+        }
+    }
 }
