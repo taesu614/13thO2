@@ -353,6 +353,14 @@ public class Entity : MonoBehaviour //해당 내용을 통해 별자리 생성 계획 그래서 �
         neweffect.SetBurn(damage, turn);
         myStatusEffect.Add(neweffect);
     }
+
+    public void MakeHealTurn(int turn)
+    {
+        Debug.Log("Effect - HealTurn");
+        StatusEffect neweffect = new StatusEffect();
+        neweffect.SetHealTurn(turn);
+        myStatusEffect.Add(neweffect);
+    }
     #endregion
     public int GetAllAttackUpEffect()   //공격력 증가 효과 가져오기
     {
@@ -564,7 +572,7 @@ class StatusEffect  //스택 형식의 효과는 없앤 상태임
     }
     #endregion
 
-    #region impossibleHeal
+    #region HealBlock
     public void SetHealBlock(int turn)
     {
         effectturn = turn;
@@ -574,6 +582,14 @@ class StatusEffect  //스택 형식의 효과는 없앤 상태임
     public bool GetHealBlock()
     {
         return canheal;
+    }
+    #endregion
+
+    #region HealTurn
+    public void SetHealTurn(int turn)
+    {
+        effectturn = turn;
+        effectname = "healturn";
     }
     #endregion
     public void DecreaseEffectTurn()
@@ -594,6 +610,10 @@ class StatusEffect  //스택 형식의 효과는 없앤 상태임
                 return (true, effectturn);    
             case "burn":
                 return (true, effectamount);
+            case "healturn":
+                if (!canheal)   //회복 불가라면 0 회복
+                    return (true, 0);
+                return (true, -effectturn);   //힐이라서 대미지와 반대 
             default:
                 return (false, 0);
         }

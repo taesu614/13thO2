@@ -131,7 +131,6 @@ public class CardManager : MonoBehaviour
         }
     }
 
-
     void Start()
     {
         SetupItemBuffer();
@@ -152,7 +151,7 @@ public class CardManager : MonoBehaviour
         SetECardState();
     }
     
-    void AddCard(bool isMine)
+    void AddCard(bool isMine)       //카드 드로우 관련
     {
         if(cardlist.GetPast().Count <= 0 && itemBuffer.Count <= 0)
         {
@@ -193,7 +192,6 @@ public class CardManager : MonoBehaviour
             var targetCard = myCards[i];
             targetCard.originPRS = originCardPRSs[i];
             targetCard.MoveTransform(targetCard.originPRS, true, 0.7f);
-
         }
     }
 
@@ -246,6 +244,35 @@ public class CardManager : MonoBehaviour
         }
         CardAlignment();
         return true;
+    }
+
+    public void DiscardMyCard() //카드를 버리면 과거로 감
+    {
+        CardAlignment();
+        if(myCards.Count > 0 && myCards[0] != null)    //Null레퍼런스 방지
+        {
+            Card card = myCards[0];
+            cardList.AddCard(card.item);
+            myCards.Remove(card);
+            card.transform.DOKill();
+            DestroyImmediate(card.gameObject);
+            selectCard = null;
+            CardAlignment();
+        }
+    }
+
+    public void CheckMyCard()       //카드 8장 초과 시 버리는 기능 
+    {
+        int nowcard = myCards.Count;
+        if (nowcard > 8)
+        {
+            Debug.Log("MyCardCountTTTTTTTTTTTTTTTTTTTTTT"+myCards.Count);
+           for(int i = 0; i < nowcard - 8; i++)
+           {
+                DiscardMyCard();
+           }
+        }
+        Debug.Log("MyCardCountTTTTTTTTTTTTTTTTTTTTTT" + myCards.Count);
     }
 
     public void UseCard()

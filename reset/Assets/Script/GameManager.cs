@@ -47,6 +47,10 @@ public class GameManager : MonoBehaviour
         //{
         //    SceneManager.LoadScene("SampleScene");
         //}
+        if (Input.GetKeyDown(KeyCode.Keypad4))
+        {
+            CardManager.Inst.DiscardMyCard();
+        }
     }
     
     public void StartGame()

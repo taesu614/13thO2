@@ -52,6 +52,7 @@ public class CardFunctionManager : MonoBehaviour
         cardEffects["TestPoison"] = TestPoison;
         cardEffects["TestBurn"] = TestBurn;
         cardEffects["TestHeal"] = TestHeal;
+        cardEffects["TestHealTurn"] = TestHealTurn;
 
         cardEffects["SharpNib"] = SharpNib;  // 날카로운 펜촉
         cardEffects["Firestick"] = Firestick;  // 불꽃 스틱
@@ -133,6 +134,10 @@ public class CardFunctionManager : MonoBehaviour
         Heal("anything", 10);
     }
 
+    private void TestHealTurn() //지속회복
+    {
+        HealTurn("anything", 5);    
+    }
     private void ImsiCard1()    //카드 드로우에 대한 내용이 있어 임시로 놔둠
     {
         Attack("anything", 7, "normal");
@@ -322,6 +327,36 @@ public class CardFunctionManager : MonoBehaviour
         }
     }
 
+    public void HealTurn(string targetcount, int turn)
+    {
+        switch (targetcount)
+        {
+            case "anything":
+                target.MakeHealTurn(turn);
+                break;
+            case "enemy":
+                break;
+            case "player":
+                FindPlayer();
+                player.MakeFaint(turn);
+                break;
+            case "all":
+                FindAllMonster();
+                foreach (Entity nowmonster in monsters)
+                {
+                    nowmonster.MakeHealTurn(turn);
+                }
+                break;
+            case "enemyall":
+                FindAllMonster();
+                foreach (Entity nowmonster in monsters)
+                {
+                    nowmonster.MakeHealTurn(turn);
+                }
+                break;
+        }
+    }
+
     public void Faint(string targetcount, int turn)
     {
         switch (targetcount)            
@@ -332,10 +367,24 @@ public class CardFunctionManager : MonoBehaviour
             case "enemy":
                 break;
             case "player":
+                FindPlayer();
+                player.MakeFaint(turn);
                 break;
             case "all":
+                FindAllMonster();
+                foreach (Entity nowmonster in monsters)
+                {
+                    nowmonster.MakeFaint(turn);
+                }
+                FindPlayer();
+                player.MakeFaint(turn);
                 break;
             case "enemyall":
+                FindAllMonster();
+                foreach (Entity nowmonster in monsters)
+                {
+                    nowmonster.MakeFaint(turn);
+                }
                 break;
         }
     }
@@ -350,10 +399,24 @@ public class CardFunctionManager : MonoBehaviour
             case "enemy":
                 break;
             case "player":
+                FindPlayer();
+                player.MakeSleep(turn);
                 break;
             case "all":
+                FindAllMonster();
+                foreach (Entity nowmonster in monsters)
+                {
+                    nowmonster.MakeSleep(turn);
+                }
+                FindPlayer();
+                player.MakeSleep(turn);
                 break;
             case "enemyall":
+                FindAllMonster();
+                foreach (Entity nowmonster in monsters)
+                {
+                    nowmonster.MakeSleep(turn);
+                }
                 break;
         }
     }
@@ -373,8 +436,20 @@ public class CardFunctionManager : MonoBehaviour
                 player.MakeImmuneSleep(turn);
                 break;
             case "all":
+                FindAllMonster();
+                foreach (Entity nowmonster in monsters)
+                {
+                    nowmonster.MakeImmuneSleep(turn);
+                }
+                FindPlayer();
+                player.MakeImmuneSleep(turn);
                 break;
             case "enemyall":
+                FindAllMonster();
+                foreach (Entity nowmonster in monsters)
+                {
+                    nowmonster.MakeImmuneSleep(turn);
+                }
                 break;
         }
     }
@@ -394,8 +469,20 @@ public class CardFunctionManager : MonoBehaviour
                 player.MakePoison(turn);
                 break;
             case "all":
+                FindAllMonster();
+                foreach (Entity nowmonster in monsters)
+                {
+                    nowmonster.MakePoison(turn);
+                }
+                FindPlayer();
+                player.MakePoison(turn);
                 break;
             case "enemyall":
+                FindAllMonster();
+                foreach (Entity nowmonster in monsters)
+                {
+                    nowmonster.MakePoison(turn);
+                }
                 break;
         }
     }
@@ -415,8 +502,20 @@ public class CardFunctionManager : MonoBehaviour
                 player.MakeBurn(damage, turn);
                 break;
             case "all":
+                FindAllMonster();
+                foreach (Entity nowmonster in monsters)
+                {
+                    nowmonster.MakeBurn(damage, turn);
+                }
+                FindPlayer();
+                player.MakeBurn(damage, turn);
                 break;
             case "enemyall":
+                FindAllMonster();
+                foreach (Entity nowmonster in monsters)
+                {
+                    nowmonster.MakeBurn(damage, turn);
+                }
                 break;
         }
     }
