@@ -7,28 +7,23 @@ using UnityEngine;
 public class CardList : MonoBehaviour
 {
     List<Item> past = new List<Item>();    //과거 리스트
-
+    List<GameObject> cardnamePrefabslist = new List<GameObject>();  //리스트로 프리팹을 전체 삭제하도록 하는 용도
 
     public CardManager cardManager;
     [SerializeField]
     private Transform slotParent;
-    [SerializeField]
-    private Slot[] slots;
+    [SerializeField] GameObject cardPrefab;
+    public RectTransform content;
 
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        slots = slotParent.GetComponentsInChildren<Slot>();
+        
     }
 #endif
 
     void Awake()
     {
-        for (int i = 0; i < past.Count && i < slots.Length; i++)   //처음 시작 시 과거 리스트 비움
-        {
-            slots[i].item = past[i];
-            slots[i].item = null;
-        }
         FreshSlot();
     }
 
@@ -39,31 +34,20 @@ public class CardList : MonoBehaviour
     public void FreshSlot()
     {
         //items = cardManager.GetItemBuffer();
-        for(int i = 0; i < past.Count && i< slots.Length;i++) {
-            slots[i].item = past[i];
-            if (past[i] == null ) {
-                slots[i].item = null;
-            }
-        }
+        
         /*for(; i <slots.Length;i++)
         {
             slots[i].item = null;
         }  */
     }
-    public void AddCard(Item _item)
+    public void AddCard(Item item)  //과거에 프리팹 이미지 생성 용도
     {
-        
-        if(past.Count < slots.Length)
-        {
-            FreshSlot();
-            past.Add(_item);
-            FreshSlot();
-            print("카드추가!!!");
-        }
-        else
-        {
-            print("슬롯가득참");
-        }
+        var cardObject = Instantiate(cardPrefab, content);
+        var card = cardObject.GetComponent<Slot>();
+        card.Setup(item);
+        past.Add(item);
+
+        cardnamePrefabslist.Add(cardObject);
     }
     
     public void GetCardList(Item cards)
@@ -82,11 +66,11 @@ public class CardList : MonoBehaviour
     }
     public void ClearItems()
     {
-        for (int i = 0; i < slots.Length; i++)
+        foreach(var prefab in cardnamePrefabslist)  //모든 프리팹 삭제
         {
-            slots[i].item = null;
+            Destroy(prefab);
         }
-        past.Clear();
+        past.Clear();   //과거 비우기
         FreshSlot();
     }
 }
