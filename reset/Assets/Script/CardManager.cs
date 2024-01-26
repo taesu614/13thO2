@@ -35,7 +35,7 @@ public class CardManager : MonoBehaviour
     }
     [SerializeField] ItemSO itemSO;
     [SerializeField] GameObject cardPrefab;
-    [SerializeField] List<Card> myCards;
+    [SerializeField] List<Card> myCards;        //내 손패 
     [SerializeField] Transform cardSpawnPoint;
     //[SerializeField] Transform otherCardSpqwnPoint;
     [SerializeField] Transform myCardLeft;
@@ -62,6 +62,11 @@ public class CardManager : MonoBehaviour
     public List<Item> GetItemBuffer()
     {
         return itemBuffer;
+    }
+
+    public List<Card> GetMyCard()
+    {
+        return myCards;
     }
     public Item PopItem()   //맨앞의 카드 빼는 용도
     {
@@ -233,10 +238,13 @@ public class CardManager : MonoBehaviour
     {
         Card card = isMine ? selectCard : selectCard;
         var targetCards = isMine ? myCards : myCards;
+        if(card != null)    //카드 소모해서 이미 사라졌는데 겹칠때 대비하는 용도
+        {
+            targetCards.Remove(card);
+            card.transform.DOKill();
+            DestroyImmediate(card.gameObject);
+        }
 
-        targetCards.Remove(card);
-        card.transform.DOKill();
-        DestroyImmediate(card.gameObject);
         if(isMine)
         {
             selectCard = null;

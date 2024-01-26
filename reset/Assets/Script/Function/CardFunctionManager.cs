@@ -59,7 +59,11 @@ public class CardFunctionManager : MonoBehaviour
         cardEffects["Mousefire"] = Mousefire;  // 쥐불놀이
         cardEffects["CtrlZ"] = CtrlZ; // 되돌리기
         cardEffects["Gradation"] = Gradation; // 그라데이션
-      
+        cardEffects["WowIdea"] = WowIdea;   //반짝! 아이디어
+        cardEffects["PiggyBank"] = PiggyBank;   //먹보 저금통
+        cardEffects["Layer"] = Layer;   //레이어
+        cardEffects["Brush"] = Brush;   //브러쉬
+        cardEffects["Woodrill"] = Woodrill; //딱다드구릴
     }
     //단일 적 gameobj 가져오는 함수
     //public void GetEnemy(GameObject targetObj)
@@ -70,15 +74,7 @@ public class CardFunctionManager : MonoBehaviour
 
     // 카드 액션,난입,연출별로 region다시 설정 할 것
     #region CardEffects
-
-    private void Moon() //코스트 회복이 쓸 일은 있을거 같아 얘는 남김 
-    {
-        //달, TheMoon, 코스트를 1 얻습니다
-        int cost = int.Parse(costTMP.text);
-        cost++;
-        costManager.CostSetNewCost(cost);
-    }
-
+    #region TestCard
     private void TestBuffAttackUp() //버프 테스트용 카드
     {
         FindPlayer();   //플레이어 찾기
@@ -93,11 +89,11 @@ public class CardFunctionManager : MonoBehaviour
         Debug.Log("버프 생성");
     }
 
-    private void TestBuffShield()   
+    private void TestBuffShield()
     {
         FindPlayer();
         player.MakeShield(10, 5);
-    }
+    }   //쉴드는 시간날때 한번 전체적으로 봐봐야함 버프 -> 지속효과로 바꿔야할수도
 
     private void TestAttack()   //선택한 대상에게 피해를 5 줍니다
     {
@@ -136,8 +132,17 @@ public class CardFunctionManager : MonoBehaviour
 
     private void TestHealTurn() //지속회복
     {
-        HealTurn("anything", 5);    
+        HealTurn("anything", 5);
     }
+    #endregion
+    private void Moon() //코스트 회복이 쓸 일은 있을거 같아 얘는 남김 
+    {
+        //달, TheMoon, 코스트를 1 얻습니다
+        int cost = int.Parse(costTMP.text);
+        cost++;
+        costManager.CostSetNewCost(cost);
+    }
+
     private void ImsiCard1()    //카드 드로우에 대한 내용이 있어 임시로 놔둠
     {
         Attack("anything", 7, "normal");
@@ -181,12 +186,50 @@ public class CardFunctionManager : MonoBehaviour
 
     private void Gradation()    //그라데이션
     {
-
         costManager.AddRGBCost('R');
         costManager.AddRGBCost('G');
         costManager.AddRGBCost('B');
     }
 
+    private void WowIdea()  //반짝 아이디어
+    {
+        int cost = int.Parse(costTMP.text);
+        cost+=2;
+        if (cost > 10)
+            cost = 10;
+        costManager.CostSetNewCost(cost);
+    }
+
+    private void PiggyBank()    //돼지저금통
+    {
+        int mycard = CardManager.Inst.GetMyCard().Count;
+        if (mycard > 3)
+            mycard = 3; //손패 최대 드로우 개수 설정
+        CardManager.Inst.DiscardMyCard();
+        CardManager.Inst.DiscardMyCard();
+        CardManager.Inst.DiscardMyCard();
+        for (int i = 0; i < mycard; i++)   //손패만큼 드로우
+        {
+            TurnManager.OnAddCard.Invoke(true);
+        }
+    }
+    private void Brush()    //브러쉬
+    {
+        Attack("anything", 3, "normal");
+    }
+    private void Layer()    //레이어   - 쉴드 관련이라 쉴드 수정할 때 같이 수정할 것
+    {
+        FindPlayer();
+        player.MakeShield(5, 1);
+    }
+
+    private void Woodrill()     //딱다드구릴 - 쉴드 관련이라 쉴드 수정할 때 같이 수정할 것 
+    {
+        int shield = target.GetShieldTMP();
+        Attack("anything", shield, "normal");
+        Attack("anything", 13, "normal");
+        Rebound(13, 50, player);
+    }
     private void CtrlZ()
     {
         // 적당히 봐보니까 entity에서 몬스터패턴쪽에서 데미지 계산할 때 고려해서 과거 체력 보내봐야될듯
@@ -294,6 +337,17 @@ public class CardFunctionManager : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    public void Rebound(int damage, int percentage, Entity user) //대미지, 반동수치, 사용자
+    {
+        damage += user.GetAllAttackUpEffect();
+        damage -= user.GetAllAttackDownEffect();
+
+        damage = (int)(damage * percentage * 0.01);
+
+        user.health -= damage;      //우선은 고정피해로
+        user.SetHealthTMP();
     }
 
     public void Heal(string targetcount, int heal, Entity me = null)   //회복 - 공격력 증가, 감소 효과와는 상관 없으므로 type 없음
