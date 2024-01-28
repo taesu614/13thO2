@@ -48,7 +48,7 @@ public class EventManager : MonoBehaviour   //옵저버 역할
 
             playerdata.SetPlayerHealth(playernow.health);
             playerdata.SetPlayerMoney(plusmoney);
-            SceneManager.LoadScene("MapScene");
+            SceneManager.LoadScene("RewardScene");
         }
     }
 }

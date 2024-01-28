@@ -88,13 +88,6 @@ public class CardManager : MonoBehaviour
             {
                 Item item = itemSO.items[i];
                 itemBuffer.Add(item);
-                if (i == 1)     //공격테스트 카드 늘리는용도 - 지워도 됨
-                {
-                    for(int j = 0; j < 5; j++)
-                    {
-                        itemBuffer.Add(item);
-                    }
-                }
             }
         }
         else
