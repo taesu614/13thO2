@@ -64,6 +64,7 @@ public class CardFunctionManager : MonoBehaviour
         cardEffects["Layer"] = Layer;   //레이어
         cardEffects["Brush"] = Brush;   //브러쉬
         cardEffects["Woodrill"] = Woodrill; //딱다드구릴
+        cardEffects["Firefestival"] = Firefestival; // 불꽃 축제
     }
     //단일 적 gameobj 가져오는 함수
     //public void GetEnemy(GameObject targetObj)
@@ -230,9 +231,48 @@ public class CardFunctionManager : MonoBehaviour
         Attack("anything", 13, "normal");
         Rebound(13, 50, player);
     }
+    private void Firefestival()  // 화상 거는 대상이 내가 직접 지정한 대상인지 아님 공격받는 전부인지 몰라서 일단 전체 대상으로 만들었습니다.
+    {
+        int randNumDmg;
+        int randNum; 
+
+        // 각 개체에 확률 적용을 따로 하기 위해 만들었습니다  (Success, fail (숫자) == 왼쪽부터 세서 몬스터 위치(0 ~ 2))
+        FindPlayer();
+        FindAllMonster();
+
+        foreach (Entity A in monsters)
+        {
+            randNumDmg = UnityEngine.Random.Range(2, 5);
+            randNum = UnityEngine.Random.Range(1, 3);
+
+            for (int i = 0; i < randNumDmg; i++)
+            {
+                target = A;
+                Attack("anything", 4, "normal");
+            }
+            if (randNum == 1)
+            {
+                A.MakeBurn(6, 1);
+            }
+        }
+
+        randNumDmg = UnityEngine.Random.Range(2, 5);
+        randNum = UnityEngine.Random.Range(1, 3);
+        for (int i = 0; i < randNumDmg; i++)
+        {
+            Attack("player", 4, "normal");
+        }
+        if (randNum == 1)
+        {
+            player.MakeBurn(6, 1);
+        }
+        ResetTarget();
+    }
     private void CtrlZ()
     {
-        // 적당히 봐보니까 entity에서 몬스터패턴쪽에서 데미지 계산할 때 고려해서 과거 체력 보내봐야될듯
+        FindPlayer();
+        player.health = player.pastHealth;
+        player.SetHealthTMP();
     }
     #endregion
 
@@ -309,8 +349,6 @@ public class CardFunctionManager : MonoBehaviour
                         target.health -= damage;
                         target.SetHealthTMP();
                         //target.GetComponents<Entity>();
-                        break;
-                    case "enemy":
                         break;
                     case "player":
                         player.health -= damage;

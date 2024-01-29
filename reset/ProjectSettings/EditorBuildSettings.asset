@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RewardScene.unity
     guid: b59568bf27cc82746ae5045ec69fc089
+  - enabled: 1
+    path: Assets/Scenes/StoreScene.unity
+    guid: 3188b4155cf3269468d7532a9be0027d
   m_configObjects: {}

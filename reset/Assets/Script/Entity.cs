@@ -26,6 +26,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     public int attack;
     public int maxhealth = 40;
     public int health = 40;
+    public int pastHealth;
     float hppercent;
     public int shield = 0;
     public string monsterfunctionname;
@@ -156,6 +157,10 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
             transform.position = pos;
     }
 
+    public void SetPastHealth()
+    {
+        pastHealth = health;
+    }
 
     #region MonsterPattern
     #region Snail
@@ -286,7 +291,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
 
     #endregion
 
-    #region MakeEffect
+    #region MakeEffect  //ÀÛµ¿¹æ½Ä °ÅÀÇ µ¿ÀÏÇÔ
     public void MakeAttackUp(int damage, int count)
     {
         Debug.Log("Effect - Attack Up");

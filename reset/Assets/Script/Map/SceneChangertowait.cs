@@ -22,4 +22,8 @@ public class SceneChangertowait : MonoBehaviour
         SceneManager.LoadScene("EventProto");
     }
 
+    public void GotoStore()
+    {
+        SceneManager.LoadScene("StoreScene");
+    }
 }

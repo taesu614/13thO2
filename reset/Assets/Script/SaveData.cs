@@ -13,7 +13,7 @@ public class SaveData : MonoBehaviour
     private static SaveData instance;   //싱글톤으로 설정
     private int playermaxhelath = 100;
     private int playerhealth = 100;
-    public int playermomey = 0;
+    public int playermoney = 10;
     private void Awake()
     {
         if (instance == null)   //씬 전환 시 생성을 막는 용도
@@ -63,20 +63,20 @@ public class SaveData : MonoBehaviour
     }
     public void SetPlayerMoney(int money)   //플레이어 돈 설정 (인기도- 최소 0, 최대 999)
     {
-        playermomey = money;
+        playermoney = money;
 
         if (money <= 0)
         {
-            playermomey = 0;
+            playermoney = 0;
         }
         else if (money >= 999)
         {
-            playermomey = 999;
+            playermoney = 999;
         }
     }
     public int GetPlayerMoney()
     {
-        return playermomey;
+        return playermoney;
     }
 
     public void SetPlayerHealth(int a)

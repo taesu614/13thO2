@@ -87,8 +87,9 @@ public class TurnManager : MonoBehaviour
 
     public void EndTrun()
     {
-        if(myTurn)
+        if (myTurn)
         {
+            playerentity.SetPastHealth();
             CardManager.Inst.CheckMyCard();
             playerentity.CheckEffect(); //내 턴이 끝날 때 지속피해를 주는 버프 효과 발동 
         }
@@ -102,6 +103,7 @@ public class TurnManager : MonoBehaviour
             }
         }
         myTurn = !myTurn;
+        EntityManager.Inst.FindDieEntity();
         //EntityManager.Inst.DamagedReset();
         StartCoroutine(StartTurnCo());
     }

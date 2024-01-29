@@ -20,6 +20,7 @@ public class Item   //카드 관련으로 꾸미는 곳
     public float percent;
     public bool selectable;
     public int identifier;  //테스트용 식별자
+    private static int calletc = 0;
     /*
     기본 앞자리 1 - int라 00000000이 작성 안됨
     코스트 00 
@@ -33,6 +34,7 @@ public class Item   //카드 관련으로 꾸미는 곳
     실제 기획에서는 char로 나눠서 일부분 나누어서 구분하는듯 하나
     카드 정렬이 우선인점, 아직 내 수준이 거기까지는 못미쳐서 int로 설정함
     */
+
 }
 
 [CreateAssetMenu(fileName = "ItemSO", menuName = "Scriptable Object/ItemSO")]   //에셋 메뉴에 추가 가능해짐
