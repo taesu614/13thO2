@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class Demo : MonoBehaviour
 {
 	[SerializeField]
-	private	Roulette	roulette;
+	private	RouletteJ	rouletteJ;
 	[SerializeField]
 	private	Button		buttonSpin;
 
@@ -13,7 +13,7 @@ public class Demo : MonoBehaviour
 		buttonSpin.onClick.AddListener(()=>
 		{
 			buttonSpin.interactable = false;
-			roulette.Spin(EndOfSpin);
+			rouletteJ.Spin(EndOfSpin);
 		});
 	}
 

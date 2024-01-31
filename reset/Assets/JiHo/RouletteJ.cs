@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine.Events;
 using UnityEngine;
 
-public class Roulette : MonoBehaviour
+public class RouletteJ : MonoBehaviour
 {
 	[SerializeField]
 	private	Transform			piecePrefab;				// ·ê·¿¿¡ Ç¥½ÃµÇ´Â Á¤º¸ ÇÁ¸®ÆÕ

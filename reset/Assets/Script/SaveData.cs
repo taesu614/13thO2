@@ -10,10 +10,14 @@ public class SaveData : MonoBehaviour
     List<int> cardcount = new List<int>();
     string constellation = "Sheep"; //기본값을 sheep으로
     // Start is called before the first frame update
-    private static SaveData instance;   //싱글톤으로 설정
+    public static SaveData instance;   //싱글톤으로 설정
     private int playermaxhelath = 100;
     private int playerhealth = 100;
     public int playermoney = 10;
+    
+    //맵 위치 관련
+    string mymap;
+    int playermapindex = 0; //플레이어 지도 위치
     private void Awake()
     {
         if (instance == null)   //씬 전환 시 생성을 막는 용도
@@ -54,8 +58,18 @@ public class SaveData : MonoBehaviour
         }
     }*/ //왜 넣었는지 모르겠어서 일단 냅둠
 
-    public void DefaultDeckSetting()    //기본 덱 설정하는 곳
+    public void DefaultDeckSetting()    //기본 덱 설정하는 곳   - 뭐 설정한 적 없어서 건드리지 말 것
     {
+    }
+
+    public void SetMyMap(string map)    //지도 설정
+    {
+        mymap = map;
+    }
+
+    public string GetMyMap()      //지도 보내기
+    {
+        return mymap;
     }
     public List<Item> GetPlayerDeck()
     {
@@ -115,5 +129,15 @@ public class SaveData : MonoBehaviour
     public string GetPlayerConstellation()
     {
         return constellation;
+    }
+
+    public void SetPlayerMapIndex(int index)    //플레이어 지도상 위치 설정
+    {
+        playermapindex = index;
+    }
+
+    public int GetPlayerMapIndex()
+    {
+        return playermapindex;
     }
 }

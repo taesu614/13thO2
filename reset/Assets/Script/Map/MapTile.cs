@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MapTile : MonoBehaviour
 {
@@ -11,13 +12,17 @@ public class MapTile : MonoBehaviour
     [SerializeField] GameObject TileObject;     //타일의 오브젝트
     [SerializeField] GameObject StageObject;    //스테이지의 오브젝트
     SpriteRenderer mysprite;
+    bool isopen = false;
+    string stagescenename;
+    int tileindex;
     private void Start()
     {
         TileObject.SetActive(false) ;       //룰렛 굴려서 들어가야 활성화가 되므로
     }
 
-    public void Setup(char stage)
+    public void Setup(char stage, int index)
     {
+        tileindex = index;
         switch (stage)
             {
             case '0':   //전투 설정
@@ -26,13 +31,16 @@ public class MapTile : MonoBehaviour
             case '3':
             case '4':
                 SetSprite(0);
+                stagescenename = "BattleScene";
                 break;
             case '5':   //상점 설정
             case '6':
                 SetSprite(1);
+                stagescenename = "StoreScene";
                 break;
             case '7':   //수수께끼 설정
                 SetSprite(2);
+                stagescenename = "EventProto";
                 break;
         }
     }
@@ -41,5 +49,23 @@ public class MapTile : MonoBehaviour
     {
         mysprite = StageObject.GetComponent<SpriteRenderer>();
         mysprite.sprite = Stageimg[i];
+    }
+
+    public void OpenTile()  ///타일맵 활성화 기능
+    {
+        TileObject.SetActive(true);
+        isopen = true;
+    }
+
+    public void ChangeScene()
+    {
+        SaveData.instance.SetPlayerMapIndex(tileindex);
+        SceneManager.LoadScene(stagescenename);
+    }
+
+    void OnMouseDown()  //해당 콜라이더를 누를때
+    {
+        if(isopen)
+            ChangeScene();
     }
 }

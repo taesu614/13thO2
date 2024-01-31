@@ -4,38 +4,82 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
+    //제작 시점에서 지도 이미지도, 사용 방식도, 오브젝트 배치방식도 모두 임시로 정해진 부분만 있어 노가다로 때움
+    //지도 확정되면 GameObject[] Tile 부분을 자동으로 탐색하도록 만들 것 
+    //아마 프리팹으로 생성하게 만들 것으로 추정되므로 프리팹 오브젝트를 생성 후 List로 관리한다면 자동으로 될 듯
+    //고정칸에 대해서는 고려하지 않음
+
     // 계속 싱글톤으로 선언하게 되는거 같은데 이래도 되나?
-    private static MapManager Inst = null;
+    public static MapManager Inst = null;
     void Awake()
     {
         if (null == Inst)
         {
             Inst = this;
-            DontDestroyOnLoad(this.gameObject);
         }
         else
-            Destroy(this.gameObject);
+            Destroy(gameObject);
     }
 
     [SerializeField] GameObject[] Tile; //씬에 적용된 Tile 프리팹을 넣을 것, 적어도 현 시점에서 노가다 형식으로 진행되므로 이렇게 씀
+    [SerializeField] GameObject playermeeple;
     MapTile maptile;
+    SaveData savedata;
     string tilecount;  //타일맵 수
     void Start()
     {
-        for(int i = 0; i < Tile.Length; i++)    //맵 랜덤하게 배치하는 용도
+        savedata = GameObject.Find("SaveData").GetComponent<SaveData>();
+        if (savedata.GetMyMap() != null)
         {
-            tilecount+=Random.Range(0, 8);   //랜덤 비율 : 전투:상점:수수께기 = 5:2:1 비율, 확률 관련해서는 MapeTile에서 조정할것
-        }                                   //굳이 이 과정을 넣은건 향후 연속되는 과정 수정할 때 사용할 가능성 높아서
-        for (int i = 0; i < Tile.Length; i++)
-        {
-            maptile = Tile[i].GetComponent<MapTile>();
-            maptile.Setup(tilecount[i]);
+            TileSet();
         }
+        else
+        {
+            MapRandomSet();
+            TileSet();
+        }
+        Instantiate(playermeeple, Tile[savedata.GetPlayerMapIndex()].transform);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    void MapRandomSet()     //맵 랜덤하게 배치하는 용도
+    {
+        for (int i = 0; i < Tile.Length; i++)    
+        {
+            tilecount += Random.Range(0, 8);   //랜덤 비율 : 전투:상점:수수께기 = 5:2:1 비율, 확률 관련해서는 MapeTile에서 조정할것
+        }                                   //굳이 이 과정을 넣은건 향후 연속되는 과정 수정할 때 사용할 가능성 높아서
+        savedata.SetMyMap(tilecount);
+        Debug.Log(savedata.GetMyMap());
+    }
+
+    void TileSet()  //타일을 배치하는 코드
+    {
+        for (int i = 0; i < Tile.Length; i++)
+        {
+            maptile = Tile[i].GetComponent<MapTile>();
+            maptile.Setup(savedata.GetMyMap()[i], i);
+        }
+    }
+
+    public void OpenTile(int num)  //지정된 숫자만큼 타일 활성화하는 메서드
+    {
+        Debug.Log(num);
+        if (num == 0)
+            num = 6;    //스크립트상 0이 6이므로
+        for(int i = savedata.GetPlayerMapIndex()+1; i < savedata.GetPlayerMapIndex() + num + 1; i++)
+        {
+            if (i > Tile.Length-1)  //개수는 1부터 시작이라 index상으로는 넘어감
+            {
+                i = 0;
+                Tile[i].GetComponent<MapTile>().OpenTile();
+                break;  //해당 위치에서 보스전 출력할것
+            }
+            Tile[i].GetComponent<MapTile>().OpenTile();
+        }
     }
 }
