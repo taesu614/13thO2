@@ -67,6 +67,12 @@ public class SaveData : MonoBehaviour
         mymap = map;
     }
 
+    public void ResetMyMap()
+    {
+        mymap = null;
+        playermapindex = 0;
+    }
+
     public string GetMyMap()      //지도 보내기
     {
         return mymap;
