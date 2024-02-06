@@ -2749,7 +2749,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemSO: {fileID: 11400000, guid: d7aea8733362e364fbc27bc12a60f310, type: 2}
-  playermomey: 0
+  playermoney: 10
 --- !u!4 &1605352141
 Transform:
   m_ObjectHideFlags: 0

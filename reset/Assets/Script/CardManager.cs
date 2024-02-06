@@ -33,7 +33,7 @@ public class CardManager : MonoBehaviour
         }
         cardlist = GameObject.Find("PastCard").GetComponent<CardList>();
     }
-    [SerializeField] ItemSO itemSO;
+    [SerializeField] ItemSO itemSO;     //정렬할 일이 없어 itemSO.InitializeItems() 실행하지 않음
     [SerializeField] GameObject cardPrefab;
     [SerializeField] List<Card> myCards;        //내 손패 
     [SerializeField] Transform cardSpawnPoint;
@@ -350,94 +350,66 @@ public class CardManager : MonoBehaviour
 
     public void CardMouseUp()   //마우스를 뗄 때 카드 사용
     {
-        if(selectCard == null)
-        {
+        if(selectCard == null)  //선택한 카드가 없을 때
             return;
-        }
-        if(player.canplay)  //카드 사용 행동 가능한지 체크 (ex: 기절)
+        if (player.canplay)  //카드 사용 행동 가능한지 체크 (ex: 기절)
+            return;
+        isMyCardDrag = false;
+
+        if (eCardState != ECardState.CanMouseDrag)
+            return;
+        if (selectCard.cardtype == "Intrusion")//난입 관련
         {
-            isMyCardDrag = false;
-
-            if (eCardState != ECardState.CanMouseDrag)
+            if (IsFullList())   //난입이 가득찬경우
                 return;
-            if (selectCard.cardtype == "Intrusion")//난입 관련
+            if (IsIntrusionDuplication(selectCard.functionname))    //난입이 중복된경우
+                return;
+
+        }
+
+        if (costManager.CompareCost(selectCard))//코스트 비교
+        {
+            if (onMyCardArea)
             {
-                if (IsFullList())
-                {
-                    return;
-                }
-                if (IsIntrusionDuplication(selectCard.functionname))
-                {
-                    return;
-                }
-
-            }   
-
-            if (costManager.CompareCost(selectCard))//코스트 비교
+            }
+            else
             {
-                if (onMyCardArea)
+                bool isObjectin = false;
+                GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+                GameObject[] entity = monsters.Concat(players).ToArray();
+                if (selectCard.selectable)   //선택 가능한지 여부
                 {
+                    foreach (GameObject obj in entity)  //카드와 게임오브젝트와의 이미지 충돌 확인 - 여기 건드리면 카드 - 카드 표식 바꾸기 가능할지도
+                    {
+                        if (IsMouseCollidingWithObject(obj))
+                        {
+                            cardfuction.SetTarget(obj);
+                            isObjectin = true;
+                            break;
+                        }
+                    }
                 }
-                else
+                else if (!selectCard.selectable)  //전체피해이므로 오브젝트가 들어가있다 가정
                 {
-                    bool isObjectin = false;
-                    GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
-                    GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-                    GameObject[] entity = monsters.Concat(players).ToArray();
-                    if (selectCard.selectable)   //선택 가능한지 여부
-                    {
-                        foreach (GameObject obj in entity)
-                        {
-                            if (IsMouseCollidingWithObject(obj))
-                            {
-                                cardfuction.SetTarget(obj);
-                                isObjectin = true;
-                                break;
-                            }
-                        }
-                    }
-                    else if(!selectCard.selectable)  //전체피해이므로 오브젝트가 들어가있다 가정
-                    {
-                        isObjectin = true;
-                    }
-                    else   //타겟이 설정되지 않거나, 전체 피해가 아닌 경우
-                    {
-                        isObjectin = false;
-                    }
-                    if (isObjectin) //본격적인 카드 기능 실행, false라면 실행되지 않으므로 카드 사용 안됨
-                    {
-                        if(player.issleep)  //수면 상태에서 
-                        {
-                            if(player.GetSleep())   //수면 효과까지 발동하여 참이 됐다면
-                            {
-                                CostManager.Inst.SubtractCost(selectCard);
-                                CostManager.Inst.ShowCost();
-                                IntrusionConditionCheck();
-                                TryPutCard(true);
-                            }
-                            else
-                            {
-                                CostManager.Inst.SubtractCost(selectCard);
-                                CostManager.Inst.ShowCost();
-                                UseCard();
-                                IntrusionConditionCheck();
-                                EntityManager.Inst.FindDieEntity();
-                                TryPutCard(true);
-                            }
-                        }
-                        else
-                        {
-                            CostManager.Inst.SubtractCost(selectCard);
-                            CostManager.Inst.ShowCost();
-                            UseCard();
-                            IntrusionConditionCheck();
-                            EntityManager.Inst.FindDieEntity();
-                            TryPutCard(true);
-                        }
-
-                    }
-
+                    isObjectin = true;
                 }
+                else   //타겟이 설정되지 않거나, 전체 피해가 아닌 경우
+                {
+                    isObjectin = false;
+                }
+                if (isObjectin) //본격적인 카드 기능 실행, false라면 실행되지 않으므로 카드 사용 안됨
+                {
+                    CostManager.Inst.SubtractCost(selectCard);
+                    CostManager.Inst.ShowCost();
+                    if (player.issleep && !player.GetSleep()) { }//수면 상태에서 수면 확률이 발동되어야 카드 미사용
+                    else
+                        UseCard();
+                    IntrusionConditionCheck();      //난입 확인 
+                    EntityManager.Inst.FindDieEntity();
+                    TryPutCard(true);
+                }
+
             }
         }
     }

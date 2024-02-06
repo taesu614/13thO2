@@ -34,7 +34,7 @@ public class UIRewardExplanation : MonoBehaviour
         functionname = this.item.functionname;
         cardtype = this.item.cardtype;
         selectable = this.item.selectable;
-        identifier = this.item.identifier;
+        identifier = this.item.GetID();
 
         if (this.item.color == 'R')  //여기 숫자 수정하면 글씨 색 바뀜
         {

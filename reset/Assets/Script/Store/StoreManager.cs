@@ -7,7 +7,7 @@ using TMPro;
 public class StoreManager : MonoBehaviour
 {
     public static StoreManager Inst { get; private set; } //싱글톤
-    [SerializeField] ItemSO itemSO;
+    [SerializeField] ItemSO itemSO; //상점에 덱 시스템 추가할 때 InitializeItems() 실행할 것 
     [SerializeField] TMP_Text moneyTMP;
     List<Item> storecardlist = new List<Item>();
     List<GameObject> storecardprefablist = new List<GameObject>();

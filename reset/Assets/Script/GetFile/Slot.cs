@@ -16,7 +16,6 @@ public class Slot : MonoBehaviour
     public string functionname;
     public string cardtype;
     public bool selectable;
-    public int identifier;
     private void Start()
     {
 
@@ -42,7 +41,6 @@ public class Slot : MonoBehaviour
         functionname = this.item.functionname;
         cardtype = this.item.cardtype;
         selectable = this.item.selectable;
-        identifier = this.item.identifier;
 
         if (this.item.color == 'R')  //여기 숫자 수정하면 글씨 색 바뀜
         {

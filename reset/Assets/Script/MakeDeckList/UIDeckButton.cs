@@ -28,7 +28,7 @@ public class UIDeckButton : MonoBehaviour
         this.itemname = item;
         nameTMP.text = item.name;
         costTMP.text = item.cost.ToString();
-        identifier = item.identifier;
+        identifier = item.GetID();
 
         if (item.color == 'R')  //여기 숫자 수정하면 글씨 색 바뀜
         {

@@ -17,6 +17,10 @@ public class RewardManager : MonoBehaviour
     GameObject deckscrollview;
     SaveData savedata;
     List<Item> decktemp = new List<Item>();
+    private void Awake()
+    {
+        itemSO.InitializeItems();
+    }
     private void Start()        //씬 전환 뒤에 한번만 사용하기에 Start에서 관리함 
     {
         deckscrollview = GameObject.Find("DeckScrollView");
@@ -73,7 +77,7 @@ public class RewardManager : MonoBehaviour
             int j = i - 1;
 
             // key보다 큰 원소들을 오른쪽으로 이동
-            while (j >= 0 && decktemp[j].identifier > key.identifier)
+            while (j >= 0 && decktemp[j].GetID() > key.GetID())
             {
                 decktemp[j + 1] = decktemp[j];
                 j = j - 1;
