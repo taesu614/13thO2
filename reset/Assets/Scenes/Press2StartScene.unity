@@ -545,6 +545,65 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1 &1865669739
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1865669741}
+  - component: {fileID: 1865669740}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1865669740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865669739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1766ff08a969af4cbe2fbf625591ab0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgmClips:
+  - {fileID: 8300000, guid: bc611c260bcc8c44ea6c05a7cbfbe8e9, type: 3}
+  - {fileID: 8300000, guid: 8ab950d6e7bd20b4da281d32ecf1b438, type: 3}
+  - {fileID: 8300000, guid: 8de56369e26cb8e46835e91796d3a067, type: 3}
+  bgmVolume: 0.3
+  sfxClips:
+  - {fileID: 8300000, guid: 3a44bd1c4dd828944a40e74ed2412352, type: 3}
+  - {fileID: 8300000, guid: d8d9e77fa6dec1743b9940ad98e33fbe, type: 3}
+  - {fileID: 8300000, guid: c6e19059a7cb08147af7fe2c2e7c9e61, type: 3}
+  - {fileID: 8300000, guid: 4843679cd2812724790c18acf2c80837, type: 3}
+  - {fileID: 8300000, guid: 647f67c25371c384bb2a2f0d04540aee, type: 3}
+  - {fileID: 8300000, guid: b309f408c2c518f4dbfdd4ca9500ee22, type: 3}
+  - {fileID: 8300000, guid: 6cebf904b04e639478bd597eebc6d788, type: 3}
+  sfxVolume: 1
+  sfxChannels: 8
+--- !u!4 &1865669741
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865669739}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2064799476
 GameObject:
   m_ObjectHideFlags: 0

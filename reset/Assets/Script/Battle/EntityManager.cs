@@ -172,6 +172,7 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
             if (selectEntity.GetHealthTMP() < 1)
             {
                 selectEntity.isDie = true;
+                //AudioManager.instance.PlaySFX(AudioManager.SFX.);  // 몬스터 죽을 때 효과음
             }
 
             if (!selectEntity.isDie)

@@ -27,11 +27,13 @@ public class MouseCollider : MonoBehaviour
             {
                 // ButtonNotInUI 레이어에 적용된 Collider와 충돌하고, Door 태그를 가진 게임 오브젝트가 클릭되었을 때 실행할 코드
                 PresstoStart("MapScene");
+                AudioManager.instance.PlaySFX(AudioManager.SFX.openClick); // 임시 효과음
             }
             if (hit.collider != null && hit.collider.CompareTag("Button2"))
             {
                 // ButtonNotInUI 레이어에 적용된 Collider와 충돌하고, Door 태그를 가진 게임 오브젝트가 클릭되었을 때 실행할 코드
                 PresstoStart("DeckBuildScene");
+                AudioManager.instance.PlaySFX(AudioManager.SFX.openClick); // 임시 효과음
             }
         }
     }

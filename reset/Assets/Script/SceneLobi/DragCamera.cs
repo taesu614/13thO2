@@ -8,6 +8,10 @@ public class DragCamera : MonoBehaviour
     public float dragSpeed = 2f;
     public BoxCollider2D cameraBounds;
 
+    private void Start()
+    {
+        AudioManager.instance.PlaySFX(AudioManager.SFX.closeClick);  // 클릭시 임시 효과음
+    }
     void Update()
     {
         HandleMouseInput();

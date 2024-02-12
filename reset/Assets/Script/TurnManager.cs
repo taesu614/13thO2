@@ -60,6 +60,8 @@ public class TurnManager : MonoBehaviour
             OnAddCard?.Invoke(true);
         }
         StartCoroutine(StartTurnCo());
+
+        AudioManager.instance.PlayBGM(AudioManager.BGM.battle);  // BattleScene 시작하면 BGM 재생
     }
 
     IEnumerator StartTurnCo()

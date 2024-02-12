@@ -53,6 +53,7 @@ public class CardFunctionManager : MonoBehaviour
         cardEffects["TestBurn"] = TestBurn;
         cardEffects["TestHeal"] = TestHeal;
         cardEffects["TestHealTurn"] = TestHealTurn;
+        cardEffects["TestSearchCard"] = TestSearchCard;
 
         cardEffects["SharpNib"] = SharpNib;  // 날카로운 펜촉
         cardEffects["Firestick"] = Firestick;  // 불꽃 스틱
@@ -274,6 +275,18 @@ public class CardFunctionManager : MonoBehaviour
         player.health = player.pastHealth;
         player.SetHealthTMP();
     }
+
+    #region sheep
+
+    private void TestSearchCard()
+    {
+        cardManager = GetComponent<CardManager>();
+        cardManager.SearchCard("꿈지기");
+        Debug.Log("꿈지기 카드 찾아오기!!");
+    }
+
+    #endregion
+
     #endregion
 
     #region IntrusionEffects
@@ -377,6 +390,10 @@ public class CardFunctionManager : MonoBehaviour
         }
     }
 
+    public void MemoryEffect(string cardName)  // 기억 키워드
+    {
+
+    }
     public void Rebound(int damage, int percentage, Entity user) //대미지, 반동수치, 사용자
     {
         damage += user.GetAllAttackUpEffect();
@@ -513,6 +530,10 @@ public class CardFunctionManager : MonoBehaviour
         }
     }
 
+    public void CheckSleepAttack(Entity entity)  // sleep상태인 entity가 공격받았는지 체크하는 메소드
+    {
+        
+    }
     public void ImmuneSleep(string targetcount, int turn)
     {
         switch (targetcount)
@@ -655,6 +676,10 @@ public class CardFunctionManager : MonoBehaviour
             entity.shield = 0;
             entity.SetHealthTMP();
             entity.SetShieldTMP();
+            if (entity.issleep)  // 수면 상태일 때 체력 변동시 
+            {
+                entity.issleep = false;
+            }
         }
     }
 

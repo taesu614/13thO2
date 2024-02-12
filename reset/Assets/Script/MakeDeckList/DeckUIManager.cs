@@ -22,7 +22,6 @@ public class DeckUIManager : MonoBehaviour
 
     private void Awake()
     {
-        itemSO.InitializeItems();
     }
     private void Start()
     {
@@ -31,6 +30,7 @@ public class DeckUIManager : MonoBehaviour
         cardlistpanel = GameObject.Find("CardListPanel");
         deckui.SetActive(false);
         savedata.ResetCardList();
+        itemSO.InitializeItems();
     }
 
     public bool IsUIOpen()
@@ -57,7 +57,7 @@ public class DeckUIManager : MonoBehaviour
 
 
             isopen = true;
-
+            AudioManager.instance.PlaySFX(AudioManager.SFX.openClick);  // 클릭시 임시 효과음
         }
         else    //이미지 제거하는 코드 만들 것
         {
@@ -71,6 +71,7 @@ public class DeckUIManager : MonoBehaviour
                 deckui.SetActive(false);
                 instantiatedCards.Clear(); // 리스트 비우기
             }
+            AudioManager.instance.PlaySFX(AudioManager.SFX.closeClick);  // 클릭시 임시 효과음
         }
     }
 
@@ -101,6 +102,7 @@ public class DeckUIManager : MonoBehaviour
     {
         mydecklisttemp.Add(item);
         MakeCardNameUI();
+        AudioManager.instance.PlaySFX(AudioManager.SFX.draw);  // 임시로 draw 효과음 넣음
     }
 
     private void SortDeck()   //정렬 관련
@@ -137,6 +139,8 @@ public class DeckUIManager : MonoBehaviour
             }
         }
         MakeCardNameUI();
+
+        AudioManager.instance.PlaySFX(AudioManager.SFX.draw);  // 임시로 draw 효과음 넣음
     }
 
     public void SaveDeck()
@@ -145,5 +149,6 @@ public class DeckUIManager : MonoBehaviour
         {
             savedata.InputCardInDeck(A);
         }
+        AudioManager.instance.PlaySFX(AudioManager.SFX.openClick); // 클릭시 효과음 임시
     }
 }

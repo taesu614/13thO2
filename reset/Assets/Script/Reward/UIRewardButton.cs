@@ -58,5 +58,6 @@ public class UIRewardButton : MonoBehaviour
         GameObject newReward = Instantiate(RewardExplantionPrefab, rewardcanvas.transform);   //해당 자식 위치에 프리팹 생성 
         UIRewardExplanation cardsetup = newReward.GetComponent<UIRewardExplanation>();
         cardsetup.Setup(item);
+        AudioManager.instance.PlaySFX(AudioManager.SFX.openClick);
     }
 }

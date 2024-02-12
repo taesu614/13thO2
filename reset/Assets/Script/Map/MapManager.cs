@@ -19,6 +19,8 @@ public class MapManager : MonoBehaviour
         }
         else
             Destroy(gameObject);
+        if(!AudioManager.instance.CheckBGM("main"))
+            AudioManager.instance.PlayBGM(AudioManager.BGM.main);
     }
 
     [SerializeField] GameObject[] Tile; //씬에 적용된 Tile 프리팹을 넣을 것, 적어도 현 시점에서 노가다 형식으로 진행되므로 이렇게 씀

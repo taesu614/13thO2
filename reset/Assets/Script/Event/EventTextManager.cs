@@ -28,6 +28,7 @@ public class EventTextManager : MonoBehaviour
         //저장되어있는 HP 와 MaxHP 가져옴
         playerHp = 0;
         playerMaxHp = 0;
+        AudioManager.instance.PlayBGM(AudioManager.BGM.riddle);
     }
 
     void EventClose()
@@ -66,12 +67,15 @@ public class EventTextManager : MonoBehaviour
         {
             case "Blue":
                 selectionExplainText.text = selectionsExplains[0];
+                AudioManager.instance.PlaySFX(AudioManager.SFX.openClick); // 임시
                 break;
             case "Red":
                 selectionExplainText.text = selectionsExplains[1];
+                AudioManager.instance.PlaySFX(AudioManager.SFX.openClick); // 임시
                 break;
             case "None":
                 selectionExplainText.text = selectionsExplains[2];
+                AudioManager.instance.PlaySFX(AudioManager.SFX.openClick); // 임시
                 break;
         }
         selectedButton = clickObjName; //선택한 버튼 저장

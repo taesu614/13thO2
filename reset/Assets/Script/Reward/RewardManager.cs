@@ -17,10 +17,6 @@ public class RewardManager : MonoBehaviour
     GameObject deckscrollview;
     SaveData savedata;
     List<Item> decktemp = new List<Item>();
-    private void Awake()
-    {
-        itemSO.InitializeItems();
-    }
     private void Start()        //씬 전환 뒤에 한번만 사용하기에 Start에서 관리함 
     {
         deckscrollview = GameObject.Find("DeckScrollView");
@@ -29,6 +25,8 @@ public class RewardManager : MonoBehaviour
         MakeDeck();
         SetRewardList();
         deckscrollview.SetActive(false);
+        AudioManager.instance.PlaySFX(AudioManager.SFX.success); // 씬 전환 하면서 성공 효과음
+        itemSO.InitializeItems();
     }
     private void SetCardReward(Item item)    //카드 보상 설정 - 3개 짜리 얘기
     {
@@ -40,16 +38,19 @@ public class RewardManager : MonoBehaviour
     public void ChangeScene()
     {
         SceneManager.LoadScene("MapScene");
+        AudioManager.instance.PlaySFX(AudioManager.SFX.closeClick);
     }
 
     public void OpenDeck()
     {
         deckscrollview.SetActive(true);
+        AudioManager.instance.PlaySFX(AudioManager.SFX.openClick);
     }
 
     public void CloseDeck()
     {
         deckscrollview.SetActive(false);
+        AudioManager.instance.PlaySFX(AudioManager.SFX.closeClick);
     }
 
     private void MakeDeck()     //덱 생성과 관련된 기능

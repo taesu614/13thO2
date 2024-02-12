@@ -8,8 +8,9 @@ public class CardList : MonoBehaviour
 {
     List<Item> past = new List<Item>();    //과거 리스트
     List<GameObject> cardnamePrefabslist = new List<GameObject>();  //리스트로 프리팹을 전체 삭제하도록 하는 용도
-
+    List<Item> tempPast = new List<Item>();
     public CardManager cardManager;
+    public CardFunctionManager cardfunctionmanager;
     [SerializeField]
     private Transform slotParent;
     [SerializeField] GameObject cardPrefab;
@@ -40,7 +41,7 @@ public class CardList : MonoBehaviour
             slots[i].item = null;
         }  */
     }
-    public void AddCard(Item item)  //과거에 프리팹 이미지 생성 용도
+    public void AddCard(Item item)  //과거에 프리팹 이미지 생성 용도 + 기억 카드 체크용
     {
         var cardObject = Instantiate(cardPrefab, content);
         var card = cardObject.GetComponent<Slot>();
@@ -73,4 +74,35 @@ public class CardList : MonoBehaviour
         past.Clear();   //과거 비우기
         FreshSlot();
     }
+
+    public bool CheckPast(string cardName)  // 과거에 특정 카드가 있는지 확인해서 bool값 리턴
+    {
+        tempPast = GetPast();
+
+
+        if (tempPast != null && tempPast.Count > 0)
+        {
+            string[] tempName = new string[tempPast.Count];
+            for (int i = 0; i < tempPast.Count; i++)
+            {
+                tempName[i] = tempPast[i].tag;
+            }
+
+
+            int tagIndex = Array.FindLastIndex(tempName, i => i == cardName);
+            if (tagIndex != -1)
+                return true;
+            else
+                Debug.Log("과거에 " + cardName + "이 없습니다!");
+                return false;
+        }
+
+        else
+        {
+            Debug.Log("과거 값이 없습니다!");
+            return false;
+        }
+    }
+
+
 }

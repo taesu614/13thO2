@@ -33,7 +33,7 @@ public class CardManager : MonoBehaviour
         }
         cardlist = GameObject.Find("PastCard").GetComponent<CardList>();
     }
-    [SerializeField] ItemSO itemSO;     //정렬할 일이 없어 itemSO.InitializeItems() 실행하지 않음
+    [SerializeField] ItemSO itemSO;
     [SerializeField] GameObject cardPrefab;
     [SerializeField] List<Card> myCards;        //내 손패 
     [SerializeField] Transform cardSpawnPoint;
@@ -129,6 +129,17 @@ public class CardManager : MonoBehaviour
         }
     }
 
+    void ShuffleItemBuffer()  // 덱 섞는 용도
+    {
+        for(int i = 0; i < itemBuffer.Count; i++)
+        {
+            int rand = Random.Range(i, itemBuffer.Count);
+            Item temp = itemBuffer[i];
+            itemBuffer[i] = itemBuffer[rand];
+            itemBuffer[rand] = temp;
+        }
+    }
+
     void Start()
     {
         SetupItemBuffer();
@@ -167,6 +178,7 @@ public class CardManager : MonoBehaviour
             
                 SetOriginOrder(isMine);
                 CardAlignment();
+                AudioManager.instance.PlaySFX(AudioManager.SFX.draw);
             }
         }
     }
@@ -284,6 +296,51 @@ public class CardManager : MonoBehaviour
             GetSelectCardType(selectCard.cardtype, selectCard.functionname);
             cardfuction.UseSelectCard(selectCard.functionname);
         }
+
+        switch(selectCard.cardtype)  // 이곳에 카드 타입에 따라 효과음 넣기
+        {
+            case "Action":
+                AudioManager.instance.PlaySFX(AudioManager.SFX.attack);
+                break;
+
+            default:
+                AudioManager.instance.PlaySFX(AudioManager.SFX.attack);
+                break;
+        }
+    }
+
+    public void SearchCard(string tag)  // 특정 태그를 가진 카드를 패로 더하는 기능
+    {
+        if (itemBuffer != null && itemBuffer.Count > 0)
+        {
+            string[] tempTag = new string[itemBuffer.Count];
+            for (int i = 0; i < itemBuffer.Count; i++)
+            {
+                tempTag[i] = itemBuffer[i].tag;
+            }
+
+
+            int tagIndex = Array.FindLastIndex(tempTag, i => i == tag);
+            if (tagIndex != -1)
+            {
+                Item temp = itemBuffer[0];
+                itemBuffer[0] = itemBuffer[tagIndex];
+                itemBuffer[tagIndex] = temp;
+
+                AddCard(true);
+                ShuffleItemBuffer();
+            }
+
+            else
+            {
+                Debug.Log("서치할 수 있는 카드가 없습니다!");
+            }
+        }
+
+        else
+        {
+            Debug.Log("서치할 수 있는 카드가 없습니다!");
+        }
     }
 
     #region MyCard
@@ -350,66 +407,94 @@ public class CardManager : MonoBehaviour
 
     public void CardMouseUp()   //마우스를 뗄 때 카드 사용
     {
-        if(selectCard == null)  //선택한 카드가 없을 때
-            return;
-        if (player.canplay)  //카드 사용 행동 가능한지 체크 (ex: 기절)
-            return;
-        isMyCardDrag = false;
-
-        if (eCardState != ECardState.CanMouseDrag)
-            return;
-        if (selectCard.cardtype == "Intrusion")//난입 관련
+        if(selectCard == null)
         {
-            if (IsFullList())   //난입이 가득찬경우
-                return;
-            if (IsIntrusionDuplication(selectCard.functionname))    //난입이 중복된경우
-                return;
-
+            return;
         }
-
-        if (costManager.CompareCost(selectCard))//코스트 비교
+        if(player.canplay)  //카드 사용 행동 가능한지 체크 (ex: 기절)
         {
-            if (onMyCardArea)
+            isMyCardDrag = false;
+
+            if (eCardState != ECardState.CanMouseDrag)
+                return;
+            if (selectCard.cardtype == "Intrusion")//난입 관련
             {
-            }
-            else
-            {
-                bool isObjectin = false;
-                GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
-                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-                GameObject[] entity = monsters.Concat(players).ToArray();
-                if (selectCard.selectable)   //선택 가능한지 여부
+                if (IsFullList())
                 {
-                    foreach (GameObject obj in entity)  //카드와 게임오브젝트와의 이미지 충돌 확인 - 여기 건드리면 카드 - 카드 표식 바꾸기 가능할지도
+                    return;
+                }
+                if (IsIntrusionDuplication(selectCard.functionname))
+                {
+                    return;
+                }
+
+            }   
+
+            if (costManager.CompareCost(selectCard))//코스트 비교
+            {
+                if (onMyCardArea)
+                {
+                }
+                else
+                {
+                    bool isObjectin = false;
+                    GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+                    GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+                    GameObject[] entity = monsters.Concat(players).ToArray();
+                    if (selectCard.selectable)   //선택 가능한지 여부
                     {
-                        if (IsMouseCollidingWithObject(obj))
+                        foreach (GameObject obj in entity)
                         {
-                            cardfuction.SetTarget(obj);
-                            isObjectin = true;
-                            break;
+                            if (IsMouseCollidingWithObject(obj))
+                            {
+                                cardfuction.SetTarget(obj);
+                                isObjectin = true;
+                                break;
+                            }
                         }
                     }
-                }
-                else if (!selectCard.selectable)  //전체피해이므로 오브젝트가 들어가있다 가정
-                {
-                    isObjectin = true;
-                }
-                else   //타겟이 설정되지 않거나, 전체 피해가 아닌 경우
-                {
-                    isObjectin = false;
-                }
-                if (isObjectin) //본격적인 카드 기능 실행, false라면 실행되지 않으므로 카드 사용 안됨
-                {
-                    CostManager.Inst.SubtractCost(selectCard);
-                    CostManager.Inst.ShowCost();
-                    if (player.issleep && !player.GetSleep()) { }//수면 상태에서 수면 확률이 발동되어야 카드 미사용
-                    else
-                        UseCard();
-                    IntrusionConditionCheck();      //난입 확인 
-                    EntityManager.Inst.FindDieEntity();
-                    TryPutCard(true);
-                }
+                    else if(!selectCard.selectable)  //전체피해이므로 오브젝트가 들어가있다 가정
+                    {
+                        isObjectin = true;
+                    }
+                    else   //타겟이 설정되지 않거나, 전체 피해가 아닌 경우
+                    {
+                        isObjectin = false;
+                    }
+                    if (isObjectin) //본격적인 카드 기능 실행, false라면 실행되지 않으므로 카드 사용 안됨
+                    {
+                        if(player.issleep)  //수면 상태에서 
+                        {
+                            if(player.GetSleep())   //수면 효과까지 발동하여 참이 됐다면
+                            {
+                                CostManager.Inst.SubtractCost(selectCard);
+                                CostManager.Inst.ShowCost();
+                                IntrusionConditionCheck();
+                                TryPutCard(true);
+                            }
+                            else
+                            {
+                                CostManager.Inst.SubtractCost(selectCard);
+                                CostManager.Inst.ShowCost();
+                                UseCard();
+                                IntrusionConditionCheck();
+                                EntityManager.Inst.FindDieEntity();
+                                TryPutCard(true);
+                            }
+                        }
+                        else
+                        {
+                            CostManager.Inst.SubtractCost(selectCard);
+                            CostManager.Inst.ShowCost();
+                            UseCard();
+                            IntrusionConditionCheck();
+                            EntityManager.Inst.FindDieEntity();
+                            TryPutCard(true);
+                        }
 
+                    }
+
+                }
             }
         }
     }

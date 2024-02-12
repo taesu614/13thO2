@@ -7,7 +7,7 @@ using TMPro;
 public class StoreManager : MonoBehaviour
 {
     public static StoreManager Inst { get; private set; } //싱글톤
-    [SerializeField] ItemSO itemSO; //상점에 덱 시스템 추가할 때 InitializeItems() 실행할 것 
+    [SerializeField] ItemSO itemSO;
     [SerializeField] TMP_Text moneyTMP;
     List<Item> storecardlist = new List<Item>();
     List<GameObject> storecardprefablist = new List<GameObject>();
@@ -90,6 +90,7 @@ public class StoreManager : MonoBehaviour
             num++;
         }
         isReload = true;
+        AudioManager.instance.PlaySFX(AudioManager.SFX.roulette);  // 클릭시 임시 효과음
     }
 
     public void SetMoneyTMP()
@@ -100,5 +101,6 @@ public class StoreManager : MonoBehaviour
     public void GotoMap()
     {
         SceneManager.LoadScene("MapScene");
+        AudioManager.instance.PlaySFX(AudioManager.SFX.closeClick);  // 클릭시 임시 효과음
     }
 }

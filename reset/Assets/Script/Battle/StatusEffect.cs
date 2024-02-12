@@ -1,4 +1,4 @@
-public class StatusEffect  //스택 형식의 효과는 없앤 상태임
+/*public class StatusEffect  //스택 형식의 효과는 없앤 상태임
 {
     //향후 계획 - Entity의 반복작업으로 인한 분량이 많아지는 현상으로 인해 코드를 통합할 방법 생각중임
     //현 시점에서 Set이름()별로 나누어진 메서드 대신
@@ -93,7 +93,7 @@ public class StatusEffect  //스택 형식의 효과는 없앤 상태임
         }
         return true;
     }*/
-
+/*
     public void SetImmuneSleep(int turn)
     {
         effectturn = turn;
@@ -174,4 +174,4 @@ public class StatusEffect  //스택 형식의 효과는 없앤 상태임
                 return (false, 0);
         }
     }
-}
+}*/

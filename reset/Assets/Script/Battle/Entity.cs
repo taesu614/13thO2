@@ -161,6 +161,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     {
         pastHealth = health;
     }
+
     #region MonsterPattern
     #region Snail
     private void SnailPattern()
@@ -180,7 +181,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
                     CardFunctionManager.Inst.Attack("player", damage, "normal", "monster");
                     break;
                 case "effect":
-                    CardFunctionManager.Inst.Poison("player", 4);
+                    CardFunctionManager.Inst.Poison("player", 4); 
                     break;
                 case "shield":
                     MakeShield(4, 1);
@@ -218,7 +219,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
 
     private void HcoronatusPattern()
     {
-        if (isfirst)
+        if(isfirst)
         {
             isfirst = false;
         }
@@ -245,8 +246,8 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
             }
         }
 
-        pattern = Random.Range(0, 10);   //¸¶Áö¸· ÆÐÅÏ ¼³Á¤
-        switch (pattern)
+        pattern = Random.Range(0,10);   //¸¶Áö¸· ÆÐÅÏ ¼³Á¤
+        switch(pattern)
         {
             case 0:
             case 1:
@@ -271,6 +272,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         Debug.Log(patternname);
     }
     #endregion
+
     #region Utils
 
     // ¸ó½ºÅÍ ÆÐÅÏ ½ÇÇà ¸Þ¼­µå
@@ -409,9 +411,9 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     {
         foreach (StatusEffect obj in myStatusEffect)
         {
-            if(obj.GetFaint())
+            if(obj.GetSleep())
             {
-                Debug.Log("You are faint");
+                Debug.Log("You are sleep");
                 canplay = false;
                 break;
             }
@@ -444,5 +446,180 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
                 return true;
         }
         return false;
+    }
+}
+
+class StatusEffect  //½ºÅÃ Çü½ÄÀÇ È¿°ú´Â ¾ø¾Ø »óÅÂÀÓ
+{
+    bool ispowerUp = false;
+    bool ispowerDown = false;
+    bool isshield = false;   //½¯µå Á¸Àç ¿©ºÎ
+    bool isfaint = false;    //±âÀý Á¸Àç ¿©ºÎ
+    bool issleep = false;    //¼ö¸é Á¸Àç ¿©ºÎ
+    bool isdamageeffect = false;    //ÇÇÇØ¸¦ ÁÖ´ÂÁö ¿©ºÎ
+    bool isimmunesleep = false;
+    bool canheal = true;
+    int effectamount = 0;    //È¿°úÀÇ ¾ç
+    int effectturn = 0;    //Áö¼Ó ÅÏ ¼ö
+    string effectname;
+    #region PowerUp
+    public void SetPowerUp(int amount, int turn)
+    {
+        effectamount = amount;
+        effectturn = turn;
+        ispowerUp = true;
+        effectname = "powerup";
+    }
+
+    public int GetAllAttackUp()
+    {
+        if (ispowerUp)
+        {
+            return effectamount;
+        }
+        return 0;
+    }
+    #endregion
+
+    #region PowerDown
+    public void SetPowerDown(int amount, int turn)
+    {
+        effectamount = amount;
+        effectturn = turn;
+        ispowerDown = true;
+    }
+
+    public int GetAllAttackDown()
+    {
+        if (ispowerDown)
+        {
+            return effectamount;
+        }
+        return 0;
+    }
+    #endregion
+
+    #region Shield
+    public void SetShield(int amount, int turn)
+    {
+        effectamount = amount;
+        effectturn = turn;
+        isshield = true;
+    }
+    #endregion
+
+    #region Faint
+    public void SetFaint(int turn)  //¼ö¸é »ý¼º
+    {
+        effectturn = turn;
+        isfaint = true;
+    }
+
+    public bool GetFaint()  //ÇØ´ç À§Ä¡¿¡¼­ ¼ö¸é ¸é¿ª Ã¼Å©
+    {
+        if(isfaint)
+        {
+            return true;
+        }
+        return false;
+    }
+    #endregion
+
+    #region Sleep
+    public void SetSleep(int turn)
+    {
+        effectturn = turn;
+        issleep = true;
+    }
+
+    public bool GetSleep()  //»ç¿ëÇÒ ¶§ canplay¸¦ ¹Ù·Î ¼³Á¤ÇÔ
+    {
+        if(issleep)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void SetImmuneSleep(int turn)
+    {
+        effectturn = turn;
+        isimmunesleep = true;
+    }
+
+    public bool GetImmuneSleep()    
+    {
+        if (isimmunesleep)
+        {
+            Debug.Log(isimmunesleep);
+            return true;
+        }
+        return false;
+    }
+    #endregion
+
+    #region Poison
+    public void SetPoison(int turn)
+    {
+        effectturn = turn;
+        isdamageeffect = true;
+    }
+    #endregion
+
+    #region Burn
+    public void SetBurn(int damage, int turn)
+    {
+        effectturn = turn;
+        effectamount = damage;
+        canheal = false;    //ÀÌ°Ô ÀÖ¾î¾ß È¸º¹ ºÒ°¡´É Ãß°¡ °¡´ÉÇÔ
+        effectname = "burn";
+    }
+    #endregion
+
+    #region HealBlock
+    public void SetHealBlock(int turn)
+    {
+        effectturn = turn;
+        canheal = false ;
+    }
+
+    public bool GetHealBlock()
+    {
+        return canheal;
+    }
+    #endregion
+
+    #region HealTurn
+    public void SetHealTurn(int turn)
+    {
+        effectturn = turn;
+        effectname = "healturn";
+    }
+    #endregion
+    public void DecreaseEffectTurn()
+    {
+        effectturn--;
+    }
+
+    public int GetEffectTurn()
+    {
+        return effectturn;
+    }
+
+    public (bool, int) CheckDamageEffect()
+    {
+        switch(effectname)
+        {
+            case "poison":
+                return (true, effectturn);    
+            case "burn":
+                return (true, effectamount);
+            case "healturn":
+                if (!canheal)   //È¸º¹ ºÒ°¡¶ó¸é 0 È¸º¹
+                    return (true, 0);
+                return (true, -effectturn);   //ÈúÀÌ¶ó¼­ ´ë¹ÌÁö¿Í ¹Ý´ë 
+            default:
+                return (false, 0);
+        }
     }
 }

@@ -76,6 +76,7 @@ public class StoreCardButton : MonoBehaviour, IPointerEnterHandler, IPointerExit
             savedata.InputCardInDeck(item);
             Destroy(gameObject);
             StoreManager.Inst.SetMoneyTMP();
+            AudioManager.instance.PlaySFX(AudioManager.SFX.openClick);  // 클릭시 임시 효과음
         }
     }
 }

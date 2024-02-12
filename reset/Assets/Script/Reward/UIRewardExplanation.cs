@@ -57,10 +57,12 @@ public class UIRewardExplanation : MonoBehaviour
         savedata.InputCardInDeck(item);
         SceneManager.LoadScene("MapScene");
         //씬 전환 넣을 것
+        AudioManager.instance.PlaySFX(AudioManager.SFX.openClick); // 임시
     }
 
     public void CloseExplanation()      //설명창 닫음
     {
         Destroy(GameObject.Find("UIRewardExplanation(Clone)"));
+        AudioManager.instance.PlaySFX(AudioManager.SFX.openClick);  // 임시
     }
 }

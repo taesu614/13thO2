@@ -53,6 +53,7 @@ public class ConstellationManager : MonoBehaviour
         GameObject starttoend = constellationqueue.Dequeue();
         constellationqueue.Enqueue(starttoend); //앞에걸 뒤로 밈
         SetConstellation(constellationqueue);
+        AudioManager.instance.PlaySFX(AudioManager.SFX.openClick); // 클릭시 효과음 임시
     }
     public void LeftMoveConstellation()
     {
@@ -62,10 +63,12 @@ public class ConstellationManager : MonoBehaviour
             constellationqueue.Enqueue(starttoend); //앞에걸 뒤로 밀기를 길이만큼 반복
         }
         SetConstellation(constellationqueue);
+        AudioManager.instance.PlaySFX(AudioManager.SFX.openClick); // 클릭시 효과음 임시
     }
 
     public void SendConstellation()
     {
         savedata.SetPlayerConstellation(constellationqueue.Peek().name);
+        AudioManager.instance.PlaySFX(AudioManager.SFX.openClick); // 클릭시 효과음 임시
     }
 }

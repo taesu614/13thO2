@@ -36,6 +36,7 @@ public class Roulette : MonoBehaviour
     {
         isclick = true;
         RunRoullet();
+        AudioManager.instance.PlaySFX(AudioManager.SFX.roulette); // 회전시 효과음
     }
 
     void RunRoullet()   //룰렛 코루틴 실행

@@ -14,6 +14,7 @@ public class CanvasConstellation : MonoBehaviour
     public void OpenUI()
     {
         gameObject.SetActive(true);
+        AudioManager.instance.PlaySFX(AudioManager.SFX.openClick);  // 클릭시 임시 효과음
     }
 
     public void CloseUI()
