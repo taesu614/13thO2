@@ -16,7 +16,7 @@ MonoBehaviour:
   - name: "\uB2EC\uD33D\uC774(\uC784\uC2DC)"
     grade: Low
     monsterfunctionname: Snail
-    sprite: {fileID: 21300000, guid: 64f332832e3531045bf4ce7e93fa9982, type: 3}
+    sprite: {fileID: 21300000, guid: 7340301c31d4c824aad2d98465a2520b, type: 3}
     maxhealth: 20
     health: 20
     attack: 4
@@ -25,7 +25,7 @@ MonoBehaviour:
   - name: "\uB09C\uCD08\uC0AC\uB9C8\uADC0"
     grade: Low
     monsterfunctionname: Hcoronatus
-    sprite: {fileID: 21300000, guid: 1940bcc09d206ca46aaccbdc370263cb, type: 3}
+    sprite: {fileID: 21300000, guid: fcfa1ceac5c64b742b666ba8f8706cd9, type: 3}
     maxhealth: 40
     health: 40
     attack: 4

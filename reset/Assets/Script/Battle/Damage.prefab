@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1716038184054649146}
   - component: {fileID: 2049779450636605843}
+  - component: {fileID: 6666671960646953267}
   m_Layer: 0
   m_Name: Damage
   m_TagString: Untagged
@@ -29,8 +30,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 897119780333911603}
   - {fileID: 3260266956331850311}
+  - {fileID: 897119780333911603}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -47,6 +48,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageTMP: {fileID: 1765555687514040958}
+  spriteRenderer: {fileID: 7525242669701138501}
+  speed: 0.5
+  time: 1
+--- !u!114 &6666671960646953267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3043155413948298226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16cff9a23c4fa749a85254dccf5b8c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backRenderers:
+  - {fileID: 7525242669701138501}
+  middleRenderers:
+  - {fileID: 7229204059439827610}
+  sortingLayerName: Entity
 --- !u!1 &4929727816304643138
 GameObject:
   m_ObjectHideFlags: 0
@@ -77,7 +98,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1716038184054649146}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7525242669701138501
 SpriteRenderer:
@@ -119,7 +140,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 4bd422c6e7b631848ba9e168a740fdc7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -142,6 +163,7 @@ GameObject:
   - component: {fileID: 3260266956331850311}
   - component: {fileID: 7229204059439827610}
   - component: {fileID: 1765555687514040958}
+  - component: {fileID: 2697437928437469983}
   m_Layer: 0
   m_Name: DamageTMP
   m_TagString: Untagged
@@ -162,7 +184,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1716038184054649146}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -303,3 +325,20 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 7229204059439827610}
   m_maskType: 0
+--- !u!114 &2697437928437469983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7344691097794464203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16cff9a23c4fa749a85254dccf5b8c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backRenderers:
+  - {fileID: 7525242669701138501}
+  middleRenderers:
+  - {fileID: 7525242669701138501}
+  sortingLayerName: Entity

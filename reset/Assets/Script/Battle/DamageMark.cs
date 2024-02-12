@@ -6,15 +6,19 @@ using TMPro;
 public class DamageMark : MonoBehaviour
 {
     [SerializeField] TMP_Text damageTMP;
+    [SerializeField] SpriteRenderer spriteRenderer;
     Transform transform;
     public float speed = 0.5f;
     public float time = 1.0f;
     int damage;
+    Order order;
     // Start is called before the first frame update
     void Start()
     {
         transform = GetComponent<Transform>();
         Destroy(gameObject, time);
+        order = GetComponent<Order>();
+        order.SetOrder(spriteRenderer.sortingOrder);
     }
 
     // Update is called once per frame

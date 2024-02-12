@@ -381,7 +381,8 @@ MonoBehaviour:
     active: 
     percent: 0
     selectable: 0
-    identifier: 0
+    memoryCard: 0
+    tag: 
   originPRS:
     pos: {x: 0, y: 0, z: 0}
     rot: {x: 0, y: 0, z: 0, w: 0}
@@ -803,7 +804,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9137589204108551663}
   - component: {fileID: 6665181052733976189}
-  - component: {fileID: 9215076319078836263}
+  - component: {fileID: 3376245030062961280}
   m_Layer: 0
   m_Name: Message
   m_TagString: Untagged
@@ -879,7 +880,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &9215076319078836263
+--- !u!114 &3376245030062961280
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
