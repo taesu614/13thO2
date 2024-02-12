@@ -202,6 +202,7 @@ MonoBehaviour:
   attack: 0
   maxhealth: 100
   health: 100
+  pastHealth: 0
   shield: 0
   monsterfunctionname: 
   isMine: 0
@@ -571,6 +572,7 @@ MonoBehaviour:
   attack: 0
   maxhealth: 40
   health: 0
+  pastHealth: 0
   shield: 0
   monsterfunctionname: 
   isMine: 0
@@ -4199,7 +4201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemSO: {fileID: 11400000, guid: d7aea8733362e364fbc27bc12a60f310, type: 2}
-  playermomey: 0
+  playermoney: 10
 --- !u!4 &1210407723
 Transform:
   m_ObjectHideFlags: 0
@@ -4422,6 +4424,7 @@ MonoBehaviour:
   gcostTMP: {fileID: 249373526}
   bcostTMP: {fileID: 1510336335}
   cardPrefab: {fileID: 5911291124298497492, guid: f3388334ffd7c32459327920f1e28a9a, type: 3}
+  damageMarkPrefab: {fileID: 3043155413948298226, guid: 83d8e4d4be4d22243b1884a3b284f354, type: 3}
   costManager: {fileID: 316461596}
   entityManager: {fileID: 1140018655}
 --- !u!1 &1392931684
@@ -4728,6 +4731,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardManager: {fileID: 1373493209}
+  cardfunctionmanager: {fileID: 0}
   slotParent: {fileID: 1538851639}
   cardPrefab: {fileID: 3066829457061674036, guid: f734e4b783cd9f94a8b2cb482d57f786, type: 3}
   content: {fileID: 323165140}

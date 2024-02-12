@@ -13,6 +13,7 @@ public class CardFunctionManager : MonoBehaviour
     [SerializeField] TMP_Text gcostTMP;
     [SerializeField] TMP_Text bcostTMP;
     [SerializeField] GameObject cardPrefab;  //내 코스트 X 카드에 써진 코스트 O
+    [SerializeField] GameObject damageMarkPrefab;
 
     ItemSO itemSO;
     Card card;
@@ -664,6 +665,10 @@ public class CardFunctionManager : MonoBehaviour
 
     private void NormalDamage(Entity entity, int damage)
     {
+        //이 위치에 프리팹 생성
+        GameObject myInstance = Instantiate(damageMarkPrefab, entity.transform); // 부모 지정
+        DamageMark damagemark = myInstance.GetComponent<DamageMark>();
+        damagemark.SetDamage(damage);
         if (entity.shield >= damage)
         {
             entity.shield -= damage;

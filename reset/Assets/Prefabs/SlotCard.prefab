@@ -287,17 +287,18 @@ MonoBehaviour:
     active: 
     percent: 0
     selectable: 0
-    identifier: 0
+    memoryCard: 0
+    tag: 
   items: []
   coloruiimage: {fileID: 3375604875896657904}
   costuiimage: {fileID: 1611751925384481413}
   colorimg: {fileID: 2099438411171593610}
   costcolor: {fileID: 8964257884229031829}
   nameTMP: {fileID: 2593082332858725169}
+  acitveTMP: {fileID: 0}
   functionname: 
   cardtype: 
   selectable: 0
-  identifier: 0
 --- !u!1 &6830010557033978261
 GameObject:
   m_ObjectHideFlags: 0
