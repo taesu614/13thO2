@@ -40,7 +40,7 @@ public class MapTile : MonoBehaviour
                 break;
             case '7':   //수수께끼 설정
                 SetSprite(2);
-                stagescenename = "EventProto";
+                stagescenename = "EventProto2";
                 break;
         }
     }
