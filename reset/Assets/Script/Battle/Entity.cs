@@ -42,7 +42,6 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     public Vector3 originPos;
     public int liveCount = 0;
     public bool canplay = true;
-    public bool issleep = false;
     public bool hasmask = false;
 
     private int pattern;
@@ -54,13 +53,13 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     {
         monsterPatterns["Snail"] = () => SnailPattern();
         monsterPatterns["Hcoronatus"] = () => HcoronatusPattern();
-        pattern = Random.Range(0,10);
+        pattern = Random.Range(0, 10);
         ExecutePattern(monsterfunctionname);    //isfirst¸¦ ÀÌ¿ëÇØ¼­ Ã³À½¿¡ »ç¿ëÇÒ ÆÐÅÏÀ» Á¤ÇÏ°Ô ÇØ µÒ 
     }
 
     void OnDestroy()
     {
-        TurnManager.OnTurnStarted -= OnTurnStarted;   
+        TurnManager.OnTurnStarted -= OnTurnStarted;
     }
     void OnTurnStarted(bool myTurn)
     {
@@ -71,7 +70,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         {
             liveCount++;
         }
-            
+
     }
     public void Setup(Monster monster)
     {
@@ -137,7 +136,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         if (health >= maxhealth)
             health = maxhealth;
         healthTMP.text = health.ToString();
-        hpline.transform.localScale = new Vector3(1 - (float)health/maxhealth, 0.65f, 1f);
+        hpline.transform.localScale = new Vector3(1 - (float)health / maxhealth, 0.65f, 1f);
     }
 
     public void SetShieldTMP()
@@ -181,7 +180,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
                     CardFunctionManager.Inst.Attack("player", damage, "normal", "monster");
                     break;
                 case "effect":
-                    CardFunctionManager.Inst.Poison("player", 4); 
+                    CardFunctionManager.Inst.Poison("player", 4);
                     break;
                 case "shield":
                     MakeShield(4, 1);
@@ -219,7 +218,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
 
     private void HcoronatusPattern()
     {
-        if(isfirst)
+        if (isfirst)
         {
             isfirst = false;
         }
@@ -246,8 +245,8 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
             }
         }
 
-        pattern = Random.Range(0,10);   //¸¶Áö¸· ÆÐÅÏ ¼³Á¤
-        switch(pattern)
+        pattern = Random.Range(0, 10);   //¸¶Áö¸· ÆÐÅÏ ¼³Á¤
+        switch (pattern)
         {
             case 0:
             case 1:
@@ -332,7 +331,6 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         StatusEffect newEffect = new StatusEffect();
         newEffect.SetSleep(turn);
         myStatusEffect.Add(newEffect);
-        issleep = true;
     }
 
     public void MakeImmuneSleep(int turn)   //¼ö¸é ¸é¿ª »ý¼º
@@ -370,7 +368,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     public int GetAllAttackUpEffect()   //°ø°Ý·Â Áõ°¡ È¿°ú °¡Á®¿À±â
     {
         int result = 0;
-        foreach(StatusEffect obj in myStatusEffect)
+        foreach (StatusEffect obj in myStatusEffect)
         {
             result += obj.GetAllAttackUp();
         }
@@ -386,35 +384,48 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         }
         return result;
     }
-    public bool GetSleep()  //ÀÓ½Ã¿ë
+    public bool GetSleep()  // sleepÀÎÁö ¾Æ´ÑÁö, immunesleepÀÎÁö ¾Æ´ÑÁö Ã¼Å©
+    {
+        foreach (StatusEffect obj in myStatusEffect)
         {
-            int sleep = Random.Range(0, 10);    //0~9ÀÇ ³­¼ö
-            foreach (StatusEffect obj in myStatusEffect)
+            if (obj.GetImmuneSleep())
             {
-                if (obj.GetImmuneSleep())
-                {
-                    Debug.Log("I can't sleep");
-                    sleep = 100;
-                    break;
-                }
+                Debug.Log("I can't sleep");
+                break;
             }
-            Debug.Log(sleep);
-            if (sleep < 7)   //0,1,2,3,4,5,6 = 70% = ½ÇÆÐ
+        }
+        foreach (StatusEffect obj in myStatusEffect)
+        {
+            if (obj.GetSleep())
             {
                 Debug.Log("I sleep");
                 return true;
             }
-            Debug.Log("I don't sleep");
-            return false;
         }
+        Debug.Log("not sleep");
+        return false;
+    }
+    public void SetSleep(bool onoff)  // StatusEffect Å¬·¡½º¿¡¼­ ¸ðµÎ Ã¼Å©ÇÏ·Á°í ÇÏ´Ù°¡ ºÎµæÀÌÇÏ°Ô ÂüÁ¶¸¦ À§ÇØ ¸¸µé¾ú½À´Ï´Ù.
+    {
+        foreach (StatusEffect obj in myStatusEffect)
+        {
+            obj.SetIsSleep(onoff);
+        }
+    }
     public void GetAllCC()
     {
         foreach (StatusEffect obj in myStatusEffect)
         {
-            if(obj.GetSleep())
+            if (obj.GetSleep())
             {
                 Debug.Log("You are sleep");
                 canplay = false;
+                break;
+            }
+            else
+            {
+                canplay = true;
+                obj.SetEffectTurn(0);
                 break;
             }
         }
@@ -422,7 +433,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
 
     public void CheckEffect()
     {
-        for(int i = myStatusEffect.Count - 1; i >= 0; i--)  //¹Ýµå½Ã ¿ª¼øÀ¸·Î Áö¿ï °Í 
+        for (int i = myStatusEffect.Count - 1; i >= 0; i--)  //¹Ýµå½Ã ¿ª¼øÀ¸·Î Áö¿ï °Í 
         {
             Debug.Log(myStatusEffect[i].CheckDamageEffect());
             if (myStatusEffect[i].CheckDamageEffect().Item1)  //Áö¼ÓÇÇÇØ È¿°ú ¿©ºÎ
@@ -431,7 +442,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
                 SetHealthTMP();
             }
             myStatusEffect[i].DecreaseEffectTurn();
-            if(myStatusEffect[i].GetEffectTurn() <= 0)
+            if (myStatusEffect[i].GetEffectTurn() <= 0)
             {
                 myStatusEffect.RemoveAt(i);
             }
@@ -440,7 +451,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
 
     public bool CheckBlockHeal()
     {
-        foreach(StatusEffect A in myStatusEffect)
+        foreach (StatusEffect A in myStatusEffect)
         {
             if (A.GetHealBlock())
                 return true;
@@ -517,7 +528,7 @@ class StatusEffect  //½ºÅÃ Çü½ÄÀÇ È¿°ú´Â ¾ø¾Ø »óÅÂÀÓ
 
     public bool GetFaint()  //ÇØ´ç À§Ä¡¿¡¼­ ¼ö¸é ¸é¿ª Ã¼Å©
     {
-        if(isfaint)
+        if (isfaint)
         {
             return true;
         }
@@ -532,9 +543,14 @@ class StatusEffect  //½ºÅÃ Çü½ÄÀÇ È¿°ú´Â ¾ø¾Ø »óÅÂÀÓ
         issleep = true;
     }
 
+    public void SetIsSleep(bool onoff)  // issleep Ã¼Å©
+    {
+        issleep = onoff;
+    }
+
     public bool GetSleep()  //»ç¿ëÇÒ ¶§ canplay¸¦ ¹Ù·Î ¼³Á¤ÇÔ
     {
-        if(issleep)
+        if (issleep)
         {
             return true;
         }
@@ -547,7 +563,7 @@ class StatusEffect  //½ºÅÃ Çü½ÄÀÇ È¿°ú´Â ¾ø¾Ø »óÅÂÀÓ
         isimmunesleep = true;
     }
 
-    public bool GetImmuneSleep()    
+    public bool GetImmuneSleep()
     {
         if (isimmunesleep)
         {
@@ -580,7 +596,7 @@ class StatusEffect  //½ºÅÃ Çü½ÄÀÇ È¿°ú´Â ¾ø¾Ø »óÅÂÀÓ
     public void SetHealBlock(int turn)
     {
         effectturn = turn;
-        canheal = false ;
+        canheal = false;
     }
 
     public bool GetHealBlock()
@@ -596,6 +612,10 @@ class StatusEffect  //½ºÅÃ Çü½ÄÀÇ È¿°ú´Â ¾ø¾Ø »óÅÂÀÓ
         effectname = "healturn";
     }
     #endregion
+
+    #region BaronetsNap
+
+    #endregion
     public void DecreaseEffectTurn()
     {
         effectturn--;
@@ -606,12 +626,17 @@ class StatusEffect  //½ºÅÃ Çü½ÄÀÇ È¿°ú´Â ¾ø¾Ø »óÅÂÀÓ
         return effectturn;
     }
 
+    public void SetEffectTurn(int turn)
+    {
+        effectturn = turn;
+    }
+
     public (bool, int) CheckDamageEffect()
     {
-        switch(effectname)
+        switch (effectname)
         {
             case "poison":
-                return (true, effectturn);    
+                return (true, effectturn);
             case "burn":
                 return (true, effectamount);
             case "healturn":

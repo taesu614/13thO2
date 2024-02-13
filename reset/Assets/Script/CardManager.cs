@@ -463,16 +463,14 @@ public class CardManager : MonoBehaviour
                     }
                     if (isObjectin) //본격적인 카드 기능 실행, false라면 실행되지 않으므로 카드 사용 안됨
                     {
-                        if(player.issleep)  //수면 상태에서 
-                        {
-                            if(player.GetSleep())   //수면 효과까지 발동하여 참이 됐다면
-                            {
+                        if(player.GetSleep())   //수면 효과까지 발동하여 참이 됐다면
+                            { 
                                 CostManager.Inst.SubtractCost(selectCard);
                                 CostManager.Inst.ShowCost();
                                 IntrusionConditionCheck();
                                 TryPutCard(true);
                             }
-                            else
+                        else
                             {
                                 CostManager.Inst.SubtractCost(selectCard);
                                 CostManager.Inst.ShowCost();
@@ -481,19 +479,8 @@ public class CardManager : MonoBehaviour
                                 EntityManager.Inst.FindDieEntity();
                                 TryPutCard(true);
                             }
-                        }
-                        else
-                        {
-                            CostManager.Inst.SubtractCost(selectCard);
-                            CostManager.Inst.ShowCost();
-                            UseCard();
-                            IntrusionConditionCheck();
-                            EntityManager.Inst.FindDieEntity();
-                            TryPutCard(true);
-                        }
 
                     }
-
                 }
             }
         }

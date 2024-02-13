@@ -110,7 +110,7 @@ public class CardFunctionManager : MonoBehaviour
 
     private void TestSleep()    //플레이어 수면 
     {
-        Sleep("anything", 3);
+        Sleep("anything", 2);
     }
 
     private void TestImmuneSleep()  //플레이어 수면 면역
@@ -197,7 +197,7 @@ public class CardFunctionManager : MonoBehaviour
     private void WowIdea()  //반짝 아이디어
     {
         int cost = int.Parse(costTMP.text);
-        cost+=2;
+        cost += 2;
         if (cost > 10)
             cost = 10;
         costManager.CostSetNewCost(cost);
@@ -236,7 +236,7 @@ public class CardFunctionManager : MonoBehaviour
     private void Firefestival()  // 화상 거는 대상이 내가 직접 지정한 대상인지 아님 공격받는 전부인지 몰라서 일단 전체 대상으로 만들었습니다.
     {
         int randNumDmg;
-        int randNum; 
+        int randNum;
 
         // 각 개체에 확률 적용을 따로 하기 위해 만들었습니다  (Success, fail (숫자) == 왼쪽부터 세서 몬스터 위치(0 ~ 2))
         FindPlayer();
@@ -317,9 +317,9 @@ public class CardFunctionManager : MonoBehaviour
     //버프가 아닌 모든 메서드의 넘길 매개변수는
     //타겟, 수치, 지속시간(혹은 횟수), 기타 내용들 순서
     public void Attack(string targetcount, int damage, string type, string user = "player")   //대상에게 피해를 n 줍니다
-    {                  
+    {
         FindPlayer();      //기본적인 계산                                              //targetcount(anything: 단일 아무나, enemy:적, player: 플레이어, all:전체, enemyall: 적 전체 
-        if(user == "player")    //몬스터에게도 사용되므로 기준이 플레이어야 몬스터냐에 따라 달라질 것
+        if (user == "player")    //몬스터에게도 사용되므로 기준이 플레이어야 몬스터냐에 따라 달라질 것
         {
             damage += player.GetAllAttackUpEffect();                        //damage(피해량)모든 공격력 증가 효과 가져와서 적용
             damage -= player.GetAllAttackDownEffect();                      //type (normal: 통상 공격, piercing: 관통 공격(보호막에 관계없이 체력에 직접적으로 공격))
@@ -332,6 +332,7 @@ public class CardFunctionManager : MonoBehaviour
                 switch (targetcount)
                 {
                     case "anything":
+                        Debug.Log(target);
                         NormalDamage(target, damage);
                         target.SetHealthTMP();
                         target.SetShieldTMP();
@@ -362,11 +363,15 @@ public class CardFunctionManager : MonoBehaviour
                     case "anything":
                         target.health -= damage;
                         target.SetHealthTMP();
+                        if (target.GetSleep())
+                            target.SetSleep(false);
                         //target.GetComponents<Entity>();
                         break;
                     case "player":
                         player.health -= damage;
                         player.SetHealthTMP();
+                        if (player.GetSleep())
+                            player.SetSleep(false);
                         break;
                     case "all":
                         FindAllMonster();
@@ -374,9 +379,13 @@ public class CardFunctionManager : MonoBehaviour
                         {
                             nowmonster.health -= damage;
                             nowmonster.SetHealthTMP();
+                            if (nowmonster.GetSleep())
+                                nowmonster.SetSleep(false);
                         }
                         player.health -= damage;    //플레이어 관련도 넣긴함
                         player.SetHealthTMP();
+                        if (player.GetSleep())
+                            player.SetSleep(false);
                         break;
                     case "enemyall":
                         FindAllMonster();
@@ -384,6 +393,8 @@ public class CardFunctionManager : MonoBehaviour
                         {
                             nowmonster.health -= damage;
                             nowmonster.SetHealthTMP();
+                            if (nowmonster.GetSleep())
+                                nowmonster.SetSleep(false);
                         }
                         break;
                 }
@@ -469,7 +480,7 @@ public class CardFunctionManager : MonoBehaviour
 
     public void Faint(string targetcount, int turn)
     {
-        switch (targetcount)            
+        switch (targetcount)
         {
             case "anything":
                 target.MakeFaint(turn);
@@ -504,6 +515,7 @@ public class CardFunctionManager : MonoBehaviour
         switch (targetcount)
         {
             case "anything":
+                Debug.Log(target);
                 target.MakeSleep(turn);
                 break;
             case "enemy":
@@ -533,7 +545,7 @@ public class CardFunctionManager : MonoBehaviour
 
     public void CheckSleepAttack(Entity entity)  // sleep상태인 entity가 공격받았는지 체크하는 메소드
     {
-        
+
     }
     public void ImmuneSleep(string targetcount, int turn)
     {
@@ -651,7 +663,7 @@ public class CardFunctionManager : MonoBehaviour
     {
         findmonsters = GameObject.FindGameObjectsWithTag("Monster");
         monsters = new Entity[findmonsters.Length];
-        for(int i = 0; i < findmonsters.Length; i++)
+        for (int i = 0; i < findmonsters.Length; i++)
         {
             monsters[i] = findmonsters[i].GetComponent<Entity>();
         }
@@ -665,7 +677,6 @@ public class CardFunctionManager : MonoBehaviour
 
     private void NormalDamage(Entity entity, int damage)
     {
-        //이 위치에 프리팹 생성
         GameObject myInstance = Instantiate(damageMarkPrefab, entity.transform); // 부모 지정
         DamageMark damagemark = myInstance.GetComponent<DamageMark>();
         damagemark.SetDamage(damage);
@@ -681,9 +692,9 @@ public class CardFunctionManager : MonoBehaviour
             entity.shield = 0;
             entity.SetHealthTMP();
             entity.SetShieldTMP();
-            if (entity.issleep)  // 수면 상태일 때 체력 변동시 
+            if (entity.GetSleep())  // 수면 상태일 때 체력 변동시 
             {
-                entity.issleep = false;
+                entity.SetSleep(false);
             }
         }
     }
