@@ -192,9 +192,9 @@ public class CostManager : MonoBehaviour
                     if (CompareRGB(conname, rcost, gcost, bcost))
                     {
                         SpawnMask(conname);
-                        playerentityscript.MakeAttackUp(3, 9999);
-                        playerentityscript.MakeShield(5, 3);
-                        playerentityscript.MakeImmuneSleep(3);
+                        playerentityscript.SetStatusEffect("powerUp", 3, 3);
+                        playerentityscript.SetStatusEffect("shield", 3, 5);
+                        playerentityscript.SetStatusEffect("immuneSleep", 3);
                         playerentityscript.hasmask = true;
                     }
                     break;
@@ -208,14 +208,14 @@ public class CostManager : MonoBehaviour
                     if (CompareRGB(conname, rcost, gcost, bcost))
                     {
                         //playerentityscript.MakeAttackUp(0, 9999);
-                        playerentityscript.MakeShield(30, 3);
+                        playerentityscript.SetStatusEffect("shield", 3, 30);
                         SpawnMask(conname);
                     }
                     break;
                 case "Sagittarius":
                     if (CompareRGB(conname, rcost, gcost, bcost))
                     {
-                        playerentityscript.MakeAttackUp(7, 9999);
+                        playerentityscript.SetStatusEffect("powerUp", 3, 7);
                         //playerentityscript.MakeShield(5, 3);
                         SpawnMask(conname);
                     }

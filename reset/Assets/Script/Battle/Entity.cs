@@ -21,7 +21,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     [SerializeField] Sprite EffectUI;
     [SerializeField] Sprite WhatUI;
 
-    List<StatusEffect> myStatusEffect = new List<StatusEffect>();
+    List<StatusEffect> myStatusEffect = new List<StatusEffect>();    //¹æ¹ý ¸øÃ£¾Æ¼­ public »ç¿ëÇÔ 
     public Monster monster;
     public int attack;
     public int maxhealth = 40;
@@ -139,8 +139,14 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         hpline.transform.localScale = new Vector3(1 - (float)health / maxhealth, 0.65f, 1f);
     }
 
-    public void SetShieldTMP()
+    public void SetShieldTMP()  //½¯µå´Â ÇØ´ç ¿£Æ¼Æ¼°¡ °¡Áø myStatusEffectÀÇ ½¯µå°ªÀ» ´õÇØ¼­ Ç¥±âÇÔ
     {
+        shield = 0;
+        foreach(StatusEffect A in myStatusEffect)
+        {
+            if (A.CheckShield())
+                shield += A.GetShield();
+        }
         shieldTMP.text = shield.ToString();
     }
     public int GetLiveCount()
@@ -183,7 +189,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
                     CardFunctionManager.Inst.Poison("player", 4);
                     break;
                 case "shield":
-                    MakeShield(4, 1);
+                    SetStatusEffect("shield", 2, 4);
                     break;
                 default:
                     break;
@@ -234,10 +240,10 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
                     CardFunctionManager.Inst.Attack("player", damage, "normal", "monster");
                     break;
                 case "effect":
-                    MakeAttackUp(2, 2);
+                    SetStatusEffect("powerUp", 2, 2);
                     break;
                 case "shield":
-                    MakeShield(10, 1);
+                    SetStatusEffect("shield", 2, 10);
                     Debug.Log("This monster make Shield");
                     break;
                 default:
@@ -291,78 +297,20 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     #endregion
 
     #region MakeEffect  //ÀÛµ¿¹æ½Ä °ÅÀÇ µ¿ÀÏÇÔ
-    public void MakeAttackUp(int damage, int count)
+
+    public void SetStatusEffect(string name, int turn, int amount = -1)
     {
-        Debug.Log("Effect - Attack Up");
+        Debug.Log("Effect - " + name);
         StatusEffect newEffect = new StatusEffect();
-        newEffect.SetPowerUp(damage, count);
+        newEffect.SetStatusEffect(name, turn, amount);
         myStatusEffect.Add(newEffect);
-    }
+        if(name == "sleep" || name == "faint")
+        {
+            GetAllCC(); //±ºÁßÁ¦¾îÈ¿°ú¸¦ ÀÚ½Å¿¡°Ô »ç¿ëÇÒ ¶§ ¹Ù·Î È¿°ú Àû¿ëÇÏ°Ô ÇÏ´Â ¿ëµµ
+        }
+        if (name == "shield")
+            SetShieldTMP();
 
-    public void MakeAttackDown(int damage, int count)
-    {
-        Debug.Log("Effect - Attack Down");
-        StatusEffect newEffect = new StatusEffect();
-        newEffect.SetPowerDown(damage, count);
-        myStatusEffect.Add(newEffect);
-    }
-
-    public void MakeShield(int amount, int turn)
-    {
-        Debug.Log("Effect - Shield");
-        StatusEffect newEffect = new StatusEffect();
-        newEffect.SetShield(amount, turn);
-        myStatusEffect.Add(newEffect);
-        shield += amount;
-        SetShieldTMP();
-    }
-
-    public void MakeFaint(int turn) //±âÀý »ý¼º
-    {
-        Debug.Log("Effect - Faint");
-        StatusEffect newEffect = new StatusEffect();
-        newEffect.SetFaint(turn);
-        myStatusEffect.Add(newEffect);
-    }
-
-    public void MakeSleep(int turn) //¼ö¸é »ý¼º
-    {
-        Debug.Log("Effect - Sleep");
-        StatusEffect newEffect = new StatusEffect();
-        newEffect.SetSleep(turn);
-        myStatusEffect.Add(newEffect);
-    }
-
-    public void MakeImmuneSleep(int turn)   //¼ö¸é ¸é¿ª »ý¼º
-    {
-        Debug.Log("Effect - Immnue Sleep");
-        StatusEffect newEffect = new StatusEffect();
-        newEffect.SetImmuneSleep(turn);
-        myStatusEffect.Add(newEffect);
-    }
-
-    public void MakePoison(int turn)
-    {
-        Debug.Log("Effect - Poison");
-        StatusEffect neweffect = new StatusEffect();
-        neweffect.SetPoison(turn);
-        myStatusEffect.Add(neweffect);
-    }
-
-    public void MakeBurn(int damage, int turn)
-    {
-        Debug.Log("Effect - Burn");
-        StatusEffect neweffect = new StatusEffect();
-        neweffect.SetBurn(damage, turn);
-        myStatusEffect.Add(neweffect);
-    }
-
-    public void MakeHealTurn(int turn)
-    {
-        Debug.Log("Effect - HealTurn");
-        StatusEffect neweffect = new StatusEffect();
-        neweffect.SetHealTurn(turn);
-        myStatusEffect.Add(neweffect);
     }
     #endregion
     public int GetAllAttackUpEffect()   //°ø°Ý·Â Áõ°¡ È¿°ú °¡Á®¿À±â
@@ -388,21 +336,13 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     {
         foreach (StatusEffect obj in myStatusEffect)
         {
-            if (obj.GetImmuneSleep())
-            {
-                Debug.Log("I can't sleep");
-                break;
-            }
-        }
-        foreach (StatusEffect obj in myStatusEffect)
-        {
             if (obj.GetSleep())
             {
                 Debug.Log("I sleep");
                 return true;
             }
         }
-        Debug.Log("not sleep");
+
         return false;
     }
     public void SetSleep(bool onoff)  // StatusEffect Å¬·¡½º¿¡¼­ ¸ðµÎ Ã¼Å©ÇÏ·Á°í ÇÏ´Ù°¡ ºÎµæÀÌÇÏ°Ô ÂüÁ¶¸¦ À§ÇØ ¸¸µé¾ú½À´Ï´Ù.
@@ -416,7 +356,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     {
         foreach (StatusEffect obj in myStatusEffect)
         {
-            if (obj.GetSleep())
+            if (obj.GetSleep() || obj.GetFaint())
             {
                 Debug.Log("You are sleep");
                 canplay = false;
@@ -425,28 +365,76 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
             else
             {
                 canplay = true;
-                obj.SetEffectTurn(0);
                 break;
             }
         }
     }
-
+    public void RemoveEffect(string name)
+    {
+        for(int i = myStatusEffect.Count - 1; i >= 0; i--)
+        {
+            if(name == "sleep") //°ø°Ý¹Þ¾ÒÀ»¶§ ¸ðµç ¼ö¸é È¿°ú Á¦°ÅÇÏ´Â ¿ëµµ
+            {
+                myStatusEffect.RemoveAt(i);
+                Debug.Log(myStatusEffect.Count);
+                continue;
+            }
+            if (name == "beneficial")
+            {
+                myStatusEffect.RemoveAt(i);
+                break;
+            }
+            else if(name == "harmful")
+            {
+                myStatusEffect.RemoveAt(i);
+            }
+        }
+    }
     public void CheckEffect()
     {
+        Debug.Log(myStatusEffect.Count);
         for (int i = myStatusEffect.Count - 1; i >= 0; i--)  //¹Ýµå½Ã ¿ª¼øÀ¸·Î Áö¿ï °Í 
-        {
-            Debug.Log(myStatusEffect[i].CheckDamageEffect());
+        {                                                    //¸ÅÄ¿´ÏÁò º¯°æ °¡´É¼º ÀÖÀ½
             if (myStatusEffect[i].CheckDamageEffect().Item1)  //Áö¼ÓÇÇÇØ È¿°ú ¿©ºÎ
             {
                 health -= myStatusEffect[i].CheckDamageEffect().Item2;
+                CardFunctionManager.Inst.MakeDamageMark(this, myStatusEffect[i].CheckDamageEffect().Item2);
                 SetHealthTMP();
             }
             myStatusEffect[i].DecreaseEffectTurn();
             if (myStatusEffect[i].GetEffectTurn() <= 0)
             {
                 myStatusEffect.RemoveAt(i);
+                SetShieldTMP(); //½¯µå »ç¶óÁ³´ÂÁö È®ÀÎÇØ¾ßÇÔ
             }
         }
+    }
+
+    public void CheckShield()   //½¯µå 0ÀÌ¸é »èÁ¦ ÇÏ´Â ±â´É
+    {
+        for (int i = myStatusEffect.Count - 1; i >= 0; i--)  //¹Ýµå½Ã ¿ª¼øÀ¸·Î Áö¿ï °Í 
+        {                                                   //¸ÅÄ¿´ÏÁò º¯°æ °¡´É¼º ÀÖÀ½
+            if (myStatusEffect[i].CheckShield() && myStatusEffect[i].GetShield() <= 0)
+            {
+                myStatusEffect.RemoveAt(i);
+            }
+        }
+        SetShieldTMP(); //½¯µå »ç¶óÁ³´ÂÁö È®ÀÎÇØ¾ßÇÔ
+    }
+
+    public int CalculateShiled(int damage)
+    {
+        foreach (StatusEffect A in myStatusEffect)
+        {
+            if (A.CheckShield())
+            {
+                damage = A.CalculateShiled(damage);
+                if (damage <= 0)    //´ë¹ÌÁö 0ÀÌ¸é ±»ÀÌ ·çÇÁ µ¹¸± ÀÌÀ¯ ¾øÀ½
+                    break;
+            }
+        }
+        CheckShield();
+        return damage;
     }
 
     public bool CheckBlockHeal()
@@ -457,194 +445,5 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
                 return true;
         }
         return false;
-    }
-}
-
-class StatusEffect  //½ºÅÃ Çü½ÄÀÇ È¿°ú´Â ¾ø¾Ø »óÅÂÀÓ
-{
-    bool ispowerUp = false;
-    bool ispowerDown = false;
-    bool isshield = false;   //½¯µå Á¸Àç ¿©ºÎ
-    bool isfaint = false;    //±âÀý Á¸Àç ¿©ºÎ
-    bool issleep = false;    //¼ö¸é Á¸Àç ¿©ºÎ
-    bool isdamageeffect = false;    //ÇÇÇØ¸¦ ÁÖ´ÂÁö ¿©ºÎ
-    bool isimmunesleep = false;
-    bool canheal = true;
-    int effectamount = 0;    //È¿°úÀÇ ¾ç
-    int effectturn = 0;    //Áö¼Ó ÅÏ ¼ö
-    string effectname;
-    #region PowerUp
-    public void SetPowerUp(int amount, int turn)
-    {
-        effectamount = amount;
-        effectturn = turn;
-        ispowerUp = true;
-        effectname = "powerup";
-    }
-
-    public int GetAllAttackUp()
-    {
-        if (ispowerUp)
-        {
-            return effectamount;
-        }
-        return 0;
-    }
-    #endregion
-
-    #region PowerDown
-    public void SetPowerDown(int amount, int turn)
-    {
-        effectamount = amount;
-        effectturn = turn;
-        ispowerDown = true;
-    }
-
-    public int GetAllAttackDown()
-    {
-        if (ispowerDown)
-        {
-            return effectamount;
-        }
-        return 0;
-    }
-    #endregion
-
-    #region Shield
-    public void SetShield(int amount, int turn)
-    {
-        effectamount = amount;
-        effectturn = turn;
-        isshield = true;
-    }
-    #endregion
-
-    #region Faint
-    public void SetFaint(int turn)  //¼ö¸é »ý¼º
-    {
-        effectturn = turn;
-        isfaint = true;
-    }
-
-    public bool GetFaint()  //ÇØ´ç À§Ä¡¿¡¼­ ¼ö¸é ¸é¿ª Ã¼Å©
-    {
-        if (isfaint)
-        {
-            return true;
-        }
-        return false;
-    }
-    #endregion
-
-    #region Sleep
-    public void SetSleep(int turn)
-    {
-        effectturn = turn;
-        issleep = true;
-    }
-
-    public void SetIsSleep(bool onoff)  // issleep Ã¼Å©
-    {
-        issleep = onoff;
-    }
-
-    public bool GetSleep()  //»ç¿ëÇÒ ¶§ canplay¸¦ ¹Ù·Î ¼³Á¤ÇÔ
-    {
-        if (issleep)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    public void SetImmuneSleep(int turn)
-    {
-        effectturn = turn;
-        isimmunesleep = true;
-    }
-
-    public bool GetImmuneSleep()
-    {
-        if (isimmunesleep)
-        {
-            Debug.Log(isimmunesleep);
-            return true;
-        }
-        return false;
-    }
-    #endregion
-
-    #region Poison
-    public void SetPoison(int turn)
-    {
-        effectturn = turn;
-        isdamageeffect = true;
-    }
-    #endregion
-
-    #region Burn
-    public void SetBurn(int damage, int turn)
-    {
-        effectturn = turn;
-        effectamount = damage;
-        canheal = false;    //ÀÌ°Ô ÀÖ¾î¾ß È¸º¹ ºÒ°¡´É Ãß°¡ °¡´ÉÇÔ
-        effectname = "burn";
-    }
-    #endregion
-
-    #region HealBlock
-    public void SetHealBlock(int turn)
-    {
-        effectturn = turn;
-        canheal = false;
-    }
-
-    public bool GetHealBlock()
-    {
-        return canheal;
-    }
-    #endregion
-
-    #region HealTurn
-    public void SetHealTurn(int turn)
-    {
-        effectturn = turn;
-        effectname = "healturn";
-    }
-    #endregion
-
-    #region BaronetsNap
-
-    #endregion
-    public void DecreaseEffectTurn()
-    {
-        effectturn--;
-    }
-
-    public int GetEffectTurn()
-    {
-        return effectturn;
-    }
-
-    public void SetEffectTurn(int turn)
-    {
-        effectturn = turn;
-    }
-
-    public (bool, int) CheckDamageEffect()
-    {
-        switch (effectname)
-        {
-            case "poison":
-                return (true, effectturn);
-            case "burn":
-                return (true, effectamount);
-            case "healturn":
-                if (!canheal)   //È¸º¹ ºÒ°¡¶ó¸é 0 È¸º¹
-                    return (true, 0);
-                return (true, -effectturn);   //ÈúÀÌ¶ó¼­ ´ë¹ÌÁö¿Í ¹Ý´ë 
-            default:
-                return (false, 0);
-        }
     }
 }

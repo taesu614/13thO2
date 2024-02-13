@@ -81,21 +81,21 @@ public class CardFunctionManager : MonoBehaviour
     private void TestBuffAttackUp() //버프 테스트용 카드
     {
         FindPlayer();   //플레이어 찾기
-        player.MakeAttackUp(5, 2);    //엔티티에서 버프 리스트 생성
+        player.SetStatusEffect("powerUp", 2, 5); ;    //엔티티에서 버프 리스트 생성
         Debug.Log("버프 생성");
     }
 
     private void TestBuffAttackDown() //버프 테스트용 카드
     {
         FindPlayer();   //플레이어 찾기
-        player.MakeAttackDown(3, 2);    //엔티티에서 버프 리스트 생성
+        player.SetStatusEffect("powerDown", 2, 3);   //엔티티에서 버프 리스트 생성
         Debug.Log("버프 생성");
     }
 
     private void TestBuffShield()
     {
         FindPlayer();
-        player.MakeShield(10, 5);
+        player.SetStatusEffect("shield", 10, 5);
     }   //쉴드는 시간날때 한번 전체적으로 봐봐야함 버프 -> 지속효과로 바꿔야할수도
 
     private void TestAttack()   //선택한 대상에게 피해를 5 줍니다
@@ -110,7 +110,7 @@ public class CardFunctionManager : MonoBehaviour
 
     private void TestSleep()    //플레이어 수면 
     {
-        Sleep("anything", 2);
+        Sleep("anything", 10);
     }
 
     private void TestImmuneSleep()  //플레이어 수면 면역
@@ -125,7 +125,7 @@ public class CardFunctionManager : MonoBehaviour
 
     private void TestBurn() //화상
     {
-        Burn("anything", 6, 3);
+        Burn("anything", 3, 6);
     }
 
     private void TestHeal() //회복
@@ -223,7 +223,7 @@ public class CardFunctionManager : MonoBehaviour
     private void Layer()    //레이어   - 쉴드 관련이라 쉴드 수정할 때 같이 수정할 것
     {
         FindPlayer();
-        player.MakeShield(5, 1);
+        player.SetStatusEffect("shield", 5, 2);
     }
 
     private void Woodrill()     //딱다드구릴 - 쉴드 관련이라 쉴드 수정할 때 같이 수정할 것 
@@ -254,7 +254,7 @@ public class CardFunctionManager : MonoBehaviour
             }
             if (randNum == 1)
             {
-                A.MakeBurn(6, 1);
+                A.SetStatusEffect("burn", 2, 6);    //2턴으로 임의 설정함
             }
         }
 
@@ -266,7 +266,7 @@ public class CardFunctionManager : MonoBehaviour
         }
         if (randNum == 1)
         {
-            player.MakeBurn(6, 1);
+            player.SetStatusEffect("burn", 2, 6);
         }
         ResetTarget();
     }
@@ -361,40 +361,24 @@ public class CardFunctionManager : MonoBehaviour
                 switch (targetcount)
                 {
                     case "anything":
-                        target.health -= damage;
-                        target.SetHealthTMP();
-                        if (target.GetSleep())
-                            target.SetSleep(false);
-                        //target.GetComponents<Entity>();
+                        PiercingDamage(target, damage);
                         break;
                     case "player":
-                        player.health -= damage;
-                        player.SetHealthTMP();
-                        if (player.GetSleep())
-                            player.SetSleep(false);
+                        PiercingDamage(player, damage);
                         break;
                     case "all":
                         FindAllMonster();
                         foreach (Entity nowmonster in monsters)
                         {
-                            nowmonster.health -= damage;
-                            nowmonster.SetHealthTMP();
-                            if (nowmonster.GetSleep())
-                                nowmonster.SetSleep(false);
+                            PiercingDamage(nowmonster, damage);
                         }
-                        player.health -= damage;    //플레이어 관련도 넣긴함
-                        player.SetHealthTMP();
-                        if (player.GetSleep())
-                            player.SetSleep(false);
+                        PiercingDamage(player, damage);
                         break;
                     case "enemyall":
                         FindAllMonster();
                         foreach (Entity nowmonster in monsters)
                         {
-                            nowmonster.health -= damage;
-                            nowmonster.SetHealthTMP();
-                            if (nowmonster.GetSleep())
-                                nowmonster.SetSleep(false);
+                            PiercingDamage(nowmonster, damage);
                         }
                         break;
                 }
@@ -453,26 +437,26 @@ public class CardFunctionManager : MonoBehaviour
         switch (targetcount)
         {
             case "anything":
-                target.MakeHealTurn(turn);
+                target.SetStatusEffect("healTurn", turn);
                 break;
             case "enemy":
                 break;
             case "player":
                 FindPlayer();
-                player.MakeFaint(turn);
+                player.SetStatusEffect("healTurn", turn);
                 break;
             case "all":
                 FindAllMonster();
                 foreach (Entity nowmonster in monsters)
                 {
-                    nowmonster.MakeHealTurn(turn);
+                    nowmonster.SetStatusEffect("healTurn", turn);
                 }
                 break;
             case "enemyall":
                 FindAllMonster();
                 foreach (Entity nowmonster in monsters)
                 {
-                    nowmonster.MakeHealTurn(turn);
+                    nowmonster.SetStatusEffect("healTurn", turn);
                 }
                 break;
         }
@@ -483,28 +467,28 @@ public class CardFunctionManager : MonoBehaviour
         switch (targetcount)
         {
             case "anything":
-                target.MakeFaint(turn);
+                target.SetStatusEffect("faint", turn);
                 break;
             case "enemy":
                 break;
             case "player":
                 FindPlayer();
-                player.MakeFaint(turn);
+                player.SetStatusEffect("faint", turn);
                 break;
             case "all":
                 FindAllMonster();
                 foreach (Entity nowmonster in monsters)
                 {
-                    nowmonster.MakeFaint(turn);
+                    nowmonster.SetStatusEffect("faint", turn);
                 }
                 FindPlayer();
-                player.MakeFaint(turn);
+                player.SetStatusEffect("faint", turn);
                 break;
             case "enemyall":
                 FindAllMonster();
                 foreach (Entity nowmonster in monsters)
                 {
-                    nowmonster.MakeFaint(turn);
+                    nowmonster.SetStatusEffect("faint", turn);
                 }
                 break;
         }
@@ -516,28 +500,28 @@ public class CardFunctionManager : MonoBehaviour
         {
             case "anything":
                 Debug.Log(target);
-                target.MakeSleep(turn);
+                target.SetStatusEffect("sleep", turn);
                 break;
             case "enemy":
                 break;
             case "player":
                 FindPlayer();
-                player.MakeSleep(turn);
+                player.SetStatusEffect("sleep", turn);
                 break;
             case "all":
                 FindAllMonster();
                 foreach (Entity nowmonster in monsters)
                 {
-                    nowmonster.MakeSleep(turn);
+                    nowmonster.SetStatusEffect("sleep", turn);
                 }
                 FindPlayer();
-                player.MakeSleep(turn);
+                player.SetStatusEffect("sleep", turn);
                 break;
             case "enemyall":
                 FindAllMonster();
                 foreach (Entity nowmonster in monsters)
                 {
-                    nowmonster.MakeSleep(turn);
+                    nowmonster.SetStatusEffect("sleep", turn);
                 }
                 break;
         }
@@ -553,28 +537,28 @@ public class CardFunctionManager : MonoBehaviour
         {
             case "anything":
                 Debug.Log(target);
-                target.MakeImmuneSleep(turn);
+                target.SetStatusEffect("immuneSleep", 3);
                 break;
             case "enemy":
                 break;
             case "player":
                 FindPlayer();
-                player.MakeImmuneSleep(turn);
+                player.SetStatusEffect("immuneSleep", 3);
                 break;
             case "all":
                 FindAllMonster();
                 foreach (Entity nowmonster in monsters)
                 {
-                    nowmonster.MakeImmuneSleep(turn);
+                    nowmonster.SetStatusEffect("immuneSleep", 3);
                 }
                 FindPlayer();
-                player.MakeImmuneSleep(turn);
+                player.SetStatusEffect("immuneSleep", 3);
                 break;
             case "enemyall":
                 FindAllMonster();
                 foreach (Entity nowmonster in monsters)
                 {
-                    nowmonster.MakeImmuneSleep(turn);
+                    nowmonster.SetStatusEffect("immuneSleep", 3);
                 }
                 break;
         }
@@ -586,61 +570,61 @@ public class CardFunctionManager : MonoBehaviour
         {
             case "anything":
                 Debug.Log(target);
-                target.MakePoison(turn);
+                target.SetStatusEffect("poison", turn);
                 break;
             case "enemy":
                 break;
             case "player":
                 FindPlayer();
-                player.MakePoison(turn);
+                player.SetStatusEffect("poison", turn);
                 break;
             case "all":
                 FindAllMonster();
                 foreach (Entity nowmonster in monsters)
                 {
-                    nowmonster.MakePoison(turn);
+                    nowmonster.SetStatusEffect("poison", turn);
                 }
                 FindPlayer();
-                player.MakePoison(turn);
+                player.SetStatusEffect("poison", turn);
                 break;
             case "enemyall":
                 FindAllMonster();
                 foreach (Entity nowmonster in monsters)
                 {
-                    nowmonster.MakePoison(turn);
+                    nowmonster.SetStatusEffect("poison", turn);
                 }
                 break;
         }
     }
 
-    public void Burn(string targetcount, int damage, int turn)
+    public void Burn(string targetcount, int turn, int damage)
     {
         switch (targetcount)
         {
             case "anything":
                 Debug.Log(target);
-                target.MakeBurn(damage, turn);
+                target.SetStatusEffect("burn", turn, damage);
                 break;
             case "enemy":
                 break;
             case "player":
                 FindPlayer();
-                player.MakeBurn(damage, turn);
+                player.SetStatusEffect("burn", turn, damage);
                 break;
             case "all":
                 FindAllMonster();
                 foreach (Entity nowmonster in monsters)
                 {
-                    nowmonster.MakeBurn(damage, turn);
+                    nowmonster.SetStatusEffect("burn", turn, damage);
                 }
                 FindPlayer();
-                player.MakeBurn(damage, turn);
+                player.SetStatusEffect("burn", turn, damage);
                 break;
             case "enemyall":
                 FindAllMonster();
                 foreach (Entity nowmonster in monsters)
                 {
-                    nowmonster.MakeBurn(damage, turn);
+                    nowmonster.SetStatusEffect("burn", turn, damage);
                 }
                 break;
         }
@@ -677,26 +661,24 @@ public class CardFunctionManager : MonoBehaviour
 
     private void NormalDamage(Entity entity, int damage)
     {
-        GameObject myInstance = Instantiate(damageMarkPrefab, entity.transform); // 부모 지정
-        DamageMark damagemark = myInstance.GetComponent<DamageMark>();
-        damagemark.SetDamage(damage);
-        if (entity.shield >= damage)
+        MakeDamageMark(entity, damage);
+        damage = entity.CalculateShiled(damage);
+        entity.health -= damage;
+        entity.SetHealthTMP();
+        if (entity.GetSleep())  // 수면 상태일 때 체력 변동시 
         {
-            entity.shield -= damage;
-            entity.SetShieldTMP();
+            entity.canplay = true;
+            entity.RemoveEffect("sleep");
         }
-        else
-        {
-            damage = damage - entity.shield;
-            entity.health -= damage;
-            entity.shield = 0;
-            entity.SetHealthTMP();
-            entity.SetShieldTMP();
-            if (entity.GetSleep())  // 수면 상태일 때 체력 변동시 
-            {
-                entity.SetSleep(false);
-            }
-        }
+    }
+
+    private void PiercingDamage(Entity entity, int damage)
+    {
+        MakeDamageMark(entity, damage);
+        entity.health -= damage;
+        entity.SetHealthTMP();
+        if (entity.GetSleep())
+            entity.SetSleep(false);
     }
 
     private void NormalHeal(Entity target, int healamount)
@@ -707,6 +689,20 @@ public class CardFunctionManager : MonoBehaviour
             if (target.maxhealth < target.health)
                 target.health = target.maxhealth;
             target.SetHealthTMP();
+        }
+    }
+
+    public void MakeDamageMark(Entity entity, int damage)
+    {
+        GameObject myInstance = Instantiate(damageMarkPrefab, entity.transform); // 부모 지정
+        DamageMark damagemark = myInstance.GetComponent<DamageMark>();
+        if(damage >= 0)
+        {
+            damagemark.SetDamage(damage);
+        }
+        else
+        {
+            damagemark.SetDamage(-damage);  //회복 이미지로 변경할 것
         }
     }
     #endregion

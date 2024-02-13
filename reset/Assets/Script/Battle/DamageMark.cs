@@ -25,13 +25,11 @@ public class DamageMark : MonoBehaviour
     void Update()
     {
         transform.Translate(0, speed * Time.deltaTime, 0);
-        Debug.Log(speed * Time.deltaTime);
     }
 
     public void SetDamage(int damage)   //대미지 설정 기능
     {
         this.damage = damage;
-        Debug.Log(damage);
         damageTMP.text = damage.ToString();
     }
     //1. 2초간 올라가는 기능

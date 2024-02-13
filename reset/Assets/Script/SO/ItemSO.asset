@@ -28,7 +28,6 @@ MonoBehaviour:
     percent: 2
     selectable: 1
     memoryCard: 0
-    identifier: 102000007
     tag: 
   - name: "\uBD88\uAF43 \uB9C9\uB300"
     functionname: Firestick
@@ -45,7 +44,6 @@ MonoBehaviour:
     percent: 2
     selectable: 1
     memoryCard: 0
-    identifier: 101000008
     tag: "\uAFC8\uC9C0\uAE30"
   - name: "\uC950\uBD88 \uB180\uC774"
     functionname: Mousefire
@@ -62,7 +60,6 @@ MonoBehaviour:
     percent: 2
     selectable: 0
     memoryCard: 0
-    identifier: 102000009
     tag: 
   - name: "\uADF8\uB77C\uB370\uC774\uC158"
     functionname: Gradation
@@ -78,7 +75,6 @@ MonoBehaviour:
     percent: 2
     selectable: 0
     memoryCard: 0
-    identifier: 100110010
     tag: 
   - name: "\uBC18\uC9DD!\uC544\uC774\uB514\uC5B4"
     functionname: WowIdea
@@ -94,7 +90,6 @@ MonoBehaviour:
     percent: 2
     selectable: 0
     memoryCard: 0
-    identifier: 101110016
     tag: 
   - name: "\uBA39\uBCF4 \uC800\uAE08\uD1B5"
     functionname: PiggyBank
@@ -111,7 +106,6 @@ MonoBehaviour:
     percent: 2
     selectable: 0
     memoryCard: 0
-    identifier: 101100017
     tag: 
   - name: "\uB808\uC774\uC5B4"
     functionname: Layer
@@ -127,7 +121,6 @@ MonoBehaviour:
     percent: 2
     selectable: 0
     memoryCard: 0
-    identifier: 101210018
     tag: 
   - name: "\uBE0C\uB7EC\uC26C"
     functionname: Brush
@@ -143,7 +136,6 @@ MonoBehaviour:
     percent: 2
     selectable: 1
     memoryCard: 0
-    identifier: 101000019
     tag: 
   - name: "\uB531\uB530\uB4DC\uAD6C\uB9B4"
     functionname: Woodrill
@@ -161,7 +153,6 @@ MonoBehaviour:
     percent: 2
     selectable: 1
     memoryCard: 0
-    identifier: 102000020
     tag: 
   - name: "\uBD88\uAF43 \uCD95\uC81C"
     functionname: Firefestival
@@ -179,7 +170,6 @@ MonoBehaviour:
     percent: 2
     selectable: 0
     memoryCard: 0
-    identifier: 103000021
     tag: 
   - name: "\uB418\uB3CC\uB9AC\uAE30"
     functionname: CtrlZ
@@ -195,7 +185,6 @@ MonoBehaviour:
     percent: 2
     selectable: 0
     memoryCard: 0
-    identifier: 102110022
     tag: 
   - name: searchTest
     functionname: TestSearchCard
@@ -211,5 +200,154 @@ MonoBehaviour:
     percent: 2
     selectable: 0
     memoryCard: 0
-    identifier: 102110023
+    tag: 
+  - name: "\uB3C5\uD14C\uC2A4\uD2B8"
+    functionname: TestPoison
+    cost: 0
+    colorimg: {fileID: 21300000, guid: bf31a3e98478f504f96f93cdc130e88e, type: 3}
+    costcolor: {fileID: 21300000, guid: 74773374773ea6d4b8a2653b5cfd1572, type: 3}
+    cardtype: Production
+    color: 71
+    rarity: 1
+    reward: Start
+    price: 5
+    active: "\uAFC8\uC9C0\uAE30 \uCE74\uB4DC\uB97C \uC11C\uCE58\uD568."
+    percent: 2
+    selectable: 1
+    memoryCard: 0
+    tag: 
+  - name: "\uC218\uBA74 \uD14C\uC2A4\uD2B8"
+    functionname: TestSleep
+    cost: 0
+    colorimg: {fileID: 21300000, guid: bf31a3e98478f504f96f93cdc130e88e, type: 3}
+    costcolor: {fileID: 21300000, guid: 74773374773ea6d4b8a2653b5cfd1572, type: 3}
+    cardtype: Production
+    color: 71
+    rarity: 1
+    reward: Start
+    price: 5
+    active: "\uAFC8\uC9C0\uAE30 \uCE74\uB4DC\uB97C \uC11C\uCE58\uD568."
+    percent: 2
+    selectable: 1
+    memoryCard: 0
+    tag: 
+  - name: "\uAE30\uC808\uD14C\uC2A4\uD2B8"
+    functionname: TestFaint
+    cost: 0
+    colorimg: {fileID: 21300000, guid: 6d1f7456de1033b44b31c685b11f8b99, type: 3}
+    costcolor: {fileID: 21300000, guid: 74773374773ea6d4b8a2653b5cfd1572, type: 3}
+    cardtype: Production
+    color: 71
+    rarity: 1
+    reward: Start
+    price: 5
+    active: "\uAFC8\uC9C0\uAE30 \uCE74\uB4DC\uB97C \uC11C\uCE58\uD568."
+    percent: 2
+    selectable: 1
+    memoryCard: 0
+    tag: 
+  - name: "\uACF5\uACA9\uB825\uC99D\uAC00\uD14C\uC2A4\uD2B8"
+    functionname: TestBuffAttackUp
+    cost: 0
+    colorimg: {fileID: 21300000, guid: 6d1f7456de1033b44b31c685b11f8b99, type: 3}
+    costcolor: {fileID: 21300000, guid: 74773374773ea6d4b8a2653b5cfd1572, type: 3}
+    cardtype: Production
+    color: 71
+    rarity: 1
+    reward: Start
+    price: 5
+    active: "\uAFC8\uC9C0\uAE30 \uCE74\uB4DC\uB97C \uC11C\uCE58\uD568."
+    percent: 2
+    selectable: 1
+    memoryCard: 0
+    tag: 
+  - name: "\uACF5\uACA9\uB825\uAC10\uC18C\uD14C\uC2A4\uD2B8"
+    functionname: TestBuffAttackDown
+    cost: 0
+    colorimg: {fileID: 21300000, guid: 6d1f7456de1033b44b31c685b11f8b99, type: 3}
+    costcolor: {fileID: 21300000, guid: 74773374773ea6d4b8a2653b5cfd1572, type: 3}
+    cardtype: Production
+    color: 71
+    rarity: 1
+    reward: Start
+    price: 5
+    active: "\uAFC8\uC9C0\uAE30 \uCE74\uB4DC\uB97C \uC11C\uCE58\uD568."
+    percent: 2
+    selectable: 1
+    memoryCard: 0
+    tag: 
+  - name: "\uC274\uB4DC\uD14C\uC2A4\uD2B8 "
+    functionname: TestBuffShield
+    cost: 0
+    colorimg: {fileID: 21300000, guid: 6d1f7456de1033b44b31c685b11f8b99, type: 3}
+    costcolor: {fileID: 21300000, guid: 74773374773ea6d4b8a2653b5cfd1572, type: 3}
+    cardtype: Production
+    color: 71
+    rarity: 1
+    reward: Start
+    price: 5
+    active: "\uAFC8\uC9C0\uAE30 \uCE74\uB4DC\uB97C \uC11C\uCE58\uD568."
+    percent: 2
+    selectable: 1
+    memoryCard: 0
+    tag: 
+  - name: "\uD654\uC0C1\uD14C\uC2A4\uD2B8 "
+    functionname: TestBurn
+    cost: 0
+    colorimg: {fileID: 21300000, guid: 6d1f7456de1033b44b31c685b11f8b99, type: 3}
+    costcolor: {fileID: 21300000, guid: 74773374773ea6d4b8a2653b5cfd1572, type: 3}
+    cardtype: Production
+    color: 71
+    rarity: 1
+    reward: Start
+    price: 5
+    active: "\uAFC8\uC9C0\uAE30 \uCE74\uB4DC\uB97C \uC11C\uCE58\uD568."
+    percent: 2
+    selectable: 1
+    memoryCard: 0
+    tag: 
+  - name: "\uD790 \uD14C\uC2A4\uD2B8"
+    functionname: TestHeal
+    cost: 0
+    colorimg: {fileID: 21300000, guid: 6d1f7456de1033b44b31c685b11f8b99, type: 3}
+    costcolor: {fileID: 21300000, guid: 74773374773ea6d4b8a2653b5cfd1572, type: 3}
+    cardtype: Production
+    color: 71
+    rarity: 1
+    reward: Start
+    price: 5
+    active: "\uAFC8\uC9C0\uAE30 \uCE74\uB4DC\uB97C \uC11C\uCE58\uD568."
+    percent: 2
+    selectable: 1
+    memoryCard: 0
+    tag: 
+  - name: "\uC9C0\uC18D\uD790 \uD14C\uC2A4\uD2B8"
+    functionname: TestHealTurn
+    cost: 0
+    colorimg: {fileID: 21300000, guid: 6d1f7456de1033b44b31c685b11f8b99, type: 3}
+    costcolor: {fileID: 21300000, guid: 74773374773ea6d4b8a2653b5cfd1572, type: 3}
+    cardtype: Production
+    color: 71
+    rarity: 1
+    reward: Start
+    price: 5
+    active: "\uAFC8\uC9C0\uAE30 \uCE74\uB4DC\uB97C \uC11C\uCE58\uD568."
+    percent: 2
+    selectable: 1
+    memoryCard: 0
+    tag: 
+  - name: "\uACF5\uACA9\uD14C\uC2A4"
+    functionname: TestAttack
+    cost: 0
+    colorimg: {fileID: 21300000, guid: 6d1f7456de1033b44b31c685b11f8b99, type: 3}
+    costcolor: {fileID: 21300000, guid: 74773374773ea6d4b8a2653b5cfd1572, type: 3}
+    cardtype: Production
+    color: 71
+    rarity: 1
+    reward: Start
+    price: 5
+    active: "\uAFC8\uC9C0\uAE30 \uCE74\uB4DC\uB97C \uC11C\uCE58\uD568."
+    percent: 2
+    selectable: 1
+    memoryCard: 0
     tag: 

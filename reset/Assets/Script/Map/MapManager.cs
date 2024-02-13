@@ -70,7 +70,6 @@ public class MapManager : MonoBehaviour
 
     public void OpenTile(int num)  //지정된 숫자만큼 타일 활성화하는 메서드
     {
-        Debug.Log(num);
         if (num == 0)
             num = 6;    //스크립트상 0이 6이므로
         for(int i = savedata.GetPlayerMapIndex()+1; i < savedata.GetPlayerMapIndex() + num + 1; i++)

@@ -279,13 +279,11 @@ public class CardManager : MonoBehaviour
         int nowcard = myCards.Count;
         if (nowcard > 8)
         {
-            Debug.Log("MyCardCountTTTTTTTTTTTTTTTTTTTTTT"+myCards.Count);
            for(int i = 0; i < nowcard - 8; i++)
            {
                 DiscardMyCard();
            }
         }
-        Debug.Log("MyCardCountTTTTTTTTTTTTTTTTTTTTTT" + myCards.Count);
     }
 
     public void UseCard()
@@ -411,79 +409,71 @@ public class CardManager : MonoBehaviour
         {
             return;
         }
-        if(player.canplay)  //카드 사용 행동 가능한지 체크 (ex: 기절)
+        if (!player.canplay)  //카드 사용 행동 가능한지 체크 (ex: 기절)
         {
-            isMyCardDrag = false;
+            GameManager.Inst.Notification("군중제어 상태에서는 카드 사용이 불가능합니다");
+            return;
+        }
+            
+        isMyCardDrag = false;
 
-            if (eCardState != ECardState.CanMouseDrag)
+        if (eCardState != ECardState.CanMouseDrag)
+            return;
+        if (selectCard.cardtype == "Intrusion")//난입 관련
+        {
+            if (IsFullList())
+            {
                 return;
-            if (selectCard.cardtype == "Intrusion")//난입 관련
+            }
+            if (IsIntrusionDuplication(selectCard.functionname))
             {
-                if (IsFullList())
-                {
-                    return;
-                }
-                if (IsIntrusionDuplication(selectCard.functionname))
-                {
-                    return;
-                }
+                return;
+            }
+        }
 
-            }   
-
-            if (costManager.CompareCost(selectCard))//코스트 비교
+        if (costManager.CompareCost(selectCard))//코스트 비교
+        {
+            if (onMyCardArea)
             {
-                if (onMyCardArea)
+            }
+            else
+            {
+                bool isObjectin = false;
+                GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+                GameObject[] entity = monsters.Concat(players).ToArray();
+                if (selectCard.selectable)   //선택 가능한지 여부
                 {
-                }
-                else
-                {
-                    bool isObjectin = false;
-                    GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
-                    GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-                    GameObject[] entity = monsters.Concat(players).ToArray();
-                    if (selectCard.selectable)   //선택 가능한지 여부
+                    foreach (GameObject obj in entity)
                     {
-                        foreach (GameObject obj in entity)
+                        if (IsMouseCollidingWithObject(obj))
                         {
-                            if (IsMouseCollidingWithObject(obj))
-                            {
-                                cardfuction.SetTarget(obj);
-                                isObjectin = true;
-                                break;
-                            }
+                            cardfuction.SetTarget(obj);
+                            isObjectin = true;
+                            break;
                         }
                     }
-                    else if(!selectCard.selectable)  //전체피해이므로 오브젝트가 들어가있다 가정
-                    {
-                        isObjectin = true;
-                    }
-                    else   //타겟이 설정되지 않거나, 전체 피해가 아닌 경우
-                    {
-                        isObjectin = false;
-                    }
-                    if (isObjectin) //본격적인 카드 기능 실행, false라면 실행되지 않으므로 카드 사용 안됨
-                    {
-                        if(player.GetSleep())   //수면 효과까지 발동하여 참이 됐다면
-                            { 
-                                CostManager.Inst.SubtractCost(selectCard);
-                                CostManager.Inst.ShowCost();
-                                IntrusionConditionCheck();
-                                TryPutCard(true);
-                            }
-                        else
-                            {
-                                CostManager.Inst.SubtractCost(selectCard);
-                                CostManager.Inst.ShowCost();
-                                UseCard();
-                                IntrusionConditionCheck();
-                                EntityManager.Inst.FindDieEntity();
-                                TryPutCard(true);
-                            }
-
-                    }
+                }
+                else if (!selectCard.selectable)  //전체피해이므로 오브젝트가 들어가있다 가정
+                {
+                    isObjectin = true;
+                }
+                else   //타겟이 설정되지 않거나, 전체 피해가 아닌 경우
+                {
+                    isObjectin = false;
+                }
+                if (isObjectin) //본격적인 카드 기능 실행, false라면 실행되지 않으므로 카드 사용 안됨
+                {
+                    CostManager.Inst.SubtractCost(selectCard);
+                    CostManager.Inst.ShowCost();
+                    UseCard();
+                    IntrusionConditionCheck();
+                    EntityManager.Inst.FindDieEntity();
+                    TryPutCard(true);
                 }
             }
         }
+        
     }
 
     void CardDrag() //카드 드래그 중일 때

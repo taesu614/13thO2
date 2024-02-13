@@ -143,10 +143,8 @@ public class TurnManager : MonoBehaviour
 
     void Achivement(int playerHp, int enemysHp) // 재미삼아 만들어본 달성도 표시 
     {
-        print(playerHp);
         int totalHp = playerHp + enemysHp;
         float achivePercent = playerHp / totalHp;
-        print(achivePercent);
         Transform stellaPower = GameObject.Find("Stella Power").transform;
         stellaPower.localScale = new Vector3(achivePercent * 5, 0.7f, 1f);
     }
