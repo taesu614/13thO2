@@ -158,11 +158,7 @@ public class StatusEffect  //스택 형식의 효과는 없앤 상태임
 
     public bool GetImmuneSleep()
     {
-        if (isImmuneSleep)
-        {
-            return true;
-        }
-        return false;
+        return isImmuneSleep;
     }
     #endregion
 

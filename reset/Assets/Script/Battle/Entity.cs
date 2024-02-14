@@ -296,21 +296,36 @@ public class Entity : MonoBehaviour //해당 내용을 통해 별자리 생성 계획 그래서 �
 
     #endregion
 
-    #region MakeEffect  //작동방식 거의 동일함
+    #region MakeEffect  //버프 생성
 
     public void SetStatusEffect(string name, int turn, int amount = -1)
     {
+        if (name == "sleep")//수면면역 체크
+        {
+            foreach (StatusEffect A in myStatusEffect)
+            {
+                if (A.GetImmuneSleep())
+                    return;
+            }
+        }  
         Debug.Log("Effect - " + name);
         StatusEffect newEffect = new StatusEffect();
         newEffect.SetStatusEffect(name, turn, amount);
         myStatusEffect.Add(newEffect);
-        if(name == "sleep" || name == "faint")
+        switch(name)
         {
-            GetAllCC(); //군중제어효과를 자신에게 사용할 때 바로 효과 적용하게 하는 용도
+            case "sleep":
+            case "faint":
+                GetAllCC();//군중제어효과를 자신에게 사용할 때 바로 효과 적용하게 하는 용도
+                break;
+            case "shield":
+                SetShieldTMP();
+                break;
+            case "immuneSleep":
+                canplay = true; 
+                RemoveEffect("sleep");  //기존의 모든 수면 효과 삭제
+                break;
         }
-        if (name == "shield")
-            SetShieldTMP();
-
     }
     #endregion
     public int GetAllAttackUpEffect()   //공격력 증가 효과 가져오기
@@ -379,17 +394,18 @@ public class Entity : MonoBehaviour //해당 내용을 통해 별자리 생성 계획 그래서 �
                 Debug.Log(myStatusEffect.Count);
                 continue;
             }
-            if (name == "beneficial")
+            if (name == "beneficial")   //이로운 효과 제거
             {
                 myStatusEffect.RemoveAt(i);
                 break;
             }
-            else if(name == "harmful")
+            else if(name == "harmful")  //해로운 효과 제거
             {
                 myStatusEffect.RemoveAt(i);
                 break;
             }
         }
+        GetAllCC(); //버프 변동 후 버프 체크
     }
     public void CheckEffect()
     {
