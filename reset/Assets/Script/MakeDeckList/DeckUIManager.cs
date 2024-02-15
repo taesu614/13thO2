@@ -46,13 +46,16 @@ public class DeckUIManager : MonoBehaviour
             for (int i = 0; i < itemSO.items.Length; i++)  //ItemSO에서 카드 데이터 불러옴 - 전체 카드 데이터
             {
                 Item item = itemSO.items[i];
-                var cardObject = Instantiate(cardPrefab, cardlistpanel.transform);
-                Transform newparent = GameObject.Find("CardListContent").GetComponent<Transform>();
-                cardObject.transform.SetParent(newparent);
-                RectTransform cardRectTransform = cardObject.GetComponent<RectTransform>(); //UI에 있어서 RectTransform사용
-                instantiatedCards.Add(cardObject);
-                var card = cardObject.GetComponent<UICardButton>();
-                card.Setup(item);
+                if (itemSO.items[i].haveCard)
+                {
+                    var cardObject = Instantiate(cardPrefab, cardlistpanel.transform);
+                    Transform newparent = GameObject.Find("CardListContent").GetComponent<Transform>();
+                    cardObject.transform.SetParent(newparent);
+                    RectTransform cardRectTransform = cardObject.GetComponent<RectTransform>(); //UI에 있어서 RectTransform사용
+                    instantiatedCards.Add(cardObject);
+                    var card = cardObject.GetComponent<UICardButton>();
+                    card.Setup(item);
+                }
             }
 
 

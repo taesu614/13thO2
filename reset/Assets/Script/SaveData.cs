@@ -40,6 +40,7 @@ public class SaveData : MonoBehaviour
     public void InputCardInDeck(Item name)
     {
         cardlist.Add(name);
+        name.haveCard = true;  // 임시로 카드 추가시 haveCard true설정
         //Debug.Log(cardlist);
     }
     
@@ -75,6 +76,7 @@ public class SaveData : MonoBehaviour
 
     public string GetMyMap()      //지도 보내기
     {
+        Debug.Log(mymap);
         return mymap;
     }
     public List<Item> GetPlayerDeck()

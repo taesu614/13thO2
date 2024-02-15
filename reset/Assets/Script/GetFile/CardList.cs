@@ -77,24 +77,24 @@ public class CardList : MonoBehaviour
 
     public bool CheckPast(string cardName)  // 과거에 특정 카드가 있는지 확인해서 bool값 리턴
     {
-        tempPast = GetPast();
 
-
-        if (tempPast != null && tempPast.Count > 0)
+        if (past != null && past.Count > 0)
         {
-            string[] tempName = new string[tempPast.Count];
-            for (int i = 0; i < tempPast.Count; i++)
+            string[] tempName = new string[past.Count];
+            for (int i = 0; i < past.Count; i++)
             {
-                tempName[i] = tempPast[i].tag;
+                tempName[i] = past[i].name;
             }
 
 
-            int tagIndex = Array.FindLastIndex(tempName, i => i == cardName);
-            if (tagIndex != -1)
+            int nameIndex = Array.FindLastIndex(tempName, i => i == cardName);
+            if (nameIndex != -1)
                 return true;
             else
+            {
                 Debug.Log("과거에 " + cardName + "이 없습니다!");
                 return false;
+            }
         }
 
         else

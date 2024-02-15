@@ -22,7 +22,9 @@ public class CardFunctionManager : MonoBehaviour
     GameManager gameManager;
     CardManager cardManager;
     PlayerManager playerManager;
+    CardList cardlist;
 
+    GameObject pastCardList;
     GameObject findtarget;
     Entity target;
     GameObject[] findmonsters;
@@ -54,7 +56,6 @@ public class CardFunctionManager : MonoBehaviour
         cardEffects["TestBurn"] = TestBurn;
         cardEffects["TestHeal"] = TestHeal;
         cardEffects["TestHealTurn"] = TestHealTurn;
-        cardEffects["TestSearchCard"] = TestSearchCard;
 
         cardEffects["SharpNib"] = SharpNib;  // 날카로운 펜촉
         cardEffects["Firestick"] = Firestick;  // 불꽃 스틱
@@ -67,6 +68,14 @@ public class CardFunctionManager : MonoBehaviour
         cardEffects["Brush"] = Brush;   //브러쉬
         cardEffects["Woodrill"] = Woodrill; //딱다드구릴
         cardEffects["Firefestival"] = Firefestival; // 불꽃 축제
+
+        cardEffects["SleepBaronets"] = SleepBaronets; // 잠자는 바로네츠
+        cardEffects["SleepKeeperArthur"] = SleepKeeperArthur; // 꿈지기 아서
+        cardEffects["SleepKeeperOz"] = SleepKeeperOz; // 꿈지기 오즈
+        cardEffects["SleepKeeperShadow"] = SleepKeeperShadow; // 꿈지기 쉐도우
+        cardEffects["SleepKeeperGooddream"] = SleepKeeperGooddream; // 꿈지기 길몽
+        cardEffects["SleepKeeperBaddream"] = SleepKeeperBaddream; // 꿈지기 흉몽
+        cardEffects["Yawn"] = Yawn; // 하품
     }
     //단일 적 gameobj 가져오는 함수
     //public void GetEnemy(GameObject targetObj)
@@ -279,11 +288,97 @@ public class CardFunctionManager : MonoBehaviour
 
     #region sheep
 
-    private void TestSearchCard()
+    private void SleepBaronets()
     {
         cardManager = GetComponent<CardManager>();
         cardManager.SearchCard("꿈지기");
         Debug.Log("꿈지기 카드 찾아오기!!");
+    }
+
+    private void SleepKeeperArthur()  // 꿈지기 아서
+    {
+        FindPastCardList();
+        FindPlayer();
+        if (cardlist == null)
+        {
+            Debug.LogError("CardList 컴포넌트를 찾을 수 없습니다.");
+            return;
+        }
+        if (cardlist.CheckPast("잠자는 바로네츠"))
+        {
+            player.SetStatusEffect("shield", 2, 12);  // 완충 효과 대신 보호막 추가로 5 더 얻는걸로 임시구현
+        }
+        else
+            player.SetStatusEffect("shield", 2, 7);
+    }
+
+    private void SleepKeeperOz()  // 꿈지기 오즈
+    {
+        FindPastCardList();
+        Attack("anything", 7, "normal");
+        if(cardlist.CheckPast("잠자는 바로네츠"))
+        {
+            Sleep("anything", 2);
+        }
+    }
+
+    private void SleepKeeperShadow()  // 꿈지기 쉐도우
+    {
+        FindPastCardList();
+        Attack("anything", 3, "normal");
+        Attack("anything", 3, "normal");
+        if (cardlist.CheckPast("잠자는 바로네츠"))
+        {
+            TurnManager.OnAddCard.Invoke(true);
+            TurnManager.OnAddCard.Invoke(true);
+        }
+    }
+
+    private void SleepKeeperGooddream()  // 꿈지기 길몽
+    {
+        Heal("player", 6);
+
+        int cost = int.Parse(costTMP.text);
+        cost += 2;
+        costManager.CostSetNewCost(cost);
+    }
+
+    private void SleepKeeperBaddream()  // 꿈지기 흉몽
+    {
+        Attack("anything", 7, "normal");
+        int randNum = UnityEngine.Random.Range(1, 11);
+        Debug.Log(randNum);
+        switch(randNum)
+        {
+            case <=3 :
+                Sleep("all", 2);
+                break;
+            case > 3:
+                break;
+            default:
+
+        }
+    }
+
+    private void Yawn()
+    {
+        FindAllMonster();
+        foreach (Entity nowmonster in monsters)
+        {
+            nowmonster.SetStatusEffect("powerDown", 1, 3);
+        }
+        int randNum = UnityEngine.Random.Range(1, 11);
+        Debug.Log(randNum);
+        switch (randNum)
+        {
+            case <= 4:
+                Sleep("enemyall", 2);
+                break;
+            case > 4:
+                break;
+            default:
+        }
+                Debug.Log("버프 생성");
     }
 
     #endregion
@@ -657,6 +752,12 @@ public class CardFunctionManager : MonoBehaviour
     {
         findplayer = GameObject.FindGameObjectWithTag("Player");
         player = findplayer.GetComponent<Entity>();
+    }
+
+    private void FindPastCardList()  // 과거 리스트 참조용
+    {
+        pastCardList = GameObject.Find("PastCard");
+        cardlist = pastCardList.GetComponent<CardList>();
     }
 
     private void NormalDamage(Entity entity, int damage)

@@ -20,6 +20,7 @@ public class Item   //카드 관련으로 꾸미는 곳
     public float percent;
     public bool selectable;
     public bool memoryCard;  // 기억 효과를 가진 카드면 true로 아니면 false로
+    public bool haveCard;  // 임시로 카드를 획득 했는지 설정  -> 시작 카드는 처음부터 true로
     int identifier;  //테스트용 식별자
     public string tag; // 특정 키워드로 서치할 때 사용하려고 임시로 만들었습니다.
     private static int calletc = 0;

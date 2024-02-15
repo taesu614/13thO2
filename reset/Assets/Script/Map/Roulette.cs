@@ -15,7 +15,7 @@ public class Roulette : MonoBehaviour
     public int speed = 10;
     int randomnum;
     int clickcount = 0;
-    int maxclickcount = 100;  //여기 수정하면 최대 룰렛돌리는 횟수 수정가능함
+    int maxclickcount = 1;  //여기 수정하면 최대 룰렛돌리는 횟수 수정가능함
     bool isclick = false;
     bool isspin = false;    //계속 클릭하면 더 많이 돌아가는 상황 방지용
     public float delayTime = 1f;   //룰렛 굴러가는시간 설정 - 랜덤하게도 가능할듯 
@@ -36,7 +36,6 @@ public class Roulette : MonoBehaviour
     {
         isclick = true;
         RunRoullet();
-        AudioManager.instance.PlaySFX(AudioManager.SFX.roulette); // 회전시 효과음
     }
 
     void RunRoullet()   //룰렛 코루틴 실행
@@ -88,6 +87,8 @@ public class Roulette : MonoBehaviour
     {
         isspin = true;
         float elapsedTime = 0f;
+
+        AudioManager.instance.PlaySFX(AudioManager.SFX.roulette); //회전시작 시 효과음 재생
 
         while (elapsedTime < delayTime)
         {

@@ -36,7 +36,7 @@ public class StoreManager : MonoBehaviour
     {
         foreach (Item A in itemSO.items) 
         {
-            if (A.reward == "Start")
+            if (A.reward == "AdventureReward" || A.reward == "Sheep")
                 storecardlist.Add(A);
         }
     }
