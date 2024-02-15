@@ -38,15 +38,13 @@ public class Event2 : MonoBehaviour
         SceneManager.LoadScene("MapScene");
     }
 
-    public void Select()
+    public void Select(string clickname)
     {
-        // 클릭된 버튼의 이름 가져오기
-        string clickObjName = EventSystem.current.currentSelectedGameObject.gameObject.name;
 
-        print("버튼 클릭 확인용: " + clickObjName);
+        print("버튼 클릭 확인용: " + clickname);
 
         // 선택한 버튼에 따라 바로 함수 호출
-        switch (clickObjName)
+        switch (clickname)
         {
             case "Injection":
                 Injection();
@@ -56,7 +54,7 @@ public class Event2 : MonoBehaviour
                 break;
         }
         // 선택한 버튼 저장
-        selectedButton = clickObjName;
+        selectedButton = clickname;
     }
     #region
     void Injection()

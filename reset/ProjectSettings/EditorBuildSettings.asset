@@ -8,8 +8,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Press2StartScene.unity
     guid: 7095400c388314f40a6177e7efa5e37d
-  - enabled: 1
-    path: Assets/Scenes/LobiScene.unity
+  - enabled: 0
+    path: Assets/Scenes/LobiScene_past.unity
     guid: 7c8c4e66a1fdf2340a041e2bedc52797
   - enabled: 1
     path: Assets/Scenes/DeckBuildScene.unity
@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EventProto2.unity
     guid: 008d017aff09f324989eec675a89ccff
+  - enabled: 1
+    path: Assets/Scenes/LobiScene.unity
+    guid: a54cc1d759e7f934a9aef53e5d6b3f66
   m_configObjects: {}

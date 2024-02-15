@@ -14,6 +14,10 @@ public class LobiManager : MonoBehaviour
         SceneManager.LoadScene("DeckBuildScene");
     }
 
+    public void GoSelectMap(string name)
+    {
+        SceneManager.LoadScene(name);
+    }
     public void TurnOnSetting()
     {
         gameObject.SetActive(true);

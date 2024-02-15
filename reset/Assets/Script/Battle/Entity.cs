@@ -11,10 +11,12 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     private Dictionary<string, Action> monsterPatterns = new Dictionary<string, Action>();  //¹öÇÁ Á¦°Å ½Ã ¼±ÀÔ ¼±Ãâ ¹æ½ÄÀ¸·Î ¿¹»óµÇ¾î Å¥·Î ¼³Á¤
     [SerializeField] SpriteRenderer entity;
     [SerializeField] SpriteRenderer charater;
+    [SerializeField] SpriteRenderer shieldRenderer;
     [SerializeField] SpriteRenderer patternUI;
     [SerializeField] TMP_Text healthTMP;
     [SerializeField] TMP_Text attackTMP;
     [SerializeField] TMP_Text shieldTMP;
+    [SerializeField] GameObject shieldIcoObj;
     [SerializeField] GameObject hpline;
     [SerializeField] Sprite AttackUI;
     [SerializeField] Sprite ShieldUI;
@@ -48,13 +50,17 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     private string patternname;
     private bool isfirst = true;   //Ã¹ÅÏ¿¡ UI¼³Á¤À» À§ÇØ¼­ ¸¸µç À§Ä¡
     private int addtionpattern = 0;
-
+    Order order;
     void Start()
     {
-        monsterPatterns["Snail"] = () => SnailPattern();
+        monsterPatterns["BacteriaVenom"] = () => BacteriaVenomPattern();
         monsterPatterns["Hcoronatus"] = () => HcoronatusPattern();
         pattern = Random.Range(0, 10);
         ExecutePattern(monsterfunctionname);    //isfirst¸¦ ÀÌ¿ëÇØ¼­ Ã³À½¿¡ »ç¿ëÇÒ ÆÐÅÏÀ» Á¤ÇÏ°Ô ÇØ µÒ 
+        order = GetComponent<Order>();
+        Debug.Log(order);
+        order.SetOrder(shieldRenderer.sortingOrder);
+        SetShieldTMP();
     }
 
     void OnDestroy()
@@ -147,7 +153,17 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
             if (A.CheckShield())
                 shield += A.GetShield();
         }
-        shieldTMP.text = shield.ToString();
+        if(shield > 0)
+        {
+            shieldIcoObj.SetActive(true);
+            shieldTMP.text = shield.ToString();
+        }
+        else
+        {
+            shieldTMP.text = shield.ToString();
+            shieldIcoObj.SetActive(false);
+        }
+        
     }
     public int GetLiveCount()
     {
@@ -168,8 +184,8 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     }
 
     #region MonsterPattern
-    #region Snail
-    private void SnailPattern()
+    #region BacteriaVenom
+    private void BacteriaVenomPattern()
     {
         if (isfirst)
         {

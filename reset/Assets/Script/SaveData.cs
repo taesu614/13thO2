@@ -76,7 +76,6 @@ public class SaveData : MonoBehaviour
 
     public string GetMyMap()      //지도 보내기
     {
-        Debug.Log(mymap);
         return mymap;
     }
     public List<Item> GetPlayerDeck()

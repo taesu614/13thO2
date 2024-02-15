@@ -232,7 +232,7 @@ public class CardFunctionManager : MonoBehaviour
     private void Layer()    //레이어   - 쉴드 관련이라 쉴드 수정할 때 같이 수정할 것
     {
         FindPlayer();
-        player.SetStatusEffect("shield", 5, 2);
+        player.SetStatusEffect("shield", 2, 5);
     }
 
     private void Woodrill()     //딱다드구릴 - 쉴드 관련이라 쉴드 수정할 때 같이 수정할 것 

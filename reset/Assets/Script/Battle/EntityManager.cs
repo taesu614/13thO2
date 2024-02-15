@@ -47,7 +47,7 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
         myplayerentity = myplayer.GetComponent<Entity>();
         SetupMonsterBuffer();
         SetPlayer();
-        //AddEntity(0);       //향후 좌표 외 이미지와 패턴 관련해서도 수정할 것
+        AddEntity(0);       //향후 좌표 외 이미지와 패턴 관련해서도 수정할 것
         AddEntity(2.5f);
         TurnManager.OnTurnStarted += OnTurnStarted;
     }
