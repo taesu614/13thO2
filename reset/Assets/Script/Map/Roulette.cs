@@ -60,10 +60,11 @@ public class Roulette : MonoBehaviour
 
     void RoulletStart() //·ê·¿ ¼ýÀÚ ÀÌµ¿
     {
+
         roulletcounttransform.position -= new Vector3(1f, 0, 0) * Time.deltaTime * speed;
-        if (roulletcounttransform.position.x < -2.3f)
+        if (roulletcounttransform.position.x < -1.15f)
         {
-            roulletcounttransform.position = new Vector3(0, 0, 0);
+            roulletcounttransform.position = new Vector3(0, 0.75f, 0);
             ChangeRoulletResult();
         }
     }
@@ -114,6 +115,6 @@ public class Roulette : MonoBehaviour
 
     void CorrectRoullet()   //·ê·¿ º¸Á¤
     {
-        roulletcounttransform.position = Vector3.zero;
+        roulletcounttransform.position = new Vector3 (0, 0.75f, 0);
     }
 }
