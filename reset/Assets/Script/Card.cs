@@ -10,7 +10,6 @@ public class Card : MonoBehaviour
     [SerializeField] SpriteRenderer costcolor;
     [SerializeField] SpriteRenderer character;
     [SerializeField] TMP_Text nameTMP;
-    [SerializeField] TMP_Text costTMP;  //계산에 쓰일 것이므로 num = int.Parse(costTMP); 해둘것
     [SerializeField] TMP_Text acitveTMP;
     [SerializeField] Sprite cardFront;  //지워야할수도?
     [SerializeField] Sprite cardBack;   //22
@@ -30,7 +29,6 @@ public class Card : MonoBehaviour
         costcolor.sprite = this.item.costcolor;
         //character.sprite = this.item.sprite;
         nameTMP.text = this.item.name;
-        costTMP.text = this.item.cost.ToString();
         acitveTMP.text = this.item.active;
         functionname = this.item.functionname;
         cardtype = this.item.cardtype;
@@ -39,17 +37,14 @@ public class Card : MonoBehaviour
         if(this.item.color == 'R')  //여기 숫자 수정하면 글씨 색 바뀜
         {
             nameTMP.color = new Color32(255, 88, 88, 255);
-            costTMP.color = new Color32(255, 88, 88, 255);
         }
         else if (this.item.color == 'G')
         {
             nameTMP.color = new Color32(88, 255, 88, 255);
-            costTMP.color = new Color32(88, 255, 88, 255);
         }
         if (this.item.color == 'B')
         {
             nameTMP.color = new Color32(88, 88, 255, 255);
-            costTMP.color = new Color32(88, 88, 255, 255);
         }
     }
 

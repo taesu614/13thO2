@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     Monster monster;
+    GameObject[] monsterentity;
     public static GameManager Inst { get; private set; }
     void Awake() => Inst = this;
 
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         StartGame();
+        
     }
 
     // Update is called once per frame
@@ -50,6 +52,18 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Keypad4))
         {
             CardManager.Inst.DiscardMyCard();
+        }
+
+        if(Input.GetKeyDown(KeyCode.Keypad9))
+        {
+            monsterentity = GameObject.FindGameObjectsWithTag("Monster");
+            Debug.Log(monsterentity.Length);
+            foreach (GameObject A in monsterentity)
+            {
+                Entity entity = A.GetComponent<Entity>();
+                entity.health = 0;
+                EntityManager.Inst.FindDieEntity();
+            }
         }
     }
     

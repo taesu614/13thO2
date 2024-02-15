@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 14.79}
+  m_AnchoredPosition: {x: 0, y: 12.86}
   m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2645724194714621138
@@ -291,7 +291,9 @@ MonoBehaviour:
     active: 
     percent: 0
     selectable: 0
-    identifier: 0
+    memoryCard: 0
+    haveCard: 0
+    tag: 
   items: []
   carduiimage: {fileID: 3375604875896657904}
   costuiimage: {fileID: 1611751925384481413}
