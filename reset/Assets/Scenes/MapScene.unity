@@ -5763,6 +5763,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tile:
+  - {fileID: 764608981}
   - {fileID: 227921729}
   - {fileID: 639937478}
   - {fileID: 1832043760}
@@ -5782,7 +5783,6 @@ MonoBehaviour:
   - {fileID: 2036316539}
   - {fileID: 1053229267}
   - {fileID: 1199591650}
-  - {fileID: 764608981}
   playermeeple: {fileID: 4610067635216159738, guid: b971c6d60d8e15448bcd47771e5f310c, type: 3}
 --- !u!1 &1850092601
 GameObject:

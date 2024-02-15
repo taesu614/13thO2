@@ -36,7 +36,7 @@ public class CostManager : MonoBehaviour
     public GameObject player;
 
     void Awake() => Inst = this;
-    private int mycost = 0;
+    private int mycost = 3;
     private int hasmycost;
     private bool can;
     int rcost = 0;
@@ -88,7 +88,7 @@ public class CostManager : MonoBehaviour
 
     public void CostSet()  //코스트 늘려주기
     {
-        if(mycost < 5)
+        if(mycost < 3)
             mycost++;
 
         hasmycost = mycost;

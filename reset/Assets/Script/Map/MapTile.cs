@@ -17,7 +17,7 @@ public class MapTile : MonoBehaviour
     int tileindex;
     private void Start()
     {
-        TileObject.SetActive(false) ;       //룰렛 굴려서 들어가야 활성화가 되므로
+        //TileObject.SetActive(false) ;       //룰렛 굴려서 들어가야 활성화가 되므로
     }
 
     public void Setup(char stage, int index)
@@ -51,10 +51,10 @@ public class MapTile : MonoBehaviour
         mysprite.sprite = Stageimg[i];
     }
 
-    public void OpenTile()  ///타일맵 활성화 기능
+    public void TileSet(bool isopen)  ///타일맵 활성화 기능
     {
-        TileObject.SetActive(true);
-        isopen = true;
+        TileObject.SetActive(isopen);
+        this.isopen = isopen;
     }
 
     public void ChangeScene()

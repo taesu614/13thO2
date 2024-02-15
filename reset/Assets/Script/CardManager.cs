@@ -288,14 +288,7 @@ public class CardManager : MonoBehaviour
 
     public void UseCard()
     {
-        if (cardfuction != null)
-        {
-            cardList.AddCard(selectCard.item);
-            GetSelectCardType(selectCard.cardtype, selectCard.functionname);
-            cardfuction.UseSelectCard(selectCard.functionname);
-        }
-
-        switch(selectCard.cardtype)  // 이곳에 카드 타입에 따라 효과음 넣기
+        switch (selectCard.cardtype)  // 이곳에 카드 타입에 따라 효과음 넣기
         {
             case "Action":
                 AudioManager.instance.PlaySFX(AudioManager.SFX.attack);
@@ -304,6 +297,12 @@ public class CardManager : MonoBehaviour
             default:
                 AudioManager.instance.PlaySFX(AudioManager.SFX.attack);
                 break;
+        }
+        if (cardfuction != null)
+        {
+            cardList.AddCard(selectCard.item);
+            GetSelectCardType(selectCard.cardtype, selectCard.functionname);
+            cardfuction.UseSelectCard(selectCard.functionname);
         }
     }
 

@@ -106,6 +106,7 @@ public class Roulette : MonoBehaviour
         }
         CorrectRoullet();
         Debug.Log(randomnum);
+        MapManager.Inst.CloseAllTile();
         MapManager.Inst.OpenTile(randomnum);
         ResetRandomNum();
         isspin = false;

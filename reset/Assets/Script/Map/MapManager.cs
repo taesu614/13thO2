@@ -23,11 +23,12 @@ public class MapManager : MonoBehaviour
             AudioManager.instance.PlayBGM(AudioManager.BGM.main);
     }
 
-    [SerializeField] GameObject[] Tile; //씬에 적용된 Tile 프리팹을 넣을 것, 적어도 현 시점에서 노가다 형식으로 진행되므로 이렇게 씀
-    [SerializeField] GameObject playermeeple;
+    [SerializeField] GameObject[] Tile; //씬에 적용된 Tile 프리팹을 넣을 것 0이 맨 마지막칸임, 적어도 현 시점에서 노가다 형식으로 진행되므로 이렇게 씀
+    [SerializeField] GameObject playermeeple;   //플레이어 말
     MapTile maptile;
     SaveData savedata;
     string tilecount;  //타일맵 수
+    int playermapindex;
     void Start()
     {
         savedata = GameObject.Find("SaveData").GetComponent<SaveData>();
@@ -40,7 +41,10 @@ public class MapManager : MonoBehaviour
             MapRandomSet();
             TileSet();
         }
-        Instantiate(playermeeple, Tile[savedata.GetPlayerMapIndex()].transform);
+        playermapindex = savedata.GetPlayerMapIndex();
+        if (playermapindex == 0)
+            return;
+        Instantiate(playermeeple, Tile[playermapindex].transform);
     }
 
     // Update is called once per frame
@@ -78,10 +82,18 @@ public class MapManager : MonoBehaviour
             if (i > Tile.Length-1)  //개수는 1부터 시작이라 index상으로는 넘어감
             {
                 i = 0;
-                Tile[i].GetComponent<MapTile>().OpenTile();
+                Tile[i].GetComponent<MapTile>().TileSet(true);
                 break;  //해당 위치에서 보스전 출력할것
             }
-            Tile[i].GetComponent<MapTile>().OpenTile();
+            Tile[i].GetComponent<MapTile>().TileSet(true);
+        }
+    }
+
+    public void CloseAllTile()
+    {
+        foreach(GameObject A in Tile)
+        {
+            A.GetComponent<MapTile>().TileSet(false);
         }
     }
 }
