@@ -3123,9 +3123,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1136078108}
+      - m_Target: {fileID: 1136078113}
         m_TargetAssemblyTypeName: BattleMessage, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: MessageUIOpen
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4659,7 +4659,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1527693400, guid: 7de19866da1dc7044a34796dc6b3c0ba, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4a60e6f614b74ba42bd369d1af02a2d4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

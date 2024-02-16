@@ -361,6 +361,10 @@ public class CardManager : MonoBehaviour
         CardMessage cardmessage = messagetransform.GetComponent<CardMessage>();
         SetMessage(card, false);
         EnlargeCard(false, card);
+        if (selectCard)
+        {
+            selectCard.ChangeCardImage(false);  //이미지 변경이 이상해지는 현상 방지용
+        }
     }
 
     public void CardMouseDown() //카드 사용 중 마우스 누를 때
@@ -369,7 +373,8 @@ public class CardManager : MonoBehaviour
         {
             return;
         }
-        if(player.canplay)
+        selectCard.ChangeCardImage(false);  //이미지 변경이 이상해지는 현상 방지용
+        if (player.canplay)
         {
             if (eCardState != ECardState.CanMouseDrag)
             {
@@ -392,14 +397,9 @@ public class CardManager : MonoBehaviour
             if (costManager.CompareCost(selectCard))    //코스트 비교
             {
                 isMyCardDrag = true;
-                if (selectCard.selectable)
-                    selectCard.ChangeCardImage(true);
-                if (onMyCardArea)   
-                {
-                    selectCard.ChangeCardImage(false);  //이미지 변경이 이상해지는 현상 방지용
-                    return;
-                }
 
+                if (onMyCardArea)
+                    return;
             }
             else if(!costManager.CompareCost(selectCard))
                 GameManager.Inst.Notification("코스트가 부족합니다");
@@ -412,7 +412,6 @@ public class CardManager : MonoBehaviour
         {
             return;
         }
-        Debug.Log(selectCard.functionname);
         selectCard.ChangeCardImage(false);
         if (!player.canplay)  //카드 사용 행동 가능한지 체크 (ex: 기절)
         {
@@ -484,6 +483,8 @@ public class CardManager : MonoBehaviour
 
     void CardDrag() //카드 드래그 중일 때
     {
+        if (selectCard.selectable)
+            selectCard.ChangeCardImage(true);
         SetMessage(selectCard, false);
         if (!onMyCardArea)
         {
@@ -494,7 +495,6 @@ public class CardManager : MonoBehaviour
             selectCard.MoveTransform(new PRS(Utils.MousePos, Utils.QI, selectCard.originPRS.scale), false);
             //Debug.Log("select");
         }
-        
     }
 
     void DetectCardArea()

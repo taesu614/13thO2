@@ -34,19 +34,6 @@ public class Card : MonoBehaviour
         cardtype = this.item.cardtype;
         selectable = this.item.selectable;
         originalImage = colorimg.sprite;
-
-        if(this.item.color == 'R')  //여기 숫자 수정하면 글씨 색 바뀜
-        {
-            nameTMP.color = new Color32(255, 88, 88, 255);
-        }
-        else if (this.item.color == 'G')
-        {
-            nameTMP.color = new Color32(88, 255, 88, 255);
-        }
-        if (this.item.color == 'B')
-        {
-            nameTMP.color = new Color32(88, 88, 255, 255);
-        }
     }
 
     void OnMouseOver()
