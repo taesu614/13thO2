@@ -33,6 +33,7 @@ public class CardManager : MonoBehaviour
         }
         cardlist = GameObject.Find("PastCard").GetComponent<CardList>();
     }
+    [SerializeField] PlayerAnimator playerAnimation;
     [SerializeField] ItemSO itemSO;
     [SerializeField] GameObject cardPrefab;
     [SerializeField] List<Card> myCards;        //내 손패 
@@ -463,6 +464,7 @@ public class CardManager : MonoBehaviour
                 }
                 if (isObjectin) //본격적인 카드 기능 실행, false라면 실행되지 않으므로 카드 사용 안됨
                 {
+                    playerAnimation.SetPlayerState("attack");
                     CostManager.Inst.SubtractCost(selectCard);
                     CostManager.Inst.ShowCost();
                     UseCard();

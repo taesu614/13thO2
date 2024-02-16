@@ -18,6 +18,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     [SerializeField] TMP_Text shieldTMP;
     [SerializeField] GameObject shieldIcoObj;
     [SerializeField] GameObject hpline;
+    [SerializeField] Transform DamageMarkTransform;
     [SerializeField] Sprite AttackUI;
     [SerializeField] Sprite ShieldUI;
     [SerializeField] Sprite EffectUI;
@@ -123,11 +124,6 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         }
         return false;
     }
-
-    public int GetHealthTMP()      //SerializeField·Î ÀÎÇÑ º¸È£¼öÁØÀ¸·Î ÀÎÇØ °ªÀ» º¸³»´Â ±â´É
-    {
-        return int.Parse(healthTMP.text);
-    }
     public int GetAttackTMP()      //SerializeField·Î ÀÎÇÑ º¸È£¼öÁØÀ¸·Î ÀÎÇØ °ªÀ» º¸³»´Â ±â´É
     {
         return int.Parse(attackTMP.text);
@@ -168,6 +164,11 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     public int GetLiveCount()
     {
         return liveCount;
+    }
+
+    public Transform GetDamageMarkTransform()
+    {
+        return DamageMarkTransform;
     }
 
     public void MoveTransform(Vector3 pos, bool useDotween, float dotweenTime = 0)

@@ -5,6 +5,8 @@ using TMPro;
 
 public class CardFunctionManager : MonoBehaviour
 {
+    //엔티티별로 애니메이션이 적용되지 않아 플레이어의 애니메이션을 여기서 설정하였음
+    //향후 애니메이션 수정할 것 
     private Dictionary<string, Action> cardEffects = new Dictionary<string, Action>();
     public static CardFunctionManager Inst { get; private set; }
     //예상되는 변수들 모음
@@ -14,6 +16,7 @@ public class CardFunctionManager : MonoBehaviour
     [SerializeField] TMP_Text bcostTMP;
     [SerializeField] GameObject cardPrefab;  //내 코스트 X 카드에 써진 코스트 O
     [SerializeField] GameObject damageMarkPrefab;
+    [SerializeField] PlayerAnimator playerAnimator;
 
     ItemSO itemSO;
     Card card;
@@ -41,6 +44,7 @@ public class CardFunctionManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        FindPlayer();
         // 카드 이름과 기능을 매칭하여 Dictionary에 저장
         //cardEffects["TheDevil"] = () => TheDevil (myscore); // 람다식 사용 예시
         cardEffects["Moon"] = Moon;
@@ -413,7 +417,7 @@ public class CardFunctionManager : MonoBehaviour
     //타겟, 수치, 지속시간(혹은 횟수), 기타 내용들 순서
     public void Attack(string targetcount, int damage, string type, string user = "player")   //대상에게 피해를 n 줍니다
     {
-        FindPlayer();      //기본적인 계산                                              //targetcount(anything: 단일 아무나, enemy:적, player: 플레이어, all:전체, enemyall: 적 전체 
+      //기본적인 계산                                              //targetcount(anything: 단일 아무나, enemy:적, player: 플레이어, all:전체, enemyall: 적 전체 
         if (user == "player")    //몬스터에게도 사용되므로 기준이 플레이어야 몬스터냐에 따라 달라질 것
         {
             damage += player.GetAllAttackUpEffect();                        //damage(피해량)모든 공격력 증가 효과 가져와서 적용
@@ -433,7 +437,12 @@ public class CardFunctionManager : MonoBehaviour
                         target.SetShieldTMP();
                         break;
                     case "player":
+                        int playerhp = player.health;
                         NormalDamage(player, damage);
+                        if(playerhp > player.health)    //피해를 받아 체력 깎였을 경우 
+                        {
+                            playerAnimator.SetPlayerState("damage");
+                        }
                         break;
                     case "all":
                         FindAllMonster();
@@ -795,7 +804,7 @@ public class CardFunctionManager : MonoBehaviour
 
     public void MakeDamageMark(Entity entity, int damage)
     {
-        GameObject myInstance = Instantiate(damageMarkPrefab, entity.transform); // 부모 지정
+        GameObject myInstance = Instantiate(damageMarkPrefab, entity.GetDamageMarkTransform()); // 부모 지정
         DamageMark damagemark = myInstance.GetComponent<DamageMark>();
         if(damage >= 0)
         {

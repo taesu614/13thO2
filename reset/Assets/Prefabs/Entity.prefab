@@ -32,7 +32,7 @@ Transform:
   - {fileID: 8626374948512025129}
   - {fileID: 8151976694015005021}
   m_Father: {fileID: 7006141395249983712}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1069377769200895813
 SpriteRenderer:
@@ -308,6 +308,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 4540601516387772352}
   - {fileID: 6746904175922616828}
   - {fileID: 8232955279024564953}
   - {fileID: 3915515947234375499}
@@ -416,6 +417,7 @@ MonoBehaviour:
   shieldTMP: {fileID: 1069155028505121248}
   shieldIcoObj: {fileID: 5317994358340572062}
   hpline: {fileID: 4789722203620989351}
+  DamageMarkTransform: {fileID: 4540601516387772352}
   AttackUI: {fileID: 21300000, guid: 588e89c92eebc1948b9d0067919bb8ae, type: 3}
   ShieldUI: {fileID: 21300000, guid: 0b03e62065e3f6441a8b9dcf50bd3d09, type: 3}
   EffectUI: {fileID: 21300000, guid: d55f377eafe5f2b46aa6eb554e011d4a, type: 3}
@@ -495,7 +497,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7006141395249983712}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7084461899566804033
 SpriteRenderer:
@@ -664,7 +666,7 @@ Transform:
   m_Children:
   - {fileID: 450917853628769068}
   m_Father: {fileID: 7006141395249983712}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6193996689062210044
 SpriteRenderer:
@@ -749,7 +751,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7006141395249983712}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1005,7 +1007,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7006141395249983712}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1146,6 +1148,37 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 5781874301824331500}
   m_maskType: 0
+--- !u!1 &7189774611296073448
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4540601516387772352}
+  m_Layer: 7
+  m_Name: DamageMarkPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4540601516387772352
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7189774611296073448}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.56, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7006141395249983712}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9125531302183995522
 GameObject:
   m_ObjectHideFlags: 0
@@ -1176,7 +1209,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7006141395249983712}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5438812697637235744
 SpriteRenderer:
