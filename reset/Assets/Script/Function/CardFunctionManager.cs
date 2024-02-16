@@ -415,10 +415,10 @@ public class CardFunctionManager : MonoBehaviour
     #region method
     //버프가 아닌 모든 메서드의 넘길 매개변수는
     //타겟, 수치, 지속시간(혹은 횟수), 기타 내용들 순서
-    public void Attack(string targetcount, int damage, string type, string user = "player")   //대상에게 피해를 n 줍니다
+    public void Attack(string targetcount, int damage, string type, Entity user = null)   //대상에게 피해를 n 줍니다
     {
       //기본적인 계산                                              //targetcount(anything: 단일 아무나, enemy:적, player: 플레이어, all:전체, enemyall: 적 전체 
-        if (user == "player")    //몬스터에게도 사용되므로 기준이 플레이어야 몬스터냐에 따라 달라질 것
+        if (user == null)    //몬스터에게도 사용되므로 기준이 플레이어야 몬스터냐에 따라 달라질 것
         {
             damage += player.GetAllAttackUpEffect();                        //damage(피해량)모든 공격력 증가 효과 가져와서 적용
             damage -= player.GetAllAttackDownEffect();                      //type (normal: 통상 공격, piercing: 관통 공격(보호막에 관계없이 체력에 직접적으로 공격))
@@ -433,8 +433,6 @@ public class CardFunctionManager : MonoBehaviour
                     case "anything":
                         Debug.Log(target);
                         NormalDamage(target, damage);
-                        target.SetHealthTMP();
-                        target.SetShieldTMP();
                         break;
                     case "player":
                         int playerhp = player.health;
@@ -443,6 +441,10 @@ public class CardFunctionManager : MonoBehaviour
                         {
                             playerAnimator.SetPlayerState("damage");
                         }
+                        break;
+                    case "enemy":
+                        target = user;
+                        NormalDamage(target, damage);
                         break;
                     case "all":
                         FindAllMonster();
@@ -469,6 +471,10 @@ public class CardFunctionManager : MonoBehaviour
                         break;
                     case "player":
                         PiercingDamage(player, damage);
+                        break;
+                    case "enemy":
+                        target = user;
+                        PiercingDamage(target, damage);
                         break;
                     case "all":
                         FindAllMonster();

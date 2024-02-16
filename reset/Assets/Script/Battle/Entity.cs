@@ -56,6 +56,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     {
         monsterPatterns["BacteriaVenom"] = () => BacteriaVenomPattern();
         monsterPatterns["Hcoronatus"] = () => HcoronatusPattern();
+        monsterPatterns["Umumu"] = () => UmumuPattern();
         pattern = Random.Range(0, 10);
         ExecutePattern(monsterfunctionname);    //isfirst¸¦ ÀÌ¿ëÇØ¼­ Ã³À½¿¡ »ç¿ëÇÒ ÆÐÅÏÀ» Á¤ÇÏ°Ô ÇØ µÒ 
         order = GetComponent<Order>();
@@ -194,13 +195,13 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         }
         else
         {
-            int damage = 8;
+            int damage = attack;
             damage += GetAllAttackUpEffect();
             damage -= GetAllAttackDownEffect();
             switch (patternname)
             {
                 case "attack":
-                    CardFunctionManager.Inst.Attack("player", damage, "normal", "monster");
+                    CardFunctionManager.Inst.Attack("player", damage, "normal", this);
                     break;
                 case "effect":
                     CardFunctionManager.Inst.Poison("player", 4);
@@ -247,14 +248,14 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         }
         else
         {
-            int damage = 5;
+            int damage = attack;
             damage += GetAllAttackUpEffect();
             damage -= GetAllAttackDownEffect();
             switch (patternname)
             {
                 case "attack":
-                    CardFunctionManager.Inst.Attack("player", damage, "normal", "monster");
-                    CardFunctionManager.Inst.Attack("player", damage, "normal", "monster");
+                    CardFunctionManager.Inst.Attack("player", damage, "normal", this);
+                    Invoke("HcoronatusPatternAttackDelay", 0.2f);
                     break;
                 case "effect":
                     SetStatusEffect("powerUp", 2, 2);
@@ -289,6 +290,69 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
             case 9:
                 patternname = "shield";
                 patternUI.sprite = ShieldUI;
+                break;
+        }
+        Debug.Log(patternname);
+    }
+
+    void HcoronatusPatternAttackDelay() //Invoke¿¡ µé¾î°¡°Ô ÇÏ·Á°í ¸¸µç °Í
+    {
+        int damage = attack;
+        damage += GetAllAttackUpEffect();
+        damage -= GetAllAttackDownEffect();
+        CardFunctionManager.Inst.Attack("player", damage, "normal", this);
+    }
+    #endregion
+
+    #region Umumu
+    private void UmumuPattern()
+    {
+        if (isfirst)
+        {
+            isfirst = false;
+        }
+        else
+        {
+            int damage = attack;
+            damage += GetAllAttackUpEffect();
+            damage -= GetAllAttackDownEffect();
+            switch (patternname)
+            {
+                case "attack":
+                    CardFunctionManager.Inst.Attack("player", damage, "normal", this);
+                    break;
+                case "effect":
+                    damage = 6;
+                    damage += GetAllAttackUpEffect();
+                    damage -= GetAllAttackDownEffect();
+                    CardFunctionManager.Inst.Attack("player", damage, "normal", this);
+                    CardFunctionManager.Inst.Poison("player", 3);
+                    CardFunctionManager.Inst.Attack("enemy", health, "normal", this);
+                    EntityManager.Inst.FindDieEntity();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        pattern = Random.Range(0, 10);   //¸¶Áö¸· ÆÐÅÏ ¼³Á¤
+        switch (pattern)
+        {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+                patternname = "attack"; //ÀÌÈÄ ÀÌ¹ÌÁö º¯°æ
+                patternUI.sprite = AttackUI;
+                break;
+            case 7:
+            case 8:
+            case 9:
+                patternname = "effect";
+                patternUI.sprite = EffectUI;
                 break;
         }
         Debug.Log(patternname);
@@ -401,6 +465,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
             }
         }
     }
+
     public void RemoveEffect(string name)
     {
         for(int i = myStatusEffect.Count - 1; i >= 0; i--)
