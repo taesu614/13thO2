@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
 {
@@ -121,9 +120,16 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
         ShowTargetPicker(ExistTargetPickEntity);
         if(myplayerentity.health<=0)    //임시용
         {
-            Destroy(myplayer);
-            Destroy(GameObject.Find("SaveData"));
-            SceneManager.LoadScene("Press2StartScene");
+            GameObject obj = GameObject.Find("Canvas").transform.Find("GameOverCanvas").gameObject;
+            GameObject ani = GameObject.Find("MyPlayer").transform.Find("MyBoss").gameObject;
+
+            Animator a = ani.GetComponent<Animator>();
+
+            obj.SetActive(true);
+            Destroy(a);
+
+            AudioManager.instance.ChangeBGMVolume(0);
+
         }
 
 

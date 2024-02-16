@@ -54,7 +54,11 @@ public class GameManager : MonoBehaviour
         {
             CardManager.Inst.DiscardMyCard();
         }
-
+        if(Input.GetKeyDown(KeyCode.Keypad8))
+        {
+            Entity player = GameObject.Find("MyPlayer").GetComponent<Entity>();
+            player.health = 1;
+        }
         if(Input.GetKeyDown(KeyCode.Keypad9))
         {
             monsterentity = GameObject.FindGameObjectsWithTag("Monster");

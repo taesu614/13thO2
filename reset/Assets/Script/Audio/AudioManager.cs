@@ -108,6 +108,8 @@ public class AudioManager : MonoBehaviour
 
     public void ChangeBGMVolume(int volume)
     {
-        bgmVolume = volume;
+        GameObject bgmObject = GameObject.Find("BGMPlayer");
+        bgmPlayer = bgmObject.GetComponent<AudioSource>();
+        bgmPlayer.volume = volume;
     }
 }

@@ -15,6 +15,8 @@ public class PlayerAnimator : MonoBehaviour
 
     public void SetPlayerState(string name)
     {
+        if (!animator)
+            return;
         switch(name)
         {
             case "attack":
