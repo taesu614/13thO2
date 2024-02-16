@@ -29,6 +29,7 @@ public class Event2 : MonoBehaviour
         playerHp = 0;
         playerMaxHp = 0;
         InjectionCount = 0;
+        AudioManager.instance.PlayBGM(AudioManager.BGM.riddle);
     }
 
     void EventClose()

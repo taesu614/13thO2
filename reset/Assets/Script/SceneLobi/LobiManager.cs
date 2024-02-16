@@ -13,15 +13,18 @@ public class LobiManager : MonoBehaviour
     public void GoToMap()
     {
         SceneManager.LoadScene("MapScene");
+        AudioManager.instance.PlaySFX(AudioManager.SFX.openClick);
     }
     public void GoToDeckBuild()
     {
         SceneManager.LoadScene("DeckBuildScene");
+        AudioManager.instance.PlaySFX(AudioManager.SFX.openClick);
     }
 
     public void GoSelectMap(string name)
     {
         SceneManager.LoadScene(name);
+        AudioManager.instance.PlaySFX(AudioManager.SFX.openClick);
     }
     public void TurnOnSetting()
     {

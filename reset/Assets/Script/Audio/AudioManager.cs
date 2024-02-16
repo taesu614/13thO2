@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
-    
+
+    public AudioMixer audiomixer;
+
     public AudioClip[] bgmClips;
     public float bgmVolume;
     AudioSource bgmPlayer;
@@ -16,11 +19,18 @@ public class AudioManager : MonoBehaviour
     AudioSource[] sfxPlayers;
     int sfxChannelIndex;
 
-    public enum BGM { main, battle, riddle};
+    public enum BGM { main, map ,battle, riddle};
     public enum SFX { draw, roulette, shield, attack, openClick, closeClick, success};
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        var objs = GameObject.FindGameObjectsWithTag("AudioManager");
+        if(objs.Length == 1)
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+            Destroy(gameObject);
+
         instance = this;
         Init();
         bgmPlayer.Play();
@@ -28,32 +38,25 @@ public class AudioManager : MonoBehaviour
 
     void Init()
     {
-        GameObject bgmObject = new GameObject("BgmPlayer");
-        bgmObject.transform.parent = transform;
-
-        bgmPlayer = bgmObject.AddComponent<AudioSource>();
+        GameObject bgmObject = GameObject.Find("BGMPlayer");
+        bgmPlayer = bgmObject.GetComponent<AudioSource>();
         bgmPlayer.playOnAwake = false;
         bgmPlayer.volume = bgmVolume;
         bgmPlayer.loop = true;
         bgmPlayer.clip = bgmClips[0];   // 일단 메인 브금으로 초기화
 
-        //bgmplayer = bgmobject.addcomponent<audiosource>();
-        //bgmplayer.playonawake = false;
-        //bgmplayer.loop = true;
-        //bgmplayer.volume = bgmvolume;
-        //bgmplayer.clip = bgmclip;
 
-        GameObject sfxObject = new GameObject("sfxPlayer");
-        sfxObject.transform.parent = transform;
+        GameObject sfxObject = GameObject.Find("SFXPlayer");
+
         sfxPlayers = new AudioSource[sfxChannels];
 
-        for(int index = 0; index < sfxPlayers.Length; index++)
+        for (int index = 0; index < sfxPlayers.Length; index++)
         {
-            sfxPlayers[index] = sfxObject.AddComponent<AudioSource>();
+            sfxPlayers[index] = sfxObject.GetComponent<AudioSource>();
             sfxPlayers[index].playOnAwake = false;
             sfxPlayers[index].volume = sfxVolume;
         }
-        
+
     }
 
     public void PlayBGM(BGM bgm)
@@ -64,11 +67,14 @@ public class AudioManager : MonoBehaviour
             case (int)BGM.main:
                 bgmPlayer.clip = bgmClips[0];
                 break;
-            case (int)BGM.battle:
+            case (int)BGM.map:
                 bgmPlayer.clip = bgmClips[1];
                 break;
-            case (int)BGM.riddle:
+            case (int)BGM.battle:
                 bgmPlayer.clip = bgmClips[2];
+                break;
+            case (int)BGM.riddle:
+                bgmPlayer.clip = bgmClips[3];
                 break;
         }
         bgmPlayer.Play();
@@ -98,5 +104,10 @@ public class AudioManager : MonoBehaviour
         else
             return false;
 
+    }
+
+    public void ChangeBGMVolume(int volume)
+    {
+        bgmVolume = volume;
     }
 }

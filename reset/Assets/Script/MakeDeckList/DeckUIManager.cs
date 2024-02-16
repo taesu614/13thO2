@@ -16,6 +16,9 @@ public class DeckUIManager : MonoBehaviour
     GameObject cardlistpanel;
     CanvasRenderer panelcanvasrenderer;
     UIDeckButton uideckbutton;
+
+    UICardButton uicardbutton;
+
     bool isopen = false;
     SaveData savedata;
     List<GameObject> instantiatedCards = new List<GameObject>();    //생성된 카드 프리팹의 리스트 - 나중에 얘네만 모아서 삭제하려는 용도
@@ -89,6 +92,7 @@ public class DeckUIManager : MonoBehaviour
         }
         cardnamePrefabslist.Clear();
         SortDeck();
+
         foreach (Item A in mydecklisttemp)      //UI표시 관련
         {
             GameObject content = GameObject.Find("Content");    //Content 자식이 덱임

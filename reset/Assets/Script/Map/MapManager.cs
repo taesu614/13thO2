@@ -32,6 +32,8 @@ public class MapManager : MonoBehaviour
     void Start()
     {
         savedata = GameObject.Find("SaveData").GetComponent<SaveData>();
+        if (!AudioManager.instance.CheckBGM("map"))
+            AudioManager.instance.PlayBGM(AudioManager.BGM.map);
         if (savedata.GetMyMap() != null)
         {
             TileSet();

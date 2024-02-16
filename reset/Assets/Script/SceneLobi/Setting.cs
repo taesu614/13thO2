@@ -14,12 +14,13 @@ public class Setting : MonoBehaviour
     public void TurnOnSetting()
     {
         settingUI.SetActive(true);
-
+        AudioManager.instance.PlaySFX(AudioManager.SFX.openClick);
     }
 
     public void TurnOffSetting()
     {
         settingUI.SetActive(false);
+        AudioManager.instance.PlaySFX(AudioManager.SFX.closeClick);
     }
 
     private void OnMouseDown()
@@ -28,6 +29,7 @@ public class Setting : MonoBehaviour
     }
     public void ExitGame()
     {
+        AudioManager.instance.PlaySFX(AudioManager.SFX.closeClick);
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
