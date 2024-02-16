@@ -77,6 +77,10 @@ public class Card : MonoBehaviour
             {
                 child.gameObject.SetActive(true);
             }
+            Transform message = transform;
+            Transform messagetransform = message.Find("Message");
+            CardMessage cardmessage = messagetransform.GetComponent<CardMessage>();
+            cardmessage.ShowCardMessage(false);
             colorimg.sprite = originalImage;
         }
 

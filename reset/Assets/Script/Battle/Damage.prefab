@@ -49,6 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageTMP: {fileID: 1765555687514040958}
   spriteRenderer: {fileID: 7525242669701138501}
+  heal: {fileID: 873237082, guid: e9937fc62f049e14895cc8cc47461410, type: 3}
   speed: 0.5
   time: 1
 --- !u!114 &6666671960646953267

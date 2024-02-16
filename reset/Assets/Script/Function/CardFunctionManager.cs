@@ -771,7 +771,7 @@ public class CardFunctionManager : MonoBehaviour
 
     private void NormalDamage(Entity entity, int damage)
     {
-        MakeDamageMark(entity, damage);
+        MakeDamageMark(entity, damage, "damage");
         damage = entity.CalculateShiled(damage);
         entity.health -= damage;
         entity.SetHealthTMP();
@@ -784,7 +784,7 @@ public class CardFunctionManager : MonoBehaviour
 
     private void PiercingDamage(Entity entity, int damage)
     {
-        MakeDamageMark(entity, damage);
+        MakeDamageMark(entity, damage, "damage");
         entity.health -= damage;
         entity.SetHealthTMP();
         if (entity.GetSleep())
@@ -799,21 +799,21 @@ public class CardFunctionManager : MonoBehaviour
             if (target.maxhealth < target.health)
                 target.health = target.maxhealth;
             target.SetHealthTMP();
+            GameObject myInstance = Instantiate(damageMarkPrefab, target.GetDamageMarkTransform()); // 부모 지정
+            DamageMark damagemark = myInstance.GetComponent<DamageMark>();
+            damagemark.SetDamage(healamount, "heal");
         }
     }
 
-    public void MakeDamageMark(Entity entity, int damage)
+    public void MakeDamageMark(Entity entity, int damage, string type)
     {
         GameObject myInstance = Instantiate(damageMarkPrefab, entity.GetDamageMarkTransform()); // 부모 지정
         DamageMark damagemark = myInstance.GetComponent<DamageMark>();
         if(damage >= 0)
         {
-            damagemark.SetDamage(damage);
+            damagemark.SetDamage(damage, type);
         }
-        else
-        {
-            damagemark.SetDamage(-damage);  //회복 이미지로 변경할 것
-        }
+
     }
     #endregion
 }

@@ -432,7 +432,7 @@ public class Entity : MonoBehaviour //해당 내용을 통해 별자리 생성 계획 그래서 �
             if (myStatusEffect[i].CheckDamageEffect().Item1)  //지속피해 효과 여부
             {
                 health -= myStatusEffect[i].CheckDamageEffect().Item2;
-                CardFunctionManager.Inst.MakeDamageMark(this, myStatusEffect[i].CheckDamageEffect().Item2);
+                CardFunctionManager.Inst.MakeDamageMark(this, myStatusEffect[i].CheckDamageEffect().Item2, myStatusEffect[i].GetEffectName());
                 SetHealthTMP();
             }
             myStatusEffect[i].DecreaseEffectTurn();

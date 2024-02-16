@@ -203,6 +203,11 @@ public class StatusEffect  //스택 형식의 효과는 없앤 상태임
         return effectturn;
     }
 
+    public string GetEffectName()
+    {
+        return effectname;
+    }
+
     public (bool, int) CheckDamageEffect()
     {
         switch (effectname)
