@@ -20,21 +20,29 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 778355a1e3357ac4a9694e7ec618ffd0, type: 3}
+      value: {fileID: 21300000, guid: bab443199dfcc7042808aa0b5dd8bc67, type: 3}
     - time: 0.083333336
-      value: {fileID: 21300000, guid: 43378c3a8f0fb1f429b0d312b69af87b, type: 3}
+      value: {fileID: 21300000, guid: 4b2d7799b8ae4644e9d41d198c02ab41, type: 3}
     - time: 0.16666667
-      value: {fileID: 21300000, guid: a6e164fd544a45842b5654198896e53b, type: 3}
+      value: {fileID: 21300000, guid: ca34e298468bdff4db08cf191fe16924, type: 3}
     - time: 0.25
-      value: {fileID: 21300000, guid: b7e23ca0caa01b0468193e38e765e070, type: 3}
+      value: {fileID: 21300000, guid: bca1b3e21f95de645b2a93f6c8fc2752, type: 3}
     - time: 0.33333334
-      value: {fileID: 21300000, guid: 1ee1e2662f3f4e742900b63c4020146f, type: 3}
+      value: {fileID: 21300000, guid: d8fb66fddc522ee4982cbe67dac416b7, type: 3}
     - time: 0.41666666
-      value: {fileID: 21300000, guid: 9c87121aa8052074799ec43f655455d9, type: 3}
+      value: {fileID: 21300000, guid: 29eea597a6dbdb641ad69464b9f4c04f, type: 3}
     - time: 0.5
-      value: {fileID: 21300000, guid: 2b689e7a230212b4b9bf0d1e835faab3, type: 3}
+      value: {fileID: 21300000, guid: 7a43f152883130f478e1854df4e0696c, type: 3}
     - time: 0.5833333
-      value: {fileID: 21300000, guid: 6368bbdb4d542764e89c471560c9a8e1, type: 3}
+      value: {fileID: 21300000, guid: 47605248ff16b004cbe4b71c32623e27, type: 3}
+    - time: 0.6666667
+      value: {fileID: 21300000, guid: 48cddf4b069b36e4b9e642431045200d, type: 3}
+    - time: 0.75
+      value: {fileID: 21300000, guid: 6a966f0c1da305948ac7d33e07e6342d, type: 3}
+    - time: 0.8333333
+      value: {fileID: 21300000, guid: a2609bdc2bde0df468c6b58779f1def2, type: 3}
+    - time: 0.9166667
+      value: {fileID: 21300000, guid: e709dbaa8c9055e4aa08941552d660a6, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -54,20 +62,24 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 778355a1e3357ac4a9694e7ec618ffd0, type: 3}
-    - {fileID: 21300000, guid: 43378c3a8f0fb1f429b0d312b69af87b, type: 3}
-    - {fileID: 21300000, guid: a6e164fd544a45842b5654198896e53b, type: 3}
-    - {fileID: 21300000, guid: b7e23ca0caa01b0468193e38e765e070, type: 3}
-    - {fileID: 21300000, guid: 1ee1e2662f3f4e742900b63c4020146f, type: 3}
-    - {fileID: 21300000, guid: 9c87121aa8052074799ec43f655455d9, type: 3}
-    - {fileID: 21300000, guid: 2b689e7a230212b4b9bf0d1e835faab3, type: 3}
-    - {fileID: 21300000, guid: 6368bbdb4d542764e89c471560c9a8e1, type: 3}
+    - {fileID: 21300000, guid: bab443199dfcc7042808aa0b5dd8bc67, type: 3}
+    - {fileID: 21300000, guid: 4b2d7799b8ae4644e9d41d198c02ab41, type: 3}
+    - {fileID: 21300000, guid: ca34e298468bdff4db08cf191fe16924, type: 3}
+    - {fileID: 21300000, guid: bca1b3e21f95de645b2a93f6c8fc2752, type: 3}
+    - {fileID: 21300000, guid: d8fb66fddc522ee4982cbe67dac416b7, type: 3}
+    - {fileID: 21300000, guid: 29eea597a6dbdb641ad69464b9f4c04f, type: 3}
+    - {fileID: 21300000, guid: 7a43f152883130f478e1854df4e0696c, type: 3}
+    - {fileID: 21300000, guid: 47605248ff16b004cbe4b71c32623e27, type: 3}
+    - {fileID: 21300000, guid: 48cddf4b069b36e4b9e642431045200d, type: 3}
+    - {fileID: 21300000, guid: 6a966f0c1da305948ac7d33e07e6342d, type: 3}
+    - {fileID: 21300000, guid: a2609bdc2bde0df468c6b58779f1def2, type: 3}
+    - {fileID: 21300000, guid: e709dbaa8c9055e4aa08941552d660a6, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.6666667
+    m_StopTime: 1
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -87,7 +99,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.6666667
+  - time: 1
     functionName: AnimationFinish
     data: damage
     objectReferenceParameter: {fileID: 0}

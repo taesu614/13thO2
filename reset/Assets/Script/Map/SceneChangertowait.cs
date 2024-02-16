@@ -29,6 +29,7 @@ public class SceneChangertowait : MonoBehaviour
 
     public void GoToLobi()
     {
+        SaveData.instance.ResetData();
         SaveData.instance.ResetMyMap();
         SceneManager.LoadScene("LobiScene");
     }

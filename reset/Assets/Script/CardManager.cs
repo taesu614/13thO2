@@ -392,8 +392,11 @@ public class CardManager : MonoBehaviour
             if (costManager.CompareCost(selectCard))    //코스트 비교
             {
                 isMyCardDrag = true;
-                if (onMyCardArea)
+                if (selectCard.selectable)
+                    selectCard.ChangeCardImage(true);
+                if (onMyCardArea)   
                 {
+                    selectCard.ChangeCardImage(false);  //이미지 변경이 이상해지는 현상 방지용
                     return;
                 }
 
@@ -405,10 +408,12 @@ public class CardManager : MonoBehaviour
 
     public void CardMouseUp()   //마우스를 뗄 때 카드 사용
     {
-        if(selectCard == null)
+        if (selectCard == null)
         {
             return;
         }
+        Debug.Log(selectCard.functionname);
+        selectCard.ChangeCardImage(false);
         if (!player.canplay)  //카드 사용 행동 가능한지 체크 (ex: 기절)
         {
             GameManager.Inst.Notification("군중제어 상태에서는 카드 사용이 불가능합니다");

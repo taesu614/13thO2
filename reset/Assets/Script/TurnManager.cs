@@ -12,7 +12,10 @@ public class TurnManager : MonoBehaviour
     public CostManager costManager;
     void Awake() => Inst = this;
 
-    [Header("Develop")]
+    private void Start()
+    {
+        playerentity.SetPastHealth();
+    }
     [SerializeField] [Tooltip("시작 턴 모드를 정합니다")] ETurnMode eTurnMode;
     [SerializeField] [Tooltip("카드 배분이 매우 빨라집니다")] bool fastMode;
     [SerializeField] [Tooltip("시작 카드 개수를 정합니다")] int startCardCount;

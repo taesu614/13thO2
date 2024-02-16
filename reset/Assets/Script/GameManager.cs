@@ -43,7 +43,8 @@ public class GameManager : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Keypad5))
         {
-            EntityManager.Inst.SpawnEntity(true, monster, Vector3.zero);
+            CostManager.Inst.CostSet();
+            //EntityManager.Inst.SpawnEntity(true, monster, Vector3.zero);
         }
         //if(Input.GetKeyDown(KeyCode.Keypad0))
         //{

@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class LobiManager : MonoBehaviour
 {
+    private void Start()
+    {
+        if (!AudioManager.instance.CheckBGM("main"))
+            AudioManager.instance.PlayBGM(AudioManager.BGM.main);
+    }
     public void GoToMap()
     {
         SceneManager.LoadScene("MapScene");

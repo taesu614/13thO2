@@ -47,12 +47,6 @@ public class MapManager : MonoBehaviour
         Instantiate(playermeeple, Tile[playermapindex].transform);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void MapRandomSet()     //맵 랜덤하게 배치하는 용도
     {
         for (int i = 0; i < Tile.Length; i++)    

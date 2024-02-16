@@ -31,6 +31,14 @@ public class SaveData : MonoBehaviour
         }
     }
 
+    public void ResetData()
+    {
+        playermaxhelath = 100;
+        playerhealth = 100;
+        playermoney = 10;
+        playermapindex = 0;
+    }
+
     public void ResetCardList() //저장된 카드 리스트 초기화
     {
         Debug.Log("초기화 완료");
