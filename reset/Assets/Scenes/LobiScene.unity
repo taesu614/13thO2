@@ -663,8 +663,8 @@ MonoBehaviour:
   m_FillRect: {fileID: 352311736}
   m_HandleRect: {fileID: 848122493}
   m_Direction: 0
-  m_MinValue: -20
-  m_MaxValue: 20
+  m_MinValue: -10
+  m_MaxValue: 10
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:
@@ -2353,6 +2353,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemSO: {fileID: 11400000, guid: d7aea8733362e364fbc27bc12a60f310, type: 2}
   playermoney: 10
+  bgmVolumeSet: 0
+  sfxVolumeSet: 0
 --- !u!4 &1518961715
 Transform:
   m_ObjectHideFlags: 0
@@ -2490,8 +2492,8 @@ MonoBehaviour:
   m_FillRect: {fileID: 332705372}
   m_HandleRect: {fileID: 2116274327}
   m_Direction: 0
-  m_MinValue: -20
-  m_MaxValue: 20
+  m_MinValue: -10
+  m_MaxValue: 10
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:

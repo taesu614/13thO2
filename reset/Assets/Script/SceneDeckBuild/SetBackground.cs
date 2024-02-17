@@ -5,12 +5,13 @@ using UnityEngine.SceneManagement;
 using TMPro;
 
 public class SetBackground : MonoBehaviour
-{
+{   //향후 ConstellationManager와 통합할 것
     GameObject deckui;
     DeckUIManager deckuimanager;
     bool isclick = false;
     GameObject background;
     Order order;
+    public ConstellationManager constellationManager;
     public CanvasConstellation canvasconstellation;
     TMP_Text constellatext;
     SaveData savedata;
@@ -69,10 +70,11 @@ public class SetBackground : MonoBehaviour
     {
         string name = savedata.GetPlayerConstellation();
         string speech;
-        switch(name)
+        switch (name)
         {
             case "Sheep":
-                speech = "양이 한마리 양이 두마리 양이 세마리...Zzz.." + System.Environment.NewLine + "R3G1B2 보호막 5 증가, 공격력 3 증가, 수면 면역";
+                speech = "양이 한마리 양이 두마리 양이 세마리...Zzz.." + System.Environment.NewLine + "활성화 시 공격력 3 증가";
+                BackgroundActive(true);
                 break;
             case "Goat":
                 speech = "유일무이, 언터쳐블, GOAT. 대단합니다, GOAT. 감사합니다, GOAT. 숭배합니다, GOAT. 수고하셨습니다, GOAT." + System.Environment.NewLine + "아 그저... GOAT 당신의 헌신과 열정이 또다시 팀을 승리로 이끌었습니다." + System.Environment.NewLine + "R0G1B2 보호막 30증가";

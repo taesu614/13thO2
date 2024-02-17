@@ -24,7 +24,7 @@ public class TurnManager : MonoBehaviour
     public bool isLoading;  //게임 끝나면 isLoading을 true로 하면 카드와 엔티티 클릭 방지
     public bool myTurn;
     public int nowTurn = 0;
-
+    public int maskturn = 0;
     public Entity playerentity;
 
     enum ETurnMode { Random, My, Other }    //턴 수 정하는 부분 적 선제공격 가능성으로 삭제하지 않음
@@ -79,6 +79,11 @@ public class TurnManager : MonoBehaviour
             costManager.ShowCost();
             GameManager.Inst.Notification("나의 턴");
             nowTurn++;
+            maskturn--;
+            if(maskturn < 1)
+            {
+                CostManager.Inst.RemoveMask();
+            }
         }
             
 

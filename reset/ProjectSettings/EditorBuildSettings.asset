@@ -35,4 +35,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LobiScene.unity
     guid: a54cc1d759e7f934a9aef53e5d6b3f66
+  - enabled: 1
+    path: Assets/Scenes/CutScene.unity
+    guid: 6a5ba0e44899e5d4cbb8f7358e17de4d
+  - enabled: 1
+    path: Assets/Scenes/CutScene2.unity
+    guid: 2f973c948e125e74a900411fa84707db
+  - enabled: 1
+    path: Assets/Scenes/CutScene3.unity
+    guid: d15d8907d7fa0894fae5b55f1b7db4c3
   m_configObjects: {}

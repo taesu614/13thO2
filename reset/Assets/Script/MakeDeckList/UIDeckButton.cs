@@ -11,6 +11,10 @@ public class UIDeckButton : MonoBehaviour
     [SerializeField] TMP_Text nameTMP;
     [SerializeField] TMP_Text costTMP;
     [SerializeField] TMP_Text cardsTMP;  // 카드 장수 정하는거
+    [SerializeField] Image image;
+    [SerializeField] Sprite blue;
+    [SerializeField] Sprite red;
+    [SerializeField] Sprite green;
     public int identifier;
     public int cards = 0;  // 카드 장수
     string a;
@@ -36,18 +40,21 @@ public class UIDeckButton : MonoBehaviour
 
         if (item.color == 'R')  //여기 숫자 수정하면 글씨 색 바뀜
         {
-            nameTMP.color = new Color32(255, 88, 88, 255);
-            costTMP.color = new Color32(255, 88, 88, 255);
+            ///nameTMP.color = new Color32(255, 88, 88, 255);
+            //costTMP.color = new Color32(255, 88, 88, 255);
+            image.sprite = red;
         }
         else if (item.color == 'G')
         {
-            nameTMP.color = new Color32(88, 255, 88, 255);
-            costTMP.color = new Color32(88, 255, 88, 255);
+            //nameTMP.color = new Color32(88, 255, 88, 255);
+            //costTMP.color = new Color32(88, 255, 88, 255);
+            image.sprite = green;
         }
         if (item.color == 'B')
         {
-            nameTMP.color = new Color32(88, 88, 255, 255);
-            costTMP.color = new Color32(88, 88, 255, 255);
+            //nameTMP.color = new Color32(88, 88, 255, 255);
+            //costTMP.color = new Color32(88, 88, 255, 255);
+            image.sprite = blue;
         }
     }
 

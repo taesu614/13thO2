@@ -19,8 +19,6 @@ public class MapManager : MonoBehaviour
         }
         else
             Destroy(gameObject);
-        if(!AudioManager.instance.CheckBGM("main"))
-            AudioManager.instance.PlayBGM(AudioManager.BGM.main);
     }
 
     [SerializeField] GameObject[] Tile; //씬에 적용된 Tile 프리팹을 넣을 것 0이 맨 마지막칸임, 적어도 현 시점에서 노가다 형식으로 진행되므로 이렇게 씀
@@ -29,10 +27,11 @@ public class MapManager : MonoBehaviour
     SaveData savedata;
     string tilecount;  //타일맵 수
     int playermapindex;
+
     void Start()
     {
         savedata = GameObject.Find("SaveData").GetComponent<SaveData>();
-        if (!AudioManager.instance.CheckBGM("map"))
+        if (!AudioManager.instance.CheckBGM("music_Map"))
             AudioManager.instance.PlayBGM(AudioManager.BGM.map);
         if (savedata.GetMyMap() != null)
         {
@@ -44,7 +43,17 @@ public class MapManager : MonoBehaviour
             TileSet();
         }
         playermapindex = savedata.GetPlayerMapIndex();
+        //if (playermapindex == 0 && savedata.IsRoulette == false)
+        //    return;
         Instantiate(playermeeple, Tile[playermapindex].transform);
+
+        if (savedata.GetPlayerMapIndex() != 0)
+        {
+
+            MapTile a = Tile[0].GetComponent<MapTile>();
+            a.SetSprite(3);
+            a.SetStageSceneName("EndingProto");
+        }
     }
 
     void MapRandomSet()     //맵 랜덤하게 배치하는 용도
@@ -59,10 +68,16 @@ public class MapManager : MonoBehaviour
 
     void TileSet()  //타일을 배치하는 코드
     {
-        for (int i = 0; i < Tile.Length; i++)
+        for (int i = 1; i < Tile.Length; i++)
         {
             maptile = Tile[i].GetComponent<MapTile>();
             maptile.Setup(savedata.GetMyMap()[i], i);
+        }
+        if(!savedata.IsRoulette)
+        {
+            maptile = Tile[0].GetComponent<MapTile>();
+            Debug.Log("maptile: " + maptile.isopen);
+            maptile.SetSprite(4);  // 투명
         }
     }
 
@@ -71,9 +86,16 @@ public class MapManager : MonoBehaviour
         Debug.Log(num);
         if (num == 0)
             num = 6;    //스크립트상 0이 6이므로
-        for(int i = savedata.GetPlayerMapIndex()+1; i < savedata.GetPlayerMapIndex() + num + 1; i++)
+        for(int i = savedata.GetPlayerMapIndex() + 1; i < savedata.GetPlayerMapIndex() + num + 1; i++)
         {
-            if (i > Tile.Length-1)  //개수는 1부터 시작이라 index상으로는 넘어감
+            if (savedata.IsRoulette == false)  // 계속 1만 나오면 진행이 안돼서 일단 처음에만 첫번째 발판에도 진입 가능하도록
+            {
+                savedata.IsRoulette = true;
+                int tempNum = i - 1;
+                Tile[tempNum].GetComponent<MapTile>().TileSet(true);
+                Tile[tempNum].GetComponent<MapTile>().isopen = false;
+            }
+            if (i > Tile.Length - 1)  //개수는 1부터 시작이라 index상으로는 넘어감
             {
                 i = 0;
                 Tile[i].GetComponent<MapTile>().TileSet(true);
@@ -85,11 +107,9 @@ public class MapManager : MonoBehaviour
 
     public void CloseAllTile()
     {
-        for(int i = 0; i< Tile.Length; i++)
+        foreach(GameObject A in Tile)
         {
-            if (i == 0) //첫칸은 열어놓을것
-                continue;
-            Tile[i].GetComponent<MapTile>().TileSet(false);
+            A.GetComponent<MapTile>().TileSet(false);
         }
     }
 }

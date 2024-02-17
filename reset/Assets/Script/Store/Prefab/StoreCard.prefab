@@ -203,15 +203,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uCE74\uB4DC \uC774\uB984"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 945d32a014df836439f7e775b75435df, type: 2}
-  m_sharedMaterial: {fileID: -3176885775795886508, guid: 945d32a014df836439f7e775b75435df, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d188c187fe57fd94d9a9ae629bb68128, type: 2}
+  m_sharedMaterial: {fileID: -8592735950030697906, guid: d188c187fe57fd94d9a9ae629bb68128, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190335
-  m_fontColor: {r: 1, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -549,7 +549,9 @@ MonoBehaviour:
     active: 
     percent: 0
     selectable: 0
-    identifier: 0
+    memoryCard: 0
+    haveCard: 0
+    tag: 
   CardImage: {fileID: 1031458243736932334}
   CostImage: {fileID: 1031458243487905500}
   nameTMP: {fileID: 1031458243110644112}

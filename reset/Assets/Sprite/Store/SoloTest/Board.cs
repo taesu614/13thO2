@@ -28,12 +28,12 @@ public class Board : MonoBehaviour
 
     private void OnMouseUp()
     {
-        EntityManager.Inst.EntityMouseUp();
+        
     }
 
     private void OnMouseDrag()
     {
-        EntityManager.Inst.EntityMouseDrag();
+       
     }
 
     public bool Select(int damage)

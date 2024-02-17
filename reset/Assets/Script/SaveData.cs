@@ -9,15 +9,18 @@ public class SaveData : MonoBehaviour
     List<Item> deck = new List<Item>();
     List<int> cardcount = new List<int>();
     string constellation = "Sheep"; //기본값을 sheep으로
-    // Start is called before the first frame update
     public static SaveData instance;   //싱글톤으로 설정
     private int playermaxhelath = 100;
     private int playerhealth = 100;
     public int playermoney = 10;
-    
+    int getmoney = 0; //얻은 돈
+    public float bgmVolumeSet = -10;
+    public float sfxVolumeSet = 0;
+
     //맵 위치 관련
     string mymap;
     int playermapindex = 0; //플레이어 지도 위치
+    public bool IsRoulette = false;
     private void Awake()
     {
         if (instance == null)   //씬 전환 시 생성을 막는 용도
@@ -31,12 +34,18 @@ public class SaveData : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        DefaultDeckSetting();
+    }
+
     public void ResetData()
     {
         playermaxhelath = 100;
         playerhealth = 100;
         playermoney = 10;
         playermapindex = 0;
+        IsRoulette = false;
     }
 
     public void ResetCardList() //저장된 카드 리스트 초기화
@@ -69,6 +78,35 @@ public class SaveData : MonoBehaviour
 
     public void DefaultDeckSetting()    //기본 덱 설정하는 곳   - 뭐 설정한 적 없어서 건드리지 말 것
     {
+        for (int i = 0; i < itemSO.items.Length; i++)  //ItemSO에서 카드 데이터 불러옴 - 전체 카드 데이터
+        {
+            Item item = itemSO.items[i];
+            switch (item.functionname)
+            {
+                case "Charge":
+                    InputCardInDeck(item);
+                    break;
+                case "WowIdea":
+                    InputCardInDeck(item);
+                    break;
+                case "Brush":
+                    InputCardInDeck(item);
+                    InputCardInDeck(item);
+                    InputCardInDeck(item);
+                    break;
+                case "Layer":
+                    InputCardInDeck(item);
+                    InputCardInDeck(item);
+                    InputCardInDeck(item);
+                    break;
+                case "CtrlZ":
+                    InputCardInDeck(item);
+                    break;
+                case "SharpNib":
+                    InputCardInDeck(item);
+                    break;
+            }
+        }
     }
 
     public void SetMyMap(string map)    //지도 설정
@@ -103,6 +141,17 @@ public class SaveData : MonoBehaviour
             playermoney = 999;
         }
     }
+
+    public void SetPlayerGetMoney(int money)
+    {
+        getmoney = money;
+    }
+
+    public int GetPlayerGetMoney()
+    {
+        return getmoney;
+    }
+
     public int GetPlayerMoney()
     {
         return playermoney;

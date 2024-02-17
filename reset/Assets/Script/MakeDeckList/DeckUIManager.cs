@@ -32,8 +32,10 @@ public class DeckUIManager : MonoBehaviour
         deckuicanvas = deckui.GetComponent<Canvas>();
         cardlistpanel = GameObject.Find("CardListPanel");
         deckui.SetActive(false);
-        savedata.ResetCardList();
+        //savedata.ResetCardList();
         itemSO.InitializeItems();
+        foreach(Item A in savedata.GetPlayerDeck())
+            mydecklisttemp.Add(A);
     }
 
     public bool IsUIOpen()
@@ -60,8 +62,7 @@ public class DeckUIManager : MonoBehaviour
                     card.Setup(item);
                 }
             }
-
-
+            MakeCardNameUI();
             isopen = true;
             AudioManager.instance.PlaySFX(AudioManager.SFX.openClick);  // 클릭시 임시 효과음
         }
@@ -152,6 +153,7 @@ public class DeckUIManager : MonoBehaviour
 
     public void SaveDeck()
     {
+        savedata.ResetCardList();
         foreach(Item A in mydecklisttemp)
         {
             savedata.InputCardInDeck(A);

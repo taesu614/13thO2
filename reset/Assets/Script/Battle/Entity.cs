@@ -26,6 +26,10 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     [SerializeField] Sprite WhatUI;
     [SerializeField] Sprite poisonIco;
     [SerializeField] Sprite sleepIco;
+    [SerializeField] Sprite burnIco;
+    [SerializeField] Sprite powerDownIco;
+    [SerializeField] Sprite powerUpIco;
+    [SerializeField] Sprite shieldIco;
     [SerializeField] Animator animator;
     List<StatusEffect> myStatusEffect = new List<StatusEffect>();    //¹æ¹ý ¸øÃ£¾Æ¼­ public »ç¿ëÇÔ 
     public Monster monster;
@@ -109,20 +113,14 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
 
     private void OnMouseDown()
     {
-        if (isMine)
-            EntityManager.Inst.EntityMouseDown(this);
     }
 
     private void OnMouseUp()
     {
-        if (isMine)
-            EntityManager.Inst.EntityMouseUp();
     }
 
     private void OnMouseDrag()
     {
-        if (isMine)
-            EntityManager.Inst.EntityMouseDrag();
     }
 
     public bool Damaged(int damage)
@@ -584,6 +582,18 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
                         break;
                     case "poison":
                         effectUI.sprite = poisonIco;
+                        break;
+                    case "powerUp":
+                        effectUI.sprite = powerUpIco;
+                        break;
+                    case "powerDown":
+                        effectUI.sprite = powerDownIco;
+                        break;
+                    case "burn":
+                        effectUI.sprite = burnIco;
+                        break;
+                    case "shield":
+                        effectUI.sprite = shieldIco;
                         break;
                     default:
                         effectUI.sprite = null;

@@ -12,7 +12,7 @@ public class MapTile : MonoBehaviour
     [SerializeField] GameObject TileObject;     //타일의 오브젝트
     [SerializeField] GameObject StageObject;    //스테이지의 오브젝트
     SpriteRenderer mysprite;
-    bool isopen = false;
+    public bool isopen = false;
     string stagescenename;
     int tileindex;
     private void Start()
@@ -22,10 +22,6 @@ public class MapTile : MonoBehaviour
 
     public void Setup(char stage, int index)
     {
-        if (index == 0) //빈 타일
-        {
-            return;
-        }
         tileindex = index;
         switch (stage)
             {
@@ -49,7 +45,12 @@ public class MapTile : MonoBehaviour
         }
     }
 
-    void SetSprite(int i)   //향후 타일(발판) 이미지도 변경될 수 있어서 만듦
+    public void SetStageSceneName(string name)
+    {
+        stagescenename = name;
+    }
+
+    public void SetSprite(int i)   //향후 타일(발판) 이미지도 변경될 수 있어서 만듦
     {
         mysprite = StageObject.GetComponent<SpriteRenderer>();
         mysprite.sprite = Stageimg[i];
@@ -63,8 +64,11 @@ public class MapTile : MonoBehaviour
 
     public void ChangeScene()
     {
-        SaveData.instance.SetPlayerMapIndex(tileindex);
-        SceneManager.LoadScene(stagescenename);
+        if(SaveData.instance.IsRoulette)
+        {
+            SaveData.instance.SetPlayerMapIndex(tileindex);
+            SceneManager.LoadScene(stagescenename);
+        }
     }
 
     void OnMouseDown()  //해당 콜라이더를 누를때

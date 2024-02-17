@@ -9,6 +9,7 @@ public class DamageMark : MonoBehaviour
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Sprite healeffect;
     [SerializeField] Sprite poisoneffect;
+    [SerializeField] Sprite burneffect;
     Transform transform;
     public float speed = 0.5f;
     public float time = 1.0f;
@@ -43,6 +44,9 @@ public class DamageMark : MonoBehaviour
                 break;
             case "poison":
                 spriteRenderer.sprite = poisoneffect;
+                break;
+            case "burn":
+                spriteRenderer.sprite = burneffect;
                 break;
         }
 

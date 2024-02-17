@@ -65,7 +65,7 @@ public class CardFunctionManager : MonoBehaviour
         cardEffects["Firestick"] = Firestick;  // 불꽃 스틱
         cardEffects["Mousefire"] = Mousefire;  // 쥐불놀이
         cardEffects["CtrlZ"] = CtrlZ; // 되돌리기
-        cardEffects["Gradation"] = Gradation; // 그라데이션
+        cardEffects["Charge"] = Charge; // 그라데이션
         cardEffects["WowIdea"] = WowIdea;   //반짝! 아이디어
         cardEffects["PiggyBank"] = PiggyBank;   //먹보 저금통
         cardEffects["Layer"] = Layer;   //레이어
@@ -200,7 +200,7 @@ public class CardFunctionManager : MonoBehaviour
         ResetTarget();  //모든 공격 기능 종료 후 타겟을 리셋해야 대상 지정안해도 카드가 사용되는 상황 방지됨
     }
 
-    private void Gradation()    //그라데이션
+    private void Charge()    //그라데이션
     {
         costManager.AddRGBCost('R');
         costManager.AddRGBCost('G');

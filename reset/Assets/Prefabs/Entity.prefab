@@ -373,6 +373,10 @@ MonoBehaviour:
   WhatUI: {fileID: 21300000, guid: 93d6e14f3f30c684a9b50836817a0a84, type: 3}
   poisonIco: {fileID: 21300000, guid: d20ff90ada7850e4f9672565414987ce, type: 3}
   sleepIco: {fileID: 21300000, guid: 84303d122c7cce345ae3343402b58eb5, type: 3}
+  burnIco: {fileID: 21300000, guid: 776f042f2050653468223268a16bd605, type: 3}
+  powerDownIco: {fileID: 21300000, guid: 81efa3280fdc51e40bfae3e636672756, type: 3}
+  powerUpIco: {fileID: 21300000, guid: e2ef50ed5ff7cec4d8647845e438c7ed, type: 3}
+  shieldIco: {fileID: 21300000, guid: eec62cae63b31b945aa7583545c815c8, type: 3}
   animator: {fileID: 1803905750701541722}
   monster:
     name: 

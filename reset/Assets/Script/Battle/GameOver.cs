@@ -16,6 +16,7 @@ public class GameOver : MonoBehaviour
     {
         SaveData.instance.ResetData();
         SaveData.instance.ResetMyMap();
+        AudioManager.instance.DestroyAudioManager();
         SceneManager.LoadScene("Press2StartScene");
     }
 }

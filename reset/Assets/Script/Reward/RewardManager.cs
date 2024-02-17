@@ -11,6 +11,8 @@ public class RewardManager : MonoBehaviour
     [SerializeField] GameObject RewardCardPrefab;   //보상이 될 카드 프리팹 넣기 
     [SerializeField] ItemSO itemSO;                 //ItemSO : 카드 데이터 관련
     [SerializeField] GameObject carndnameuiprefab;   //덱에 표시할  카드 이름의 프리팹 
+    [SerializeField] TMP_Text moneyTMP;
+    [SerializeField] TMP_Text getMoneyTMP;
     Transform RewardContent;     //카드 보상 넣을 Content의 Transform
     public Transform DeckContent;          //덱 리스트 넣을 Content의 Transfrom
     List<Item> RewardList = new List<Item>();  //보상에 들어갈 리스트
@@ -21,6 +23,9 @@ public class RewardManager : MonoBehaviour
     {
         deckscrollview = GameObject.Find("DeckScrollView");
         savedata = GameObject.Find("SaveData").GetComponent<SaveData>();
+        moneyTMP.text = savedata.GetPlayerMoney().ToString();
+        getMoneyTMP.text = "+" + savedata.GetPlayerGetMoney().ToString();
+
         RewardContent = GameObject.Find("RewardContent").GetComponent<Transform>();
         MakeDeck();
         SetRewardList();

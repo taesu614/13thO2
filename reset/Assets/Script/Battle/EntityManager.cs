@@ -118,7 +118,6 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
 
     private void Update()
     {
-        ShowTargetPicker(ExistTargetPickEntity);
         if(myplayerentity.health<=0)    //임시용
         {
             GameObject obj = GameObject.Find("Canvas").transform.Find("GameOverCanvas").gameObject;
@@ -188,11 +187,14 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
             continue;
         }
         if (nowMonsterList.Count < 1)
-            StartCoroutine(WaitForSecondsExample());
+            StartCoroutine(FinishBattle());
     }
 
-    IEnumerator WaitForSecondsExample() //이벤트 기반 아키텍처 사용 미숙으로 인해 이쪽으로 옮김
+    IEnumerator FinishBattle() //이벤트 기반 아키텍처 사용 미숙으로 인해 이쪽으로 옮김
     {
+        int getmoney = 10;
+        AudioManager.instance.ChangeBGMVolume(-80);
+        AudioManager.instance.PlaySFX(AudioManager.SFX.success);
         PlayerWin.SetActive(true);
         yield return new WaitForSeconds(3.0f);
 
@@ -203,8 +205,8 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
         Entity playernow = player.GetComponent<Entity>();
 
         int moneyNow = playerdata.GetPlayerMoney();
-        int plusmoney = moneyNow + 10;  // 일단 임시로 몬스터 죽이면 고정으로 10원 추가하는걸로 했습니다.
-
+        int plusmoney = moneyNow + getmoney;  // 일단 임시로 몬스터 죽이면 고정으로 10원 추가하는걸로 했습니다.
+        playerdata.SetPlayerGetMoney(getmoney);
         playerdata.SetPlayerHealth(playernow.health);
         playerdata.SetPlayerMoney(plusmoney);
         SceneManager.LoadScene("RewardScene");
@@ -222,118 +224,5 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
             }
         }
         return false;
-    }
-
-    void EntityAlignment(bool isMine)   //엔티티 정렬 이걸 활용해서 게임 시작 후 몬스터 소환 시 정렬해야할듯
-    {
-        float targetY = isMine ? -1f : 4.15f;
-        var targetEntities = isMine ? myEntities : otherEntites;
-
-        for(int i = 0; i < targetEntities.Count; i++)
-        {
-            float targetX = (targetEntities.Count - 1) * -3.4f + i * 6.8f;
-
-            var targetEntity = targetEntities[i];
-            targetEntity.originPos = new Vector3(targetX, targetY, 0);
-            targetEntity.MoveTransform(targetEntity.originPos, true, 0.5f);
-            targetEntity.GetComponent<Order>().SetOriginOrder(i);
-        }
-    }
-
-    public void InsertMyEmptyEntity(float xPos) //마우스 필드 드래그 시 엔티티 리스트 위치 변경용인듯? 하스에서 하수인 놔두기 전에 미리 배치하는 그거
-    {
-        if (IsFullMyEntities)
-        {
-            return;
-        }
-        if (!ExistMyEmptyEntity)
-            myEntities.Add(myEmptyEntity);
-
-        Vector3 emptyentityPos = myEmptyEntity.transform.position;
-        emptyentityPos.x = xPos;
-        myEmptyEntity.transform.position = emptyentityPos;
-
-        int _emptyEntityIndex = MyEmptyEntityIndex;
-        myEntities.Sort((entity1, entity2) => entity1.transform.position.x.CompareTo(entity2.transform.position.x));
-        if (MyEmptyEntityIndex != _emptyEntityIndex)
-            EntityAlignment(true);
-    }
-
-    public void RemoveMyEmptyEntity()   //InsertMyEmptyEntity랑 같이 쓰는 용도인듯
-    {
-        if (!ExistMyEmptyEntity)
-            return;
-
-        myEntities.RemoveAt(MyEmptyEntityIndex);
-        EntityAlignment(true);
-    }
-
-    public void EntityMouseDown(Entity entity)
-    {
-        if (!CanMouseInput)
-            return;
-
-        selectEntity = entity;
-    }    
-    
-    public void EntityMouseUp()
-    {
-        if (!CanMouseInput)
-            return;
-
-        // selectEntity, targetPickEntity 둘 다 존재하면 공격한다. 바로 null, null로 만든다.
-        if (selectEntity && targetPickEntity && selectEntity.attackable)
-            Attack(selectEntity, targetPickEntity);
-
-        selectEntity = null;
-        targetPickEntity = null;
-    }    
-    
-    public void EntityMouseDrag()
-    {
-        if (!CanMouseInput || selectEntity == null)
-        {
-            return;
-        }
-            
-
-        //Other 타겟 엔티티 찾기
-        bool existTarget = false;
-        foreach (var hit in Physics2D.RaycastAll(Utils.MousePos, Vector3.forward))
-        {
-            Entity entity = hit.collider?.GetComponent<Entity>();
-            if(entity != null && !entity.isMine && selectEntity.attackable) //적꺼 선택 이거 활용하면 내꺼 선택도 가능할듯
-            {
-                targetPickEntity = entity;
-                existTarget = true;
-                break;
-            }
-        }
-        if (!existTarget)
-            targetPickEntity = null;
-    }
-
-    void Attack(Entity attacker, Entity defender)
-    {
-        //_attacker가 _defende 의 위치로 이동하다 원래 위치로 온다, 이때 order가 높다
-        attacker.attackable = false;
-        attacker.GetComponent<Order>().SetMostFrontOrder(true);
-        Sequence sequence = DOTween.Sequence()
-            .Append(attacker.transform.DOMove(defender.transform.position, 0.4f)).SetEase(Ease.InSine)
-            .AppendCallback(() =>
-            {
-                //데미지 주고 받기  
-                attacker.Damaged(defender.attack);
-                defender.Damaged(attacker.attack);
-            })
-            .Append(attacker.transform.DOMove(attacker.originPos, 0.4f)).SetEase(Ease.OutSine)
-            .OnComplete(() => { });//죽음처리
-    }
-
-    void ShowTargetPicker(bool isShow)
-    {
-        targetPicker.SetActive(isShow);
-        if (ExistTargetPickEntity)
-            targetPicker.transform.position = targetPickEntity.transform.position;
     }
 }

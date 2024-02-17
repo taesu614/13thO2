@@ -28,7 +28,7 @@ MonoBehaviour:
     percent: 2
     selectable: 1
     memoryCard: 0
-    haveCard: 0
+    haveCard: 1
     tag: 
   - name: "\uBD88\uAF43 \uB9C9\uB300"
     functionname: Firestick
@@ -64,8 +64,8 @@ MonoBehaviour:
     memoryCard: 0
     haveCard: 0
     tag: 
-  - name: "\uADF8\uB77C\uB370\uC774\uC158"
-    functionname: Gradation
+  - name: "\uCDA9\uC804"
+    functionname: Charge
     cost: 0
     colorimg: {fileID: 21300000, guid: bf31a3e98478f504f96f93cdc130e88e, type: 3}
     costcolor: {fileID: 21300000, guid: 74773374773ea6d4b8a2653b5cfd1572, type: 3}
@@ -111,7 +111,7 @@ MonoBehaviour:
     percent: 2
     selectable: 0
     memoryCard: 0
-    haveCard: 0
+    haveCard: 1
     tag: 
   - name: "\uB808\uC774\uC5B4"
     functionname: Layer

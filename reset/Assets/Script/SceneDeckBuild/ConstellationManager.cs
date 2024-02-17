@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class ConstellationManager : MonoBehaviour
 {
     GameObject[] constellations;
     Queue<GameObject> constellationqueue = new Queue<GameObject>();
     SaveData savedata;
+    public CanvasConstellation canvasconstellation;
+    public SetBackground setbg; 
+    [SerializeField] GameObject Message;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +23,7 @@ public class ConstellationManager : MonoBehaviour
             index++;
         }
         SetConstellation(constellationqueue);
+        Message.SetActive(false);
     }
 
     // Update is called once per frame
@@ -69,6 +74,43 @@ public class ConstellationManager : MonoBehaviour
     public void SendConstellation()
     {
         savedata.SetPlayerConstellation(constellationqueue.Peek().name);
+
         AudioManager.instance.PlaySFX(AudioManager.SFX.openClick); // 클릭시 효과음 임시
+    }
+    
+    public void OpenMirror()
+    {
+        TMP_Text text = Message.GetComponent<TMP_Text>();
+        switch (constellationqueue.Peek().name)
+        {
+            case "Sheep":
+                setbg.BackgroundActive(true);
+                canvasconstellation.CloseUI();
+                SendConstellation();
+                break;
+            case "Goat":
+                text.text = "개발이 완료되지 않아 사용할 수 없습니다.";
+                StartCoroutine(AlertMessage());
+                break;
+            case "Sagittarius":
+                
+
+                text.text = "개발이 완료되지 않아 사용할 수 없습니다.";
+                StartCoroutine(AlertMessage());
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    IEnumerator AlertMessage()
+    {
+        Message.SetActive(true);
+        // 코루틴 실행 내용
+        yield return new WaitForSeconds(2f);
+
+        Message.SetActive(false);
+        yield break;
     }
 }

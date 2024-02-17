@@ -6,9 +6,7 @@ using UnityEngine.Audio;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
-
-    public AudioMixer audiomixer;
-
+    public AudioMixer audioMixer;
     public AudioClip[] bgmClips;
     public float bgmVolume;
     AudioSource bgmPlayer;
@@ -31,32 +29,50 @@ public class AudioManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-        instance = this;
         Init();
         bgmPlayer.Play();
+        instance = this;
     }
 
     void Init()
     {
-        GameObject bgmObject = GameObject.Find("BGMPlayer");
-        bgmPlayer = bgmObject.GetComponent<AudioSource>();
-        bgmPlayer.playOnAwake = false;
-        bgmPlayer.volume = bgmVolume;
-        bgmPlayer.loop = true;
-        bgmPlayer.clip = bgmClips[0];   // 일단 메인 브금으로 초기화
-
-
-        GameObject sfxObject = GameObject.Find("SFXPlayer");
-
-        sfxPlayers = new AudioSource[sfxChannels];
-
-        for (int index = 0; index < sfxPlayers.Length; index++)
+        if (audioMixer != null)
         {
-            sfxPlayers[index] = sfxObject.GetComponent<AudioSource>();
-            sfxPlayers[index].playOnAwake = false;
-            sfxPlayers[index].volume = sfxVolume;
-        }
+            AudioMixerGroup[] masterGroups = audioMixer.FindMatchingGroups("Master");
+            GameObject bgmObject = GameObject.Find("BGMPlayer");
+            GameObject sfxObject = GameObject.Find("SFXPlayer");
+            sfxPlayers = new AudioSource[sfxChannels];
 
+            if (masterGroups != null && masterGroups.Length > 0)
+            {
+                AudioMixerGroup bgmGroup = masterGroups[0].audioMixer.FindMatchingGroups("BGM")[0];
+
+                bgmPlayer = bgmObject.AddComponent<AudioSource>();
+                bgmPlayer.playOnAwake = false;
+                bgmPlayer.volume = bgmVolume;
+                bgmPlayer.loop = true;
+                bgmPlayer.clip = bgmClips[0];   // 일단 메인 브금으로 초기화
+                bgmPlayer.outputAudioMixerGroup = bgmGroup;
+
+                AudioMixerGroup sfxGroup = masterGroups[0].audioMixer.FindMatchingGroups("SFX")[0];
+
+                for (int index = 0; index < sfxPlayers.Length; index++)
+                {
+                    sfxPlayers[index] = sfxObject.AddComponent<AudioSource>();
+                    sfxPlayers[index].playOnAwake = false;
+                    sfxPlayers[index].volume = sfxVolume;
+                    sfxPlayers[index].outputAudioMixerGroup = sfxGroup;
+                }
+            }
+            else
+            {
+                Debug.LogError("Master group not found.");
+            }
+        }
+        else
+        {
+            Debug.LogError("AudioMixer is null.");
+        }
     }
 
     public void PlayBGM(BGM bgm)
@@ -99,6 +115,7 @@ public class AudioManager : MonoBehaviour
 
     public bool CheckBGM(string playing)
     {
+        Debug.Log(bgmPlayer);
         if (bgmPlayer.clip.name == playing)
             return true;
         else
@@ -111,5 +128,20 @@ public class AudioManager : MonoBehaviour
         GameObject bgmObject = GameObject.Find("BGMPlayer");
         bgmPlayer = bgmObject.GetComponent<AudioSource>();
         bgmPlayer.volume = volume;
+    }
+
+    public void ChangeSFXVolume(int volume)
+    {
+        GameObject sfxObject = GameObject.Find("SFXPlayer");
+        for(int i = 0; i < sfxPlayers.Length; i++)
+        {
+            sfxPlayers[i] = sfxObject.GetComponent<AudioSource>();
+            sfxPlayers[i].volume = volume;
+        }
+    }
+
+    public void DestroyAudioManager()
+    {
+        Destroy(gameObject);
     }
 }

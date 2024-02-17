@@ -51,6 +51,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 7525242669701138501}
   healeffect: {fileID: 873237082, guid: e9937fc62f049e14895cc8cc47461410, type: 3}
   poisoneffect: {fileID: 21300000, guid: 93c50c73fb62fbb43bee6b52fc3f33c1, type: 3}
+  burneffect: {fileID: 21300000, guid: b6ed96a34d94d2d4c8e6e0cfc96aa089, type: 3}
   speed: 0.5
   time: 1
 --- !u!114 &6666671960646953267
@@ -95,7 +96,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4929727816304643138}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.014, y: -0.014, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -143,7 +144,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: 5f54c2bbb09aaec47bbef434ce385fac, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e6e5aa5088c3f664d9cf410171c7a312, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -190,7 +191,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.077, y: 0.059}
+  m_AnchoredPosition: {x: 0.043, y: -0.017}
   m_SizeDelta: {x: 1.9898, y: 2.161}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &7229204059439827610
@@ -233,7 +234,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &1765555687514040958
 MonoBehaviour:

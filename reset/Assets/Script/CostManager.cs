@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class CostManager : MonoBehaviour
 {
+    [SerializeField] PlayerAnimator playerAnimation;
     [SerializeField] TMP_Text costTMP;  //계산에 쓰일 것이므로 num = int.Parse(costTMP); 해둘것
     [SerializeField] TMP_Text rcostTMP;
     [SerializeField] TMP_Text gcostTMP;
@@ -17,7 +18,6 @@ public class CostManager : MonoBehaviour
     public GameObject RBottle;
     public GameObject GBottle;
     public GameObject BBottle;
-    public GameObject ConstellationButton;
     public Sprite[] img; 
     public Sprite[] rgbimg;
     public Sprite Goatcant;
@@ -61,7 +61,8 @@ public class CostManager : MonoBehaviour
     }
 
     private void SetConstellaButtoncant(string name, bool can)
-    {
+    {//기능이 삭제됐으나 사용될 가능성이 있다고 판단되어 주석처리
+        /*
         Image consprite = ConstellationButton.GetComponent<Image>();
         switch(name)
         {
@@ -78,6 +79,7 @@ public class CostManager : MonoBehaviour
                     consprite.sprite = Goatcant;
                 break;
         }
+        */
     }
     public void ShowCost()  //코스트 표기용 - ex: 코스트값 변화시키고, 코스트 숫자 변경
     {
@@ -196,8 +198,6 @@ public class CostManager : MonoBehaviour
                         spotlight.SetActive(true);
                         SpawnMask(conname);
                         playerentityscript.SetStatusEffect("powerUp", 3, 3);
-                        playerentityscript.SetStatusEffect("shield", 3, 5);
-                        playerentityscript.SetStatusEffect("immuneSleep", 3);
                         playerentityscript.hasmask = true;
                     }
                     break;
@@ -315,11 +315,20 @@ public class CostManager : MonoBehaviour
     {
 
         Vector3 spawnposition = new Vector3(playerposition.position.x + 0.25f, playerposition.position.y + 0.25f, playerposition.position.z);    //플레이어 위치를 기준 0.25f 0.25f에 생성하기 위함
-        GameObject mask = Instantiate(playermaskprafab, spawnposition, Quaternion.identity);    //프리팹 생성 기본 기능
-        Mask mymask = mask.GetComponent<Mask>();    //프리팹에서 Mask스크립트를 가져와서 
-        mymask.ChangeStarMaskImage(conname);                       //이미지를 변경하기 위함
-        mask.transform.SetParent(playerposition);
+        //GameObject mask = Instantiate(playermaskprafab, spawnposition, Quaternion.identity);    //프리팹 생성 기본 기능
+        //Mask mymask = mask.GetComponent<Mask>();    //프리팹에서 Mask스크립트를 가져와서 
+        //mymask.ChangeStarMaskImage(conname);                       //이미지를 변경하기 위함
+        //mask.transform.SetParent(playerposition);
         OpenConstellationButton(conname);
+        TurnManager.Inst.maskturn = 3;
+        playerAnimation.SetPlayerConstellaState(conname);
+    }
+
+    public void RemoveMask()
+    {
+        Entity playerentityscript = player.GetComponent<Entity>();
+        playerentityscript.hasmask = false;
+        playerAnimation.SetPlayerConstellaState("Idle");
     }
 
     void SetCostSprite(int num) //코스트 스프라이트 적용하는 기능
@@ -389,6 +398,7 @@ public class CostManager : MonoBehaviour
 
     void OpenConstellationButton(string conname)    //별자리 활성화 시 바꾸는 용도
     {
+        /*
         Image consprite = ConstellationButton.GetComponent<Image>();
         switch (conname)
         {
@@ -399,5 +409,6 @@ public class CostManager : MonoBehaviour
                 SetConstellaButtoncant("Sheep", true);
                 break;
         }
+        */
     }
 }

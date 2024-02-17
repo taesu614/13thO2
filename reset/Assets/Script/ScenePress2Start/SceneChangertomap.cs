@@ -13,4 +13,9 @@ public class SceneChangertomap : MonoBehaviour
     {
         SceneManager.LoadScene("LobiScene");
     }
+
+    public void PressToCutScene()
+    {
+        SceneManager.LoadScene("CutScene");
+    }
 }
