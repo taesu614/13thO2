@@ -44,8 +44,6 @@ public class MapManager : MonoBehaviour
             TileSet();
         }
         playermapindex = savedata.GetPlayerMapIndex();
-        if (playermapindex == 0)
-            return;
         Instantiate(playermeeple, Tile[playermapindex].transform);
     }
 
@@ -87,9 +85,11 @@ public class MapManager : MonoBehaviour
 
     public void CloseAllTile()
     {
-        foreach(GameObject A in Tile)
+        for(int i = 0; i< Tile.Length; i++)
         {
-            A.GetComponent<MapTile>().TileSet(false);
+            if (i == 0) //첫칸은 열어놓을것
+                continue;
+            Tile[i].GetComponent<MapTile>().TileSet(false);
         }
     }
 }

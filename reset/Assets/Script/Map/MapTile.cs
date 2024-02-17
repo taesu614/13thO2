@@ -22,6 +22,8 @@ public class MapTile : MonoBehaviour
 
     public void Setup(char stage, int index)
     {
+        if (index == 0) //∫Û ≈∏¿œ
+            return;
         tileindex = index;
         switch (stage)
             {
