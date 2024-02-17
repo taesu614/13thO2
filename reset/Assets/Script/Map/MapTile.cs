@@ -74,6 +74,8 @@ public class MapTile : MonoBehaviour
     void OnMouseDown()  //해당 콜라이더를 누를때
     {
         if(isopen)
+        {
             ChangeScene();
+        }
     }
 }
