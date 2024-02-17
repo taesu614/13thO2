@@ -7,7 +7,7 @@ using DG.Tweening;
 using Random = UnityEngine.Random;  //·£´ý »ç¿ëÀ» À§ÇÔ
 
 public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´Ù¸¥ monsterSO¸¦ ¸¸µê
-{
+{   //ÇâÈÄ Å©°Ô Á¤¸® ÇÒ °Í, ¿¹¸¦µé¸é ¸ó½ºÅÍ¿Í ÇÃ·¹ÀÌ¾î¸¦ µû·Î ±¸ºÐÁþ´Â´Ù°Å³ª µî
     private Dictionary<string, Action> monsterPatterns = new Dictionary<string, Action>();  //¹öÇÁ Á¦°Å ½Ã ¼±ÀÔ ¼±Ãâ ¹æ½ÄÀ¸·Î ¿¹»óµÇ¾î Å¥·Î ¼³Á¤
     [SerializeField] SpriteRenderer entity;
     [SerializeField] SpriteRenderer charater;
@@ -23,7 +23,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     [SerializeField] Sprite ShieldUI;
     [SerializeField] Sprite EffectUI;
     [SerializeField] Sprite WhatUI;
-
+    [SerializeField] Animator animator;
     List<StatusEffect> myStatusEffect = new List<StatusEffect>();    //¹æ¹ý ¸øÃ£¾Æ¼­ public »ç¿ëÇÔ 
     public Monster monster;
     public int attack;
@@ -51,6 +51,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     private string patternname;
     private bool isfirst = true;   //Ã¹ÅÏ¿¡ UI¼³Á¤À» À§ÇØ¼­ ¸¸µç À§Ä¡
     private int addtionpattern = 0;
+    MonsterAnimator monsterAnimator;
     Order order;
     void Start()
     {
@@ -63,6 +64,11 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         Debug.Log(order);
         order.SetOrder(shieldRenderer.sortingOrder);
         SetShieldTMP();
+        if (gameObject.name != "MyPlayer")   //ÇÃ·¹ÀÌ¾îÀÏ ¶§ ÇØ´ç ³»¿ëµé ½ÇÇà ±ÝÁö
+        {
+            monsterAnimator = transform.Find("Character").GetComponent<MonsterAnimator>();
+        }
+
     }
 
     void OnDestroy()
@@ -94,6 +100,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         healthTMP.text = this.monster.health.ToString();
         shieldTMP.text = this.monster.shield.ToString();
         attackTMP.text = this.monster.attack.ToString();
+        animator.runtimeAnimatorController = this.monster.stateController;  //ÁÁÀº ¹æ¹ýÀÌ ¾Æ´Ï¶ó »ý°¢ÀÌ µé¾î ³ªÁß¿¡ °í¹ÎÇØº¼ °Í
     }
 
     private void OnMouseDown()
@@ -198,6 +205,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
             int damage = attack;
             damage += GetAllAttackUpEffect();
             damage -= GetAllAttackDownEffect();
+            monsterAnimator.SetMonsterState("attack");
             switch (patternname)
             {
                 case "attack":
@@ -238,7 +246,8 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
                 break;
         }
     }
-    #endregion  Hcoronatus  ³­»ï±Í°¡ ¹ºÁö ¸ô¶ó¼­ ³­ÃÊ»ç¸¶±Í·Î ÀÓ½Ã´ëÃ¼
+    #endregion
+    #region Hcoronatus  ³­»ï±Í°¡ ¹ºÁö ¸ô¶ó¼­ ³­ÃÊ»ç¸¶±Í·Î ÀÓ½Ã´ëÃ¼
 
     private void HcoronatusPattern()
     {
@@ -251,6 +260,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
             int damage = attack;
             damage += GetAllAttackUpEffect();
             damage -= GetAllAttackDownEffect();
+            monsterAnimator.SetMonsterState("attack");
             switch (patternname)
             {
                 case "attack":
@@ -303,7 +313,6 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         CardFunctionManager.Inst.Attack("player", damage, "normal", this);
     }
     #endregion
-
     #region Umumu
     private void UmumuPattern()
     {
@@ -316,6 +325,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
             int damage = attack;
             damage += GetAllAttackUpEffect();
             damage -= GetAllAttackDownEffect();
+            monsterAnimator.SetMonsterState("attack");
             switch (patternname)
             {
                 case "attack":
@@ -357,6 +367,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         }
         Debug.Log(patternname);
     }
+    #endregion
     #endregion
 
     #region Utils

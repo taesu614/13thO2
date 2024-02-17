@@ -201,6 +201,7 @@ MonoBehaviour:
     attack: 0
     shield: 0
     percent: 0
+    stateController: {fileID: 0}
   attack: 0
   maxhealth: 100
   health: 100

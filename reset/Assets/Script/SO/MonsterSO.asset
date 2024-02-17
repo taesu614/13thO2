@@ -17,17 +17,29 @@ MonoBehaviour:
     grade: Low
     monsterfunctionname: BacteriaVenom
     sprite: {fileID: 21300000, guid: a0d3b42bd214db342a7ec8c4bef1f5a4, type: 3}
-    maxhealth: 20
-    health: 20
-    attack: 4
+    maxhealth: 16
+    health: 16
+    attack: 8
     shield: 0
     percent: 3
+    stateController: {fileID: 9100000, guid: 7738b7a7c181d8d41b4412c03bb42ea3, type: 2}
   - name: "\uB09C\uCD08\uC0AC\uB9C8\uADC0"
     grade: Low
     monsterfunctionname: Hcoronatus
     sprite: {fileID: 21300000, guid: f7ccdee00977b844c8b31faff6b8113b, type: 3}
-    maxhealth: 40
-    health: 40
+    maxhealth: 12
+    health: 12
+    attack: 5
+    shield: 0
+    percent: 3
+    stateController: {fileID: 9100000, guid: d3542bc8f3e36944cb2831ea6906dbce, type: 2}
+  - name: "\uB09C\uCD08\uC0AC\uB9C8\uADC0"
+    grade: Low
+    monsterfunctionname: Umumu
+    sprite: {fileID: 21300000, guid: 828e4a3ddef155045a8fef3560eb29e7, type: 3}
+    maxhealth: 4
+    health: 4
     attack: 4
     shield: 0
     percent: 3
+    stateController: {fileID: 9100000, guid: 26ea1a41afef96245b34776770e9bc6c, type: 2}

@@ -14,6 +14,7 @@ public class Monster    //몬스터 관련으로 꾸미는곳 몬스터 기능 설정시 등급_몬스�
     public int attack;
     public int shield;
     public float percent;
+    public RuntimeAnimatorController stateController; ///애니메이션 컨트롤러
 }
 
 [CreateAssetMenu(fileName = "MonsterSO", menuName = "Scriptable Object/MonsterSO")]   //에셋 메뉴에 추가 가능해짐
