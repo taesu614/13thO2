@@ -7,12 +7,13 @@ using DG.Tweening;
 using Random = UnityEngine.Random;  //·£´ý »ç¿ëÀ» À§ÇÔ
 
 public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´Ù¸¥ monsterSO¸¦ ¸¸µê
-{   //ÇâÈÄ Å©°Ô Á¤¸® ÇÒ °Í, ¿¹¸¦µé¸é ¸ó½ºÅÍ¿Í ÇÃ·¹ÀÌ¾î¸¦ µû·Î ±¸ºÐÁþ´Â´Ù°Å³ª µî
+{   //ÇâÈÄ Å©°Ô Á¤¸® ÇÒ °Í, ¿¹¸¦µé¸é ¸ó½ºÅÍ¿Í ÇÃ·¹ÀÌ¾î¸¦ µû·Î ±¸ºÐÁþ´Â´Ù°Å³ª, SeriaizeField¸¦ ±¸ºÐÇÑ´Ù°Å³ª µî
     private Dictionary<string, Action> monsterPatterns = new Dictionary<string, Action>();  //¹öÇÁ Á¦°Å ½Ã ¼±ÀÔ ¼±Ãâ ¹æ½ÄÀ¸·Î ¿¹»óµÇ¾î Å¥·Î ¼³Á¤
     [SerializeField] SpriteRenderer entity;
     [SerializeField] SpriteRenderer charater;
     [SerializeField] SpriteRenderer shieldRenderer;
     [SerializeField] SpriteRenderer patternUI;
+    [SerializeField] SpriteRenderer effectUI;
     [SerializeField] TMP_Text healthTMP;
     [SerializeField] TMP_Text attackTMP;
     [SerializeField] TMP_Text shieldTMP;
@@ -23,6 +24,8 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     [SerializeField] Sprite ShieldUI;
     [SerializeField] Sprite EffectUI;
     [SerializeField] Sprite WhatUI;
+    [SerializeField] Sprite poisonIco;
+    [SerializeField] Sprite sleepIco;
     [SerializeField] Animator animator;
     List<StatusEffect> myStatusEffect = new List<StatusEffect>();    //¹æ¹ý ¸øÃ£¾Æ¼­ public »ç¿ëÇÔ 
     public Monster monster;
@@ -51,6 +54,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
     private string patternname;
     private bool isfirst = true;   //Ã¹ÅÏ¿¡ UI¼³Á¤À» À§ÇØ¼­ ¸¸µç À§Ä¡
     private int addtionpattern = 0;
+    bool isCoroutineRunning = false; //ÄÚ·çÆ¾ ÇÑ¹ø¸¸ ½ÇÇàµÇ°Ô ÇÏ´Â ¿ëµµ
     MonsterAnimator monsterAnimator;
     Order order;
     void Start()
@@ -418,6 +422,8 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
                 RemoveEffect("sleep");  //±âÁ¸ÀÇ ¸ðµç ¼ö¸é È¿°ú »èÁ¦
                 break;
         }
+        if(!isCoroutineRunning)
+            StartCoroutine(DisplayEffect());
     }
     #endregion
     public int GetAllAttackUpEffect()   //°ø°Ý·Â Áõ°¡ È¿°ú °¡Á®¿À±â
@@ -452,34 +458,26 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
 
         return false;
     }
-    public void SetSleep(bool onoff)  // StatusEffect Å¬·¡½º¿¡¼­ ¸ðµÎ Ã¼Å©ÇÏ·Á°í ÇÏ´Ù°¡ ºÎµæÀÌÇÏ°Ô ÂüÁ¶¸¦ À§ÇØ ¸¸µé¾ú½À´Ï´Ù.
-    {
-        foreach (StatusEffect obj in myStatusEffect)
-        {
-            obj.SetIsSleep(onoff);
-        }
-    }
     public void GetAllCC()
     {
+        int i = 0;
         foreach (StatusEffect obj in myStatusEffect)
         {
             if (obj.GetSleep() || obj.GetFaint())
             {
+                i++;
                 Debug.Log("You are sleep");
-                canplay = false;
-                break;
-            }
-            else
-            {
-                canplay = true;
-                break;
             }
         }
+        if (i > 0)
+            canplay = false;
+        else
+            canplay = true;
     }
 
     public void RemoveEffect(string name)
     {
-        for(int i = myStatusEffect.Count - 1; i >= 0; i--)
+        for (int i = myStatusEffect.Count - 1; i >= 0; i--)
         {
             if(name == "sleep") //°ø°Ý¹Þ¾ÒÀ»¶§ ¸ðµç ¼ö¸é È¿°ú Á¦°ÅÇÏ´Â ¿ëµµ
             {
@@ -499,6 +497,8 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
             }
         }
         GetAllCC(); //¹öÇÁ º¯µ¿ ÈÄ ¹öÇÁ Ã¼Å©
+        if (!isCoroutineRunning)
+            StartCoroutine(DisplayEffect());
     }
     public void CheckEffect()
     {
@@ -518,6 +518,8 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
                 SetShieldTMP(); //½¯µå »ç¶óÁ³´ÂÁö È®ÀÎÇØ¾ßÇÔ
             }
         }
+        if (!isCoroutineRunning)
+            StartCoroutine(DisplayEffect());
     }
 
     public void CheckShield()   //½¯µå 0ÀÌ¸é »èÁ¦ ÇÏ´Â ±â´É
@@ -530,6 +532,8 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
             }
         }
         SetShieldTMP(); //½¯µå »ç¶óÁ³´ÂÁö È®ÀÎÇØ¾ßÇÔ
+        if (!isCoroutineRunning)
+            StartCoroutine(DisplayEffect());
     }
 
     public int CalculateShiled(int damage)
@@ -555,5 +559,43 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
                 return true;
         }
         return false;
+    }
+
+    IEnumerator DisplayEffect()    //¹öÇÁ Ç¥½Ã¿ë
+    {
+        isCoroutineRunning = true; // ÄÚ·çÆ¾ÀÌ ½ÇÇà ÁßÀÓÀ» Ç¥½Ã
+        List<StatusEffect> coroutineList = new List<StatusEffect>();
+        foreach (StatusEffect A in myStatusEffect)
+        {
+            coroutineList.Add(A);
+        }
+        while (coroutineList.Count > 0)
+        {
+            coroutineList.Clear();
+            foreach (StatusEffect A in myStatusEffect)
+                coroutineList.Add(A);
+            Debug.Log(coroutineList.Count);
+            for(int i = 0; i < coroutineList.Count; i++)
+            {
+                switch (coroutineList[i].GetEffectName())
+                {
+                    case "sleep":
+                        effectUI.sprite = sleepIco;
+                        break;
+                    case "poison":
+                        effectUI.sprite = poisonIco;
+                        break;
+                    default:
+                        effectUI.sprite = null;
+                        break;
+                }
+                yield return new WaitForSeconds(2f);
+            }
+        }
+
+
+        effectUI.sprite = null;
+        isCoroutineRunning = false;
+        yield break;
     }
 }

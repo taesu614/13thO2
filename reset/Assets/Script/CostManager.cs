@@ -11,6 +11,7 @@ public class CostManager : MonoBehaviour
     [SerializeField] TMP_Text gcostTMP;
     [SerializeField] TMP_Text bcostTMP;
     [SerializeField] Image costimg;
+    [SerializeField] GameObject spotlight;
 
     public GameObject rgbprefab;
     public GameObject RBottle;
@@ -46,6 +47,7 @@ public class CostManager : MonoBehaviour
     private void Start()    
     {
         savedata = GameObject.Find("SaveData");
+        spotlight.SetActive(false);
         if (savedata == null)    //바로 실행할 때 대비하는 용도 - 기본값: Sheep
         {
             conname = "Sheep";
@@ -191,6 +193,7 @@ public class CostManager : MonoBehaviour
                 case "Sheep":
                     if (CompareRGB(conname, rcost, gcost, bcost))
                     {
+                        spotlight.SetActive(true);
                         SpawnMask(conname);
                         playerentityscript.SetStatusEffect("powerUp", 3, 3);
                         playerentityscript.SetStatusEffect("shield", 3, 5);
@@ -201,12 +204,14 @@ public class CostManager : MonoBehaviour
                 case "Bull":
                     if (CompareRGB(conname, rcost, gcost, bcost))
                     {
+                        spotlight.SetActive(true);
                         SpawnMask(conname);
                     }
                     break;
                 case "Goat":
                     if (CompareRGB(conname, rcost, gcost, bcost))
                     {
+                        spotlight.SetActive(true);
                         //playerentityscript.MakeAttackUp(0, 9999);
                         playerentityscript.SetStatusEffect("shield", 3, 30);
                         SpawnMask(conname);
@@ -215,6 +220,7 @@ public class CostManager : MonoBehaviour
                 case "Sagittarius":
                     if (CompareRGB(conname, rcost, gcost, bcost))
                     {
+                        spotlight.SetActive(true);
                         playerentityscript.SetStatusEffect("powerUp", 3, 7);
                         //playerentityscript.MakeShield(5, 3);
                         SpawnMask(conname);

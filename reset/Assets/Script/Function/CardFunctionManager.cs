@@ -794,7 +794,10 @@ public class CardFunctionManager : MonoBehaviour
         entity.health -= damage;
         entity.SetHealthTMP();
         if (entity.GetSleep())
-            entity.SetSleep(false);
+        {
+            entity.canplay = true;
+            entity.RemoveEffect("sleep");
+        }
     }
 
     private void NormalHeal(Entity target, int healamount)

@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
 {
     public static EntityManager Inst { get; private set; }
-    public delegate void EntityEvent(); //델리게이트 선언
-    public static event EntityEvent EventEntitySpawn;   //몬스터 생성됨 알림용
-    public static event EntityEvent EventEntityDestroy; //몬스터 파괴됨 알림용
     private void Awake()
     {
         Inst = this; // 싱글톤 인스턴스 설정
@@ -24,6 +22,7 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
     [SerializeField] Entity myBossEntity;
     [SerializeField] Entity otherBossEntity;
     [SerializeField] GameObject EntityPrefab;
+    [SerializeField] GameObject PlayerWin;
 
     const int MAX_ENTITY_COUNT = 6; //엔티티 최대 개수 및 정렬
     public bool IsFullMyEntities => myEntities.Count >= MAX_ENTITY_COUNT && !ExistMyEmptyEntity;
@@ -39,6 +38,7 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
     Entity myplayerentity;
     WaitForSeconds delay1 = new WaitForSeconds(1);
     List<Monster> monsterBuffer;
+    List<GameObject> nowMonsterList = new List<GameObject>();
 
     void Start()
     {
@@ -48,6 +48,7 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
         SetPlayer();
         AddEntity(0);       //향후 좌표 외 이미지와 패턴 관련해서도 수정할 것
         AddEntity(2.5f);
+        PlayerWin.SetActive(false);
         TurnManager.OnTurnStarted += OnTurnStarted;
     }
 
@@ -98,10 +99,10 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
 
     void AddEntity(float distance)
     {
-        var entityObject = Instantiate(entityPrefab, new Vector3(4.3f + distance, -1.5f, 0), Quaternion.identity);
+        GameObject entityObject = Instantiate(entityPrefab, new Vector3(4.3f + distance, -1.5f, 0), Quaternion.identity);
         var monster = entityObject.GetComponent<Entity>();
         monster.Setup(PopMonster());
-        EventEntitySpawn(); //이벤트 몬스터 스폰 알림
+        nowMonsterList.Add(entityObject);
     }
 
     void OnDestroy()
@@ -129,10 +130,7 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
             Destroy(a);
 
             AudioManager.instance.ChangeBGMVolume(0);
-
         }
-
-
     }
 
     IEnumerator AICo()  //적 턴 시작시 AI 코루틴 시작됨
@@ -171,10 +169,10 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
 
     public void FindDieEntity()
     {
-        GameObject[] entities = GameObject.FindGameObjectsWithTag("Monster");
-        foreach (GameObject entityObject in entities)
+        //GameObject[] entities = GameObject.FindGameObjectsWithTag("Monster");
+        for(int i = nowMonsterList.Count-1; i >= 0; i--) 
         {
-            Entity selectEntity = entityObject.GetComponent<Entity>();
+            Entity selectEntity = nowMonsterList[i].GetComponent<Entity>();
             if (selectEntity.health < 1)
             {
                 selectEntity.isDie = true;
@@ -183,22 +181,33 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
 
             if (!selectEntity.isDie)
                 continue;
-            if (selectEntity.isMine)
-            {
-                myEntities.Remove(selectEntity);
-                Destroy(selectEntity.gameObject);
-                entities = GameObject.FindGameObjectsWithTag("Monster");
-                continue;
-            }
-            else
-            {
-                EventEntityDestroy();   //몬스터 파괴 알림
-                otherEntites.Remove(selectEntity);
-                Destroy(selectEntity.gameObject);
-                entities = GameObject.FindGameObjectsWithTag("Monster");
-                continue;
-            }
+            Destroy(nowMonsterList[i]);
+            nowMonsterList.Remove(nowMonsterList[i]);
+
+            //entities = GameObject.FindGameObjectsWithTag("Monster");
+            continue;
         }
+        if (nowMonsterList.Count < 1)
+            StartCoroutine(WaitForSecondsExample());
+    }
+
+    IEnumerator WaitForSecondsExample() //이벤트 기반 아키텍처 사용 미숙으로 인해 이쪽으로 옮김
+    {
+        PlayerWin.SetActive(true);
+        yield return new WaitForSeconds(3.0f);
+
+        //게임 종료 후 데이터 저장 - 늘어날 코드 분량 생각해서 정리할것
+        GameObject savedata = GameObject.Find("SaveData");
+        SaveData playerdata = savedata.GetComponent<SaveData>();
+        GameObject player = GameObject.Find("MyPlayer");
+        Entity playernow = player.GetComponent<Entity>();
+
+        int moneyNow = playerdata.GetPlayerMoney();
+        int plusmoney = moneyNow + 10;  // 일단 임시로 몬스터 죽이면 고정으로 10원 추가하는걸로 했습니다.
+
+        playerdata.SetPlayerHealth(playernow.health);
+        playerdata.SetPlayerMoney(plusmoney);
+        SceneManager.LoadScene("RewardScene");
     }
 
     public bool IsDieEntity()
@@ -248,35 +257,6 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
         myEntities.Sort((entity1, entity2) => entity1.transform.position.x.CompareTo(entity2.transform.position.x));
         if (MyEmptyEntityIndex != _emptyEntityIndex)
             EntityAlignment(true);
-    }
-
-    public bool SpawnEntity(bool isMine, Monster monster, Vector3 spawnPos)
-    {
-        InsertMyEmptyEntity(0f);
-        //if (isMine)
-        //{
-        //    if (IsFullMyEntities || !ExistMyEmptyEntity)
-        //        return false;
-        //}
-        //else
-        //{
-        //    if (IsFullMyEntities)
-        //        return false;
-        //}
-
-        var entityObject = Instantiate(entityPrefab, spawnPos, Utils.QI);
-        var entity = entityObject.GetComponent<Entity>();
-
-        if (isMine)
-            myEntities[MyEmptyEntityIndex] = entity;
-        else
-            otherEntites.Insert(Random.Range(0, otherEntites.Count), entity);
-
-        entity.isMine = isMine;
-        entity.Setup(monster);
-        EntityAlignment(isMine);
-
-        return true;
     }
 
     public void RemoveMyEmptyEntity()   //InsertMyEmptyEntity랑 같이 쓰는 용도인듯
