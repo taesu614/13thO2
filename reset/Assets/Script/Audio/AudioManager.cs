@@ -115,7 +115,6 @@ public class AudioManager : MonoBehaviour
 
     public bool CheckBGM(string playing)
     {
-        Debug.Log(bgmPlayer);
         if (bgmPlayer.clip.name == playing)
             return true;
         else

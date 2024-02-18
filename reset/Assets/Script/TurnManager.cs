@@ -74,16 +74,16 @@ public class TurnManager : MonoBehaviour
         FaceOnOff();
         if (myTurn)
         {
+            if (maskturn < 1)
+            {
+                CostManager.Inst.RemoveMask();
+            }
             playerentity.GetAllCC();
             costManager.CostSet();
             costManager.ShowCost();
             GameManager.Inst.Notification("³ªÀÇ ÅÏ");
             nowTurn++;
             maskturn--;
-            if(maskturn < 1)
-            {
-                CostManager.Inst.RemoveMask();
-            }
         }
             
 

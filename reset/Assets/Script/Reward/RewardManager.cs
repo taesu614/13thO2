@@ -30,7 +30,6 @@ public class RewardManager : MonoBehaviour
         MakeDeck();
         SetRewardList();
         deckscrollview.SetActive(false);
-        AudioManager.instance.PlaySFX(AudioManager.SFX.success); // 씬 전환 하면서 성공 효과음
         itemSO.InitializeItems();
     }
     private void SetCardReward(Item item)    //카드 보상 설정 - 3개 짜리 얘기

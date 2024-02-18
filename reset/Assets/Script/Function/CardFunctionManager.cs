@@ -195,7 +195,7 @@ public class CardFunctionManager : MonoBehaviour
 
         for (int i = 0; i < randNum; i++)
         {
-            Attack("all", 3, "normal");
+            Attack("enemyall", 3, "normal");
         }
         ResetTarget();  //모든 공격 기능 종료 후 타겟을 리셋해야 대상 지정안해도 카드가 사용되는 상황 방지됨
     }
@@ -355,7 +355,7 @@ public class CardFunctionManager : MonoBehaviour
         switch(randNum)
         {
             case <=3 :
-                Sleep("all", 2);
+                Sleep("enemyall", 2);
                 break;
             case > 3:
                 break;

@@ -9,6 +9,7 @@ public class DeckUIManager : MonoBehaviour
     [SerializeField] GameObject cardPrefab;
     List<GameObject> cardnamePrefabslist = new List<GameObject>();  //리스트로 프리팹을 전체 삭제하도록 하는 용도
     private List<Item> mydecklisttemp = new List<Item>();   //덱 리스트 임시 저장소(이곳을 가지고 놀다 최종적으로 생성된 덱을itemBuffer에 넣음)
+    List<Item> uicardlisttemp = new List<Item>();
     public GameObject deckui;
     public RectTransform content;
     public GameObject cardnameuiprefab;
@@ -34,7 +35,9 @@ public class DeckUIManager : MonoBehaviour
         deckui.SetActive(false);
         //savedata.ResetCardList();
         itemSO.InitializeItems();
-        foreach(Item A in savedata.GetPlayerDeck())
+        foreach (Item A in itemSO.items)
+            uicardlisttemp.Add(A);
+        foreach (Item A in savedata.GetPlayerDeck())
             mydecklisttemp.Add(A);
     }
 
@@ -47,11 +50,12 @@ public class DeckUIManager : MonoBehaviour
         if (!isopen)    //닫혀 있다면
         {
             deckui.SetActive(true);
+            SortItemSOtouicardlisttemp();
             //itemBuffer = new List<Item>();
-            for (int i = 0; i < itemSO.items.Length; i++)  //ItemSO에서 카드 데이터 불러옴 - 전체 카드 데이터
+            for (int i = 0; i < uicardlisttemp.Count; i++)  //ItemSO값을 넣은 uicardlisttemp에서 카드 데이터 불러옴 - 전체 카드 데이터
             {
-                Item item = itemSO.items[i];
-                if (itemSO.items[i].haveCard)
+                Item item = uicardlisttemp[i];
+                if (uicardlisttemp[i].haveCard)
                 {
                     var cardObject = Instantiate(cardPrefab, cardlistpanel.transform);
                     Transform newparent = GameObject.Find("CardListContent").GetComponent<Transform>();
@@ -113,6 +117,25 @@ public class DeckUIManager : MonoBehaviour
         AudioManager.instance.PlaySFX(AudioManager.SFX.draw);  // 임시로 draw 효과음 넣음
     }
 
+    void SortItemSOtouicardlisttemp()
+    {
+        int n = uicardlisttemp.Count;
+        for (int i = 1; i < n; ++i)
+        {
+            Item key = uicardlisttemp[i];
+            int j = i - 1;
+
+            // key보다 큰 원소들을 오른쪽으로 이동
+            while (j >= 0 && uicardlisttemp[j].GetID() > key.GetID())
+            {
+                uicardlisttemp[j + 1] = uicardlisttemp[j];
+                j = j - 1;
+            }
+
+            // key를 적절한 위치에 삽입
+            uicardlisttemp[j + 1] = key;
+        }
+    }
     private void SortDeck()   //정렬 관련
     {
         int n = mydecklisttemp.Count;

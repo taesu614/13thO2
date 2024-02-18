@@ -27,13 +27,11 @@ public class EntityManager : MonoBehaviour  //별자리 전용으로 교체될 가능성 높음
     const int MAX_ENTITY_COUNT = 6; //엔티티 최대 개수 및 정렬
     public bool IsFullMyEntities => myEntities.Count >= MAX_ENTITY_COUNT && !ExistMyEmptyEntity;
     bool IsFullOtherEntities => otherEntites.Count >= MAX_ENTITY_COUNT;
-    bool ExistTargetPickEntity => targetPickEntity != null;
     bool ExistMyEmptyEntity => myEntities.Exists(x => x == myEmptyEntity);
     int MyEmptyEntityIndex => myEntities.FindIndex(x => x == myEmptyEntity);
     bool CanMouseInput => TurnManager.Inst.myTurn && !TurnManager.Inst.isLoading;
 
     Entity selectEntity;
-    Entity targetPickEntity;
     GameObject myplayer;
     Entity myplayerentity;
     WaitForSeconds delay1 = new WaitForSeconds(1);

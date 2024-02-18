@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class MapManager : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class MapManager : MonoBehaviour
 
     [SerializeField] GameObject[] Tile; //씬에 적용된 Tile 프리팹을 넣을 것 0이 맨 마지막칸임, 적어도 현 시점에서 노가다 형식으로 진행되므로 이렇게 씀
     [SerializeField] GameObject playermeeplePrefab;   //플레이어 말
+    [SerializeField] GameObject message;
+    [SerializeField] TMP_Text mytext;
     public Sprite movesprite;
     SpriteRenderer playermeeplerenderer;
     GameObject playermeeple;
@@ -39,6 +42,7 @@ public class MapManager : MonoBehaviour
         savedata = GameObject.Find("SaveData").GetComponent<SaveData>();
         if (!AudioManager.instance.CheckBGM("music_Map"))
             AudioManager.instance.PlayBGM(AudioManager.BGM.map);
+        AudioManager.instance.ChangeBGMVolume(1);
         if (savedata.GetMyMap() != null)
         {
             TileSet();
@@ -61,9 +65,23 @@ public class MapManager : MonoBehaviour
             a.SetSprite(3);
             a.SetStageSceneName("EndingProto");
         }
+        message.SetActive(false);
+        StartCoroutine(OutputMessage());
         playermeeplerenderer = playermeeple.GetComponent<SpriteRenderer>();
     }
 
+    IEnumerator OutputMessage()
+    {
+        if (savedata.GetMessage() != null)
+        {
+            message.SetActive(true);
+            mytext.text = savedata.GetMessage();
+            savedata.SetMessage(null);
+            yield return new WaitForSeconds(3f);
+            message.SetActive(false);
+        }
+        yield break;
+    }
     private void Update()
     {
         if (canselect)

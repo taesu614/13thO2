@@ -208,6 +208,11 @@ public class StatusEffect  //스택 형식의 효과는 없앤 상태임
         return effectname;
     }
 
+    public bool GetBenefitEffect()
+    {
+        return isBeneFicialEffect;
+    }
+
     public (bool, int) CheckDamageEffect()
     {
         switch (effectname)

@@ -76,7 +76,7 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         {
             monsterAnimator = transform.Find("Character").GetComponent<MonsterAnimator>();
         }
-
+        StartCoroutine(DisplayEffect());
     }
 
     void OnDestroy()
@@ -109,18 +109,6 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
         shieldTMP.text = this.monster.shield.ToString();
         attackTMP.text = this.monster.attack.ToString();
         animator.runtimeAnimatorController = this.monster.stateController;  //ÁÁÀº ¹æ¹ýÀÌ ¾Æ´Ï¶ó »ý°¢ÀÌ µé¾î ³ªÁß¿¡ °í¹ÎÇØº¼ °Í
-    }
-
-    private void OnMouseDown()
-    {
-    }
-
-    private void OnMouseUp()
-    {
-    }
-
-    private void OnMouseDrag()
-    {
     }
 
     public bool Damaged(int damage)
@@ -392,6 +380,10 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
 
     #region MakeEffect  //¹öÇÁ »ý¼º
 
+    public void AddStatusEffect(StatusEffect effect)   //savedata¿¡ ÀúÀåµÈ ¹öÇÁ°ªÀ» °¡Á®¿À´Â ¿ëµµ
+    {
+        myStatusEffect.Add(effect);
+    }
     public void SetStatusEffect(string name, int turn, int amount = -1)
     {
         if (name == "sleep")//¼ö¸é¸é¿ª Ã¼Å©
@@ -485,12 +477,14 @@ public class Entity : MonoBehaviour //ÇØ´ç ³»¿ëÀ» ÅëÇØ º°ÀÚ¸® »ý¼º °èÈ¹ ±×·¡¼­ ´
             }
             if (name == "beneficial")   //ÀÌ·Î¿î È¿°ú Á¦°Å
             {
-                myStatusEffect.RemoveAt(i);
+                if(myStatusEffect[i].GetBenefitEffect())
+                    myStatusEffect.RemoveAt(i);
                 break;
             }
             else if(name == "harmful")  //ÇØ·Î¿î È¿°ú Á¦°Å
             {
-                myStatusEffect.RemoveAt(i);
+                if (!myStatusEffect[i].GetBenefitEffect())
+                    myStatusEffect.RemoveAt(i);
                 break;
             }
         }

@@ -118,7 +118,7 @@ public class CostManager : MonoBehaviour
         return can;
     }
 
-    public void AddRGBCost(int color)  // RGBCost를 하나씩 추가하는 메소드
+    public void AddRGBCost(int color)  // RGBCost를 하나씩 추가하는 메소드 - Charge
     {
         switch (color)
         {
@@ -148,6 +148,9 @@ public class CostManager : MonoBehaviour
 
     public void SubtractCost(Card card) //코스트 얻는 기능
     {
+        Entity playerentityscript = player.GetComponent<Entity>();
+        if (playerentityscript.hasmask)
+            return;
         hasmycost -= card.item.cost;
         if(card.item.color == 'R')
         {
@@ -180,8 +183,52 @@ public class CostManager : MonoBehaviour
             }
         }
     }
+
+    public void SetSpotLight()  //향후 CompareRGB와 통합할 것
+    {
+        Entity playerentityscript = player.GetComponent<Entity>();
+        if (playerentityscript.hasmask || CompareRGBForSpotLight(conname, rcost, gcost,bcost))
+        {
+            spotlight.SetActive(true);
+        }
+        else
+        {
+            spotlight.SetActive(false);
+        }
+    }
+
+    bool CompareRGBForSpotLight(string name, int r, int g, int b)
+    {
+        switch (name)    //이름에 따라서 스위치문 발동 - 직관성 향상 및 속도 향상을 위해 if 대신 스위치문 사용
+        {
+            case "Sheep":
+                if (r >= 3 && g >= 1 && b >= 2)
+                {
+                    return true;
+                }
+                break;
+            case "Bull":
+                return true;
+            case "Goat":
+                if (r >= 0 && g >= 1 && b >= 2)
+                {
+                    return true;
+                }
+                break;
+            case "Sagittarius":
+                if (r >= 3 && g >= 0 && b >= 0)
+                {
+                    return true;
+                }
+                break;
+        }
+        return false;
+    }
     public void GetMyStarMask() //Button에서 사용, 마스크 착용 기능
     {
+        if (!TurnManager.Inst.myTurn)
+            return;
+
         //Debug.Log(conname);
         Entity playerentityscript = player.GetComponent<Entity>();
         if(playerentityscript.hasmask)
@@ -231,6 +278,7 @@ public class CostManager : MonoBehaviour
                     break;
             }
         }
+        SetSpotLight();
     }
     private bool CompareRGB(string name, int r, int g, int b)   //RGB 코스트 비교용 메서드
     {
@@ -300,8 +348,8 @@ public class CostManager : MonoBehaviour
 
     void BCostCompare(int cost) //B코스트 소모
     {
-        bcost = bcost - 3;
-        for (int i = 0; i < 3; i++)
+        bcost = bcost - cost;
+        for (int i = 0; i < cost; i++)
         {
             if (BPrefabList.Count == 0)
                 break;
@@ -328,6 +376,7 @@ public class CostManager : MonoBehaviour
     {
         Entity playerentityscript = player.GetComponent<Entity>();
         playerentityscript.hasmask = false;
+        SetSpotLight();
         playerAnimation.SetPlayerConstellaState("Idle");
     }
 

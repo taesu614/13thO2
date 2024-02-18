@@ -32,6 +32,8 @@ public class CardManager : MonoBehaviour
             savedata = save.GetComponent<SaveData>();
         }
         cardlist = GameObject.Find("PastCard").GetComponent<CardList>();
+        foreach(StatusEffect A in savedata.mapstatus)
+            player.AddStatusEffect(A);
     }
     [SerializeField] PlayerAnimator playerAnimation;
     [SerializeField] ItemSO itemSO;
@@ -472,6 +474,7 @@ public class CardManager : MonoBehaviour
                     CostManager.Inst.SubtractCost(selectCard);
                     CostManager.Inst.ShowCost();
                     UseCard();
+                    CostManager.Inst.SetSpotLight();
                     IntrusionConditionCheck();
                     EntityManager.Inst.FindDieEntity();
                     TryPutCard(true);

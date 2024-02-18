@@ -60,40 +60,36 @@ public class Event2 : MonoBehaviour
     #region
     void Injection()
     {
-        InjectionCount++;
-
-        if (InjectionCount <= 5)
+        int rand = UnityEngine.Random.Range(0, 10);
+        if (rand < 2) //20% 확률
         {
-            int rand = UnityEngine.Random.Range(0, 10);
-
-            if (rand < 2) //20% 확률
-            {
-                playerHp -= 5;
-                print("체력 감소! 얻은 체력: " + playerHp);
-            }
-            else if (rand < 5) //30% 확률
-            {
-                playerHp += 20;
-                print("체력 회복! 얻은 체력: " + playerHp);
-            }
-            else if (rand < 9) //40% 확률
-            {
-                playerHp += 10;
-                print("체력 회복! 얻은 체력: " +  playerHp);
-            }
-            else //10% 확률
-            {
-                Venom();
-                print("[맹독] 스택5 획득!");
-            }
-            if (InjectionCount == 5)
-            {
-                EventClose();
-            }
+            playerHp -= 5;
+            savedata.SetMessage("체력이 " + playerHp + " 감소하였습니다");
         }
+        else if (rand < 5) //30% 확률
+        {
+            playerHp += 20;
+            savedata.SetMessage("체력이 " + playerHp + " 회복되었습니다");
+        }
+        else if (rand < 9) //40% 확률
+        {
+            playerHp += 10;
+            savedata.SetMessage("체력이 " + playerHp + " 회복되었습니다");
+        }
+        else //10% 확률
+        {
+            Venom();
+            savedata.SetMessage("맹독 상태(5턴)가 되었습니다");
+        }
+        EventClose();
     }
 
-    void Venom() {}
+    void Venom() 
+    {
+        StatusEffect statuseffect = new StatusEffect();
+        statuseffect.SetStatusEffect("poison", 5);
+        savedata.AddStatusEffect(statuseffect);
+    }
 
     void None()
     {

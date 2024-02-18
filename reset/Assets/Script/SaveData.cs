@@ -8,6 +8,7 @@ public class SaveData : MonoBehaviour
     List<Item> cardlist = new List<Item>();
     List<Item> deck = new List<Item>();
     List<int> cardcount = new List<int>();
+    public List<StatusEffect> mapstatus = new List<StatusEffect>();
     string constellation = "Sheep"; //기본값을 sheep으로
     public static SaveData instance;   //싱글톤으로 설정
     private int playermaxhelath = 100;
@@ -16,7 +17,7 @@ public class SaveData : MonoBehaviour
     int getmoney = 0; //얻은 돈
     public float bgmVolumeSet = -10;
     public float sfxVolumeSet = 0;
-
+    string message;
     //맵 위치 관련
     string mymap;
     int playermapindex = 0; //플레이어 지도 위치
@@ -39,6 +40,10 @@ public class SaveData : MonoBehaviour
         DefaultDeckSetting();
     }
 
+    public void AddStatusEffect(StatusEffect statuseffect)
+    {
+        mapstatus.Add(statuseffect);
+    }
     public void ResetData()
     {
         playermaxhelath = 100;
@@ -46,6 +51,16 @@ public class SaveData : MonoBehaviour
         playermoney = 10;
         playermapindex = 0;
         IsRoulette = false;
+    }
+
+    public void SetMessage(string eventmessage)
+    {
+        message = eventmessage;
+    }
+
+    public string GetMessage()
+    {
+        return message;
     }
 
     public void ResetCardList() //저장된 카드 리스트 초기화
