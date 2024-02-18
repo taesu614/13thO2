@@ -6979,7 +6979,12 @@ MonoBehaviour:
   - {fileID: 1053229267}
   - {fileID: 1199591650}
   - {fileID: 764608981}
-  playermeeple: {fileID: 4610067635216159738, guid: b971c6d60d8e15448bcd47771e5f310c, type: 3}
+  playermeeplePrefab: {fileID: 4610067635216159738, guid: b971c6d60d8e15448bcd47771e5f310c, type: 3}
+  movesprite: {fileID: 21300000, guid: ddacc28383539b54ab5a512254145c55, type: 3}
+  canselect: 1
+  selectindex: 0
+  nextindex: 0
+  speed: 1
 --- !u!1 &1850092601
 GameObject:
   m_ObjectHideFlags: 0

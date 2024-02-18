@@ -73,9 +73,10 @@ public class MapTile : MonoBehaviour
 
     void OnMouseDown()  //해당 콜라이더를 누를때
     {
-        if(isopen)
+        if(isopen&&MapManager.Inst.canselect)
         {
-            ChangeScene();
+            MapManager.Inst.selectindex = tileindex;
+            MapManager.Inst.canselect = false;
         }
     }
 }

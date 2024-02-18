@@ -22,12 +22,18 @@ public class MapManager : MonoBehaviour
     }
 
     [SerializeField] GameObject[] Tile; //씬에 적용된 Tile 프리팹을 넣을 것 0이 맨 마지막칸임, 적어도 현 시점에서 노가다 형식으로 진행되므로 이렇게 씀
-    [SerializeField] GameObject playermeeple;   //플레이어 말
+    [SerializeField] GameObject playermeeplePrefab;   //플레이어 말
+    public Sprite movesprite;
+    SpriteRenderer playermeeplerenderer;
+    GameObject playermeeple;
     MapTile maptile;
     SaveData savedata;
     string tilecount;  //타일맵 수
     int playermapindex;
-
+    public bool canselect = true;
+    public int selectindex;
+    public int nextindex;
+    public float speed = 0.01f;
     void Start()
     {
         savedata = GameObject.Find("SaveData").GetComponent<SaveData>();
@@ -43,9 +49,10 @@ public class MapManager : MonoBehaviour
             TileSet();
         }
         playermapindex = savedata.GetPlayerMapIndex();
+        nextindex = playermapindex + 1;
         //if (playermapindex == 0 && savedata.IsRoulette == false)
         //    return;
-        Instantiate(playermeeple, Tile[playermapindex].transform);
+        playermeeple = Instantiate(playermeeplePrefab, Tile[playermapindex].transform);
 
         if (savedata.GetPlayerMapIndex() != 0)
         {
@@ -53,6 +60,43 @@ public class MapManager : MonoBehaviour
             MapTile a = Tile[0].GetComponent<MapTile>();
             a.SetSprite(3);
             a.SetStageSceneName("EndingProto");
+        }
+        playermeeplerenderer = playermeeple.GetComponent<SpriteRenderer>();
+    }
+
+    private void Update()
+    {
+        if (canselect)
+            return;
+        MovePlayerMeeple();
+    }
+    
+    void MovePlayerMeeple()
+    {
+        if (nextindex >= 20)
+            nextindex = 0;
+        playermeeplerenderer.sprite = movesprite;
+        if (playermeeple.transform.position.x < Tile[nextindex].transform.position.x)
+            playermeeple.transform.rotation = Quaternion.Euler(0, 180, 0);
+        else
+            playermeeple.transform.rotation = Quaternion.Euler(0, 0, 0);
+
+        if (Vector3.Distance(playermeeple.transform.position, Tile[nextindex].transform.position) < 0.1f && nextindex < selectindex)
+        {
+            nextindex++;
+            if (nextindex >= 20)
+                nextindex = 0;
+        }
+        playermeeple.transform.position = Vector3.MoveTowards(playermeeple.transform.position, Tile[nextindex].transform.position, speed * Time.deltaTime);
+        if (selectindex == 0)
+            selectindex = 20;
+        if (Vector3.Distance(playermeeple.transform.position, Tile[nextindex].transform.position) < 0.1f && nextindex >= selectindex || Vector3.Distance(playermeeple.transform.position, Tile[0].transform.position) < 0.1f && selectindex == 20)
+        {
+            if (selectindex == 20)
+                selectindex = 0;
+            MapTile selecttile = Tile[selectindex].GetComponent<MapTile>();
+            selecttile.ChangeScene();
+            //이곳에서 씬 변경
         }
     }
 

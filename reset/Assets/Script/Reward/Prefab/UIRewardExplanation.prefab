@@ -506,7 +506,9 @@ MonoBehaviour:
     active: 
     percent: 0
     selectable: 0
-    identifier: 0
+    memoryCard: 0
+    haveCard: 0
+    tag: 
   items: []
   coloruiimage: {fileID: 3833947997541135585}
   costuiimage: {fileID: 1611751925384481413}
@@ -843,8 +845,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -20.2, y: -20.4}
-  m_SizeDelta: {x: 17.27526, y: 5.23029}
+  m_AnchoredPosition: {x: -20.051, y: -22.1}
+  m_SizeDelta: {x: 19.00309, y: 5.23029}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6445480983798425924
 CanvasRenderer:
@@ -876,15 +878,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uACF5\uACA9 \uD14C\uC2A4\uD2B8 \uCE74\uB4DC"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 945d32a014df836439f7e775b75435df, type: 2}
-  m_sharedMaterial: {fileID: -3176885775795886508, guid: 945d32a014df836439f7e775b75435df, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d188c187fe57fd94d9a9ae629bb68128, type: 2}
+  m_sharedMaterial: {fileID: -8592735950030697906, guid: d188c187fe57fd94d9a9ae629bb68128, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190335
-  m_fontColor: {r: 1, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
