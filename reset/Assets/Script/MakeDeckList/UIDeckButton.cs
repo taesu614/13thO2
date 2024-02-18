@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class UIDeckButton : MonoBehaviour
+public class UIDeckButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Item itemname;
     [SerializeField] Image coloruiimage;
     [SerializeField] TMP_Text nameTMP;
     [SerializeField] TMP_Text costTMP;
     [SerializeField] TMP_Text cardsTMP;  // 카드 장수 정하는거
+    [SerializeField] TMP_Text activeTMP;
     [SerializeField] Image image;
     [SerializeField] Sprite blue;
     [SerializeField] Sprite red;
     [SerializeField] Sprite green;
+    [SerializeField] GameObject panel;
     public int identifier;
     public int cards = 0;  // 카드 장수
     string a;
@@ -22,7 +25,8 @@ public class UIDeckButton : MonoBehaviour
     DeckUIManager deckuimanager;
     // Start is called before the first frame update
     void Start()
-    { 
+    {
+        panel.SetActive(false);
         GameObject save = GameObject.Find("SaveData");
         savedata = save.transform.GetComponent<SaveData>();
         GameObject deckui = GameObject.Find("DeckUIManager");
@@ -34,8 +38,9 @@ public class UIDeckButton : MonoBehaviour
         this.itemname = item;
         nameTMP.text = item.name;
         costTMP.text = item.cost.ToString();
-       // cards++;
-       // cardsTMP.text = cards.ToString();
+        activeTMP.text = item.active;
+        // cards++;
+        // cardsTMP.text = cards.ToString();
         identifier = item.GetID();
 
         if (item.color == 'R')  //여기 숫자 수정하면 글씨 색 바뀜
@@ -67,6 +72,16 @@ public class UIDeckButton : MonoBehaviour
     {
         Debug.Log(itemname.name);
         deckuimanager.RemoveCard(itemname);
+    }
 
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Debug.Log("12313123");
+        panel.SetActive(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        panel.SetActive(false);
     }
 }
