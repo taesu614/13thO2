@@ -43,7 +43,8 @@ public class Card : MonoBehaviour
 
     void OnMouseExit()
     {
-        CardManager.Inst.CardMouseExit(this);    
+        CardManager.Inst.CardMouseExit(this);
+        colorimg.sprite = originalImage;
     }
     public void MoveTransform(PRS prs, bool useDotween, float dotweenTime = 0)
     {

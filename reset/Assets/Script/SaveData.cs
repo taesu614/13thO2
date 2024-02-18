@@ -44,6 +44,11 @@ public class SaveData : MonoBehaviour
     {
         mapstatus.Add(statuseffect);
     }
+
+    public void ResetStatusEffect()
+    {
+        mapstatus.Clear();
+    }
     public void ResetData()
     {
         playermaxhelath = 100;

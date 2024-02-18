@@ -34,6 +34,7 @@ public class CardManager : MonoBehaviour
         cardlist = GameObject.Find("PastCard").GetComponent<CardList>();
         foreach(StatusEffect A in savedata.mapstatus)
             player.AddStatusEffect(A);
+        savedata.ResetStatusEffect();
     }
     [SerializeField] PlayerAnimator playerAnimation;
     [SerializeField] ItemSO itemSO;

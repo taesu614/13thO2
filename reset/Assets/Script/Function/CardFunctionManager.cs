@@ -816,13 +816,12 @@ public class CardFunctionManager : MonoBehaviour
 
     public void MakeDamageMark(Entity entity, int damage, string type)
     {
-        GameObject myInstance = Instantiate(damageMarkPrefab, entity.GetDamageMarkTransform()); // 부모 지정
-        DamageMark damagemark = myInstance.GetComponent<DamageMark>();
-        if(damage >= 0)
+        if (damage >= 0)
         {
+            GameObject myInstance = Instantiate(damageMarkPrefab, entity.GetDamageMarkTransform()); // 부모 지정
+            DamageMark damagemark = myInstance.GetComponent<DamageMark>();
             damagemark.SetDamage(damage, type);
         }
-
     }
     #endregion
 }
