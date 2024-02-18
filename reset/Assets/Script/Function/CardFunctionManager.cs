@@ -295,7 +295,7 @@ public class CardFunctionManager : MonoBehaviour
     private void SleepBaronets()
     {
         cardManager = GetComponent<CardManager>();
-        cardManager.SearchCard("꿈지기");
+        cardManager.SearchCard("sleepKeeper");
         Debug.Log("꿈지기 카드 찾아오기!!");
     }
 
