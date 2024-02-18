@@ -9,7 +9,7 @@ using System.Linq;
 public class CardManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    public static CardManager Inst { get; private set;} //싱글톤
+    public static CardManager Inst { get; private set; } //싱글톤
 
 
     private void Awake()
@@ -18,7 +18,7 @@ public class CardManager : MonoBehaviour
         cardfuction = GetComponent<CardFunctionManager>(); // CardFunction 컴포넌트 가져오기
         //cardfuction.SetCardManager(this); // CardFunctionManager 클래스에 CardManager 인스턴스 주입
         GameObject save = GameObject.Find("SaveData");  //삭제될 일 없는 파일 SaveData를 통해 저장할 데이터 불러옴
-        if(save == null)    //바로 실행할 때 대비하는 용도
+        if (save == null)    //바로 실행할 때 대비하는 용도
         {
             itemBuffer = new List<Item>();
             for (int i = 0; i < itemSO.items.Length; i++)
@@ -32,9 +32,6 @@ public class CardManager : MonoBehaviour
             savedata = save.GetComponent<SaveData>();
         }
         cardlist = GameObject.Find("PastCard").GetComponent<CardList>();
-        foreach(StatusEffect A in savedata.mapstatus)
-            player.AddStatusEffect(A);
-        savedata.ResetStatusEffect();
     }
     [SerializeField] PlayerAnimator playerAnimation;
     [SerializeField] ItemSO itemSO;
@@ -97,15 +94,15 @@ public class CardManager : MonoBehaviour
         else
         {
             itemBuffer = new List<Item>();
-            for(int i = 0; i < savedata.GetPlayerDeck().Count; i++)
-               {
-                   Item item = savedata.GetPlayerDeck()[i];
-                   itemBuffer.Add(item);
-               }
+            for (int i = 0; i < savedata.GetPlayerDeck().Count; i++)
+            {
+                Item item = savedata.GetPlayerDeck()[i];
+                itemBuffer.Add(item);
+            }
         }
-          
 
-        for (int i = 0; i < itemBuffer.Count; i++ )
+
+        for (int i = 0; i < itemBuffer.Count; i++)
         {
             int rand = Random.Range(i, itemBuffer.Count);
             Item temp = itemBuffer[i];
@@ -135,7 +132,7 @@ public class CardManager : MonoBehaviour
 
     void ShuffleItemBuffer()  // 덱 섞는 용도
     {
-        for(int i = 0; i < itemBuffer.Count; i++)
+        for (int i = 0; i < itemBuffer.Count; i++)
         {
             int rand = Random.Range(i, itemBuffer.Count);
             Item temp = itemBuffer[i];
@@ -152,7 +149,7 @@ public class CardManager : MonoBehaviour
 
     void OnDestroy()
     {
-        TurnManager.OnAddCard -= AddCard;    
+        TurnManager.OnAddCard -= AddCard;
     }
 
     void Update()
@@ -163,23 +160,23 @@ public class CardManager : MonoBehaviour
         DetectCardArea();
         SetECardState();
     }
-    
+
     void AddCard(bool isMine)       //카드 드로우 관련
     {
-        if(cardlist.GetPast().Count <= 0 && itemBuffer.Count <= 0)
+        if (cardlist.GetPast().Count <= 0 && itemBuffer.Count <= 0)
         {
 
         }
         else
         {
-            if(isMine)
+            if (isMine)
             {
                 var cardObject = Instantiate(cardPrefab, cardSpawnPoint.position, Utils.QI);
                 var card = cardObject.GetComponent<Card>();
                 card.Setup(PopItem(), isMine);
-                if(isMine)
+                if (isMine)
                     myCards.Add(card);
-            
+
                 SetOriginOrder(isMine);
                 CardAlignment();
                 AudioManager.instance.PlaySFX(AudioManager.SFX.draw);
@@ -197,7 +194,7 @@ public class CardManager : MonoBehaviour
         }
     }
 
-   void CardAlignment()  // 카드 정렬
+    void CardAlignment()  // 카드 정렬
     {
         List<PRS> originCardPRSs = new List<PRS>();
         originCardPRSs = RoundAlignment(myCardLeft, myCardRight, myCards.Count, 0.5f, Vector3.one * 0.3f);  //맨 끝 사이즈 수정 시 카드 사이즈 변경됨
@@ -230,7 +227,7 @@ public class CardManager : MonoBehaviour
         {
             var targetPos = Vector3.Lerp(leftTr.position, rightTr.position, objLerps[i]);
             var targetRot = Utils.QI;
-            if(objCount >= 4)
+            if (objCount >= 4)
             {
                 float curve = Mathf.Sqrt(Mathf.Pow(height, 2) - Mathf.Pow(objLerps[i] - 0.5f, 2));
                 curve = height >= 0 ? curve : -curve;
@@ -247,14 +244,14 @@ public class CardManager : MonoBehaviour
     {
         Card card = isMine ? selectCard : selectCard;
         var targetCards = isMine ? myCards : myCards;
-        if(card != null)    //카드 소모해서 이미 사라졌는데 겹칠때 대비하는 용도
+        if (card != null)    //카드 소모해서 이미 사라졌는데 겹칠때 대비하는 용도
         {
             targetCards.Remove(card);
             card.transform.DOKill();
             DestroyImmediate(card.gameObject);
         }
 
-        if(isMine)
+        if (isMine)
         {
             selectCard = null;
             myPutCount++;
@@ -266,7 +263,7 @@ public class CardManager : MonoBehaviour
     public void DiscardMyCard() //카드를 버리면 과거로 감
     {
         CardAlignment();
-        if(myCards.Count > 0 && myCards[0] != null)    //Null레퍼런스 방지
+        if (myCards.Count > 0 && myCards[0] != null)    //Null레퍼런스 방지
         {
             Card card = myCards[0];
             cardList.AddCard(card.item);
@@ -283,10 +280,10 @@ public class CardManager : MonoBehaviour
         int nowcard = myCards.Count;
         if (nowcard > 8)
         {
-           for(int i = 0; i < nowcard - 8; i++)
-           {
+            for (int i = 0; i < nowcard - 8; i++)
+            {
                 DiscardMyCard();
-           }
+            }
         }
     }
 
@@ -304,9 +301,12 @@ public class CardManager : MonoBehaviour
         }
         if (cardfuction != null)
         {
+            string tempType = selectCard.cardtype;
+            string tempFunction = selectCard.functionname;
             cardList.AddCard(selectCard.item);
-            GetSelectCardType(selectCard.cardtype, selectCard.functionname);
-            cardfuction.UseSelectCard(selectCard.functionname);
+            TryPutCard(true);
+            GetSelectCardType(tempType, tempFunction);
+            cardfuction.UseSelectCard(tempFunction);
         }
     }
 
@@ -355,7 +355,7 @@ public class CardManager : MonoBehaviour
         EnlargeCard(true, card);
     }
 
-    
+
 
     public void CardMouseExit(Card card)    //카드 위에 마우스를 뗄 때(사용 상태 X) 
     {
@@ -372,7 +372,7 @@ public class CardManager : MonoBehaviour
 
     public void CardMouseDown() //카드 사용 중 마우스 누를 때
     {
-        if(selectCard == null)
+        if (selectCard == null)
         {
             return;
         }
@@ -404,7 +404,7 @@ public class CardManager : MonoBehaviour
                 if (onMyCardArea)
                     return;
             }
-            else if(!costManager.CompareCost(selectCard))
+            else if (!costManager.CompareCost(selectCard))
                 GameManager.Inst.Notification("코스트가 부족합니다");
         }
     }
@@ -421,7 +421,7 @@ public class CardManager : MonoBehaviour
             GameManager.Inst.Notification("군중제어 상태에서는 카드 사용이 불가능합니다");
             return;
         }
-            
+
         isMyCardDrag = false;
 
         if (eCardState != ECardState.CanMouseDrag)
@@ -475,14 +475,12 @@ public class CardManager : MonoBehaviour
                     CostManager.Inst.SubtractCost(selectCard);
                     CostManager.Inst.ShowCost();
                     UseCard();
-                    CostManager.Inst.SetSpotLight();
                     IntrusionConditionCheck();
                     EntityManager.Inst.FindDieEntity();
-                    TryPutCard(true);
                 }
             }
         }
-        
+
     }
 
     void CardDrag() //카드 드래그 중일 때
@@ -494,7 +492,7 @@ public class CardManager : MonoBehaviour
         {
             selectCard.MoveTransform(new PRS(Utils.MousePos, Utils.QI, selectCard.originPRS.scale), false);
         }
-        else if(!onMyCardArea)     //선택 해야하는 케이스에 사용
+        else if (!onMyCardArea)     //선택 해야하는 케이스에 사용
         {
             selectCard.MoveTransform(new PRS(Utils.MousePos, Utils.QI, selectCard.originPRS.scale), false);
             //Debug.Log("select");
@@ -530,7 +528,7 @@ public class CardManager : MonoBehaviour
             eCardState = ECardState.CanMouseOver;
 
         else if (TurnManager.Inst.myTurn)
-            eCardState = ECardState.CanMouseDrag;     
+            eCardState = ECardState.CanMouseDrag;
     }
 
     #endregion
@@ -585,9 +583,9 @@ public class CardManager : MonoBehaviour
 
     public bool IsIntrusionDuplication(string function)
     {
-        foreach(string key in intrusionList)
+        foreach (string key in intrusionList)
         {
-            if(key == function)
+            if (key == function)
             {
                 return true;
             }
@@ -606,7 +604,7 @@ public class CardManager : MonoBehaviour
 
     public void IntrusionConditionCheck()   //조건 확인용
     {
-        if(intrusionencore == true && ConditionIntrusionEncore() == true)   //앙코르 조건 확인
+        if (intrusionencore == true && ConditionIntrusionEncore() == true)   //앙코르 조건 확인
         {
             UseIntrusionEncore();
         }

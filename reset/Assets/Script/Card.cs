@@ -22,6 +22,18 @@ public class Card : MonoBehaviour
     public string cardtype;
     public bool selectable;
     public bool isdrag = false;
+    static int cardid = 0;
+    int myid;
+    public int newid;
+    public int GetCardID()
+    {
+        return myid;
+    }
+
+    private void Awake()
+    {
+        myid = cardid++;
+    }
     public void Setup(Item item, bool isMine)   //SO파일을 통해 카드 상태 설정
     {
         this.item = item;
@@ -36,6 +48,14 @@ public class Card : MonoBehaviour
         originalImage = colorimg.sprite;
     }
 
+    public void IDCopy(int i)
+    {
+        newid = i;
+    }
+    public int GetCopyID()
+    {
+        return newid;
+    }
     void OnMouseOver()
     {
         CardManager.Inst.CardMouseOver(this);
