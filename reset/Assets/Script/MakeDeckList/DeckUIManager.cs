@@ -7,6 +7,7 @@ public class DeckUIManager : MonoBehaviour
 {
     [SerializeField] ItemSO itemSO;
     [SerializeField] GameObject cardPrefab;
+    [SerializeField] GameObject carduicontent;
     List<GameObject> cardnamePrefabslist = new List<GameObject>();  //리스트로 프리팹을 전체 삭제하도록 하는 용도
     private List<Item> mydecklisttemp = new List<Item>();   //덱 리스트 임시 저장소(이곳을 가지고 놀다 최종적으로 생성된 덱을itemBuffer에 넣음)
     List<Item> uicardlisttemp = new List<Item>();
@@ -14,7 +15,6 @@ public class DeckUIManager : MonoBehaviour
     public RectTransform content;
     public GameObject cardnameuiprefab;
     Canvas deckuicanvas;
-    GameObject cardlistpanel;
     CanvasRenderer panelcanvasrenderer;
     UIDeckButton uideckbutton;
 
@@ -31,7 +31,6 @@ public class DeckUIManager : MonoBehaviour
     {
         savedata = GameObject.Find("SaveData").GetComponent<SaveData>();
         deckuicanvas = deckui.GetComponent<Canvas>();
-        cardlistpanel = GameObject.Find("CardListPanel");
         deckui.SetActive(false);
         //savedata.ResetCardList();
         itemSO.InitializeItems();
@@ -57,10 +56,7 @@ public class DeckUIManager : MonoBehaviour
                 Item item = uicardlisttemp[i];
                 if (uicardlisttemp[i].haveCard)
                 {
-                    var cardObject = Instantiate(cardPrefab, cardlistpanel.transform);
-                    Transform newparent = GameObject.Find("CardListContent").GetComponent<Transform>();
-                    cardObject.transform.SetParent(newparent);
-                    RectTransform cardRectTransform = cardObject.GetComponent<RectTransform>(); //UI에 있어서 RectTransform사용
+                    var cardObject = Instantiate(cardPrefab, carduicontent.transform);
                     instantiatedCards.Add(cardObject);
                     var card = cardObject.GetComponent<UICardButton>();
                     card.Setup(item);

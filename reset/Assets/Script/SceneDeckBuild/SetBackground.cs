@@ -73,7 +73,7 @@ public class SetBackground : MonoBehaviour
         switch (name)
         {
             case "Sheep":
-                speech = "바로네츠가 악몽으로부터 위협받지 않도록 꿈지기들로 여왕을 수호하세요!“ 흐아아암..나의 안전은 곧 공주의 안식..병사들이여 나를 지켜..라 zZ ”" + System.Environment.NewLine + System.Environment.NewLine + "R3 G1 B2" + System.Environment.NewLine + "활성화 시 공격력 3 증가";
+                speech = "바로네츠가 악몽으로부터 위협받지 않도록 꿈지기들로 여왕을 수호하세요!“ 흐아아암..나의 안전은 곧 공주의 안식..병사들이여 나를 지켜..라 zZ ”" + System.Environment.NewLine + System.Environment.NewLine + "RGB 코스트를 각각 3,1,2 소모해 별자리의 힘을 얻을 수 있습니다" + System.Environment.NewLine + "힘을 얻는 동안 공격력이 3 증가합니다";
                 BackgroundActive(true);
                 break;
             case "Goat":

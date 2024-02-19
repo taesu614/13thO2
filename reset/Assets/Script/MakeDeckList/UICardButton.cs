@@ -11,16 +11,15 @@ public class UICardButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public List<Item> items;
     [SerializeField] Image coloruiimage;
     [SerializeField] Image costuiimage;
-    [SerializeField] SpriteRenderer colorimg;
-    [SerializeField] SpriteRenderer costcolor;
     [SerializeField] TMP_Text nameTMP;
     [SerializeField] TMP_Text costTMP;  //계산에 쓰일 것이므로 num = int.Parse(costTMP); 해둘것
     [SerializeField] TMP_Text acitveTMP;
     [SerializeField] GameObject panel;
-    public string functionname;
-    public string cardtype;
-    public bool selectable;
-    public int identifier;
+    [SerializeField] GameObject realPanel;  //카드 사이즈로 인해 충돌범위가 겹쳐서 만듬
+    string functionname;
+    string cardtype;
+    bool selectable;
+    int identifier;
     SaveData savedata;
     DeckUIManager deckuimanager;
     private void Start()
@@ -29,14 +28,13 @@ public class UICardButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         savedata = save.transform.GetComponent<SaveData>();
         deckuimanager = GameObject.Find("DeckUIManager").GetComponent<DeckUIManager>();
         panel.SetActive(false);
+        realPanel.SetActive(false);
     }
     public void Setup(Item item)    //Card.cs를 복붙하고 수정한 코드 -기능: 카드 세팅
     {
         this.item = item;
-        colorimg.sprite = this.item.colorimg;
-        costcolor.sprite = this.item.costcolor;
         coloruiimage.sprite = this.item.colorimg;       //UI에서 사용되려면 Image컴포넌트를 수정해야함
-        costuiimage.sprite = this.item.costcolor;       //SO파일은 SpriteRender라 이미지를 2번 주는식으로 함
+        costuiimage.sprite = this.item.costcolor;       
         nameTMP.text = this.item.name;
         acitveTMP.text = this.item.active;
         functionname = this.item.functionname;
@@ -55,9 +53,11 @@ public class UICardButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public void OnPointerEnter(PointerEventData eventData)
     {
         panel.SetActive(true);
+        realPanel.SetActive(true);
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         panel.SetActive(false);
+        realPanel.SetActive(false);
     }
 }

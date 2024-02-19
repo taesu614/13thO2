@@ -118,7 +118,7 @@ public class CostManager : MonoBehaviour
         return can;
     }
 
-    public void AddRGBCost(int color)  // RGBCost를 하나씩 추가하는 메소드 - Charge
+    public void AddRGBCost(int color)  // RGBCost를 하나씩 추가하는 메소드 - Charge전용
     {
         switch (color)
         {

@@ -36,7 +36,7 @@ public class MapManager : MonoBehaviour
     public bool canselect = true;
     public int selectindex;
     public int nextindex;
-    public float speed = 0.01f;
+    float speed = 2f;
     void Start()
     {
         savedata = GameObject.Find("SaveData").GetComponent<SaveData>();
@@ -106,6 +106,7 @@ public class MapManager : MonoBehaviour
                 nextindex = 0;
         }
         playermeeple.transform.position = Vector3.MoveTowards(playermeeple.transform.position, Tile[nextindex].transform.position, speed * Time.deltaTime);
+        Debug.Log(speed);
         if (selectindex == 0)
             selectindex = 20;
         if (Vector3.Distance(playermeeple.transform.position, Tile[nextindex].transform.position) < 0.1f && nextindex >= selectindex || Vector3.Distance(playermeeple.transform.position, Tile[0].transform.position) < 0.1f && selectindex == 20)

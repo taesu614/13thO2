@@ -6,21 +6,38 @@ public class Setting : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject settingUI;
+    public bool isTurnOn;
     void Start()
     {
         TurnOffSetting();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isTurnOn)
+            {
+                TurnOffSetting();
+                return;
+            }
+            TurnOnSetting();
+        }
+
     }
 
     public void TurnOnSetting()
     {
         settingUI.SetActive(true);
         AudioManager.instance.PlaySFX(AudioManager.SFX.openClick);
+        isTurnOn = true;
     }
 
     public void TurnOffSetting()
     {
         settingUI.SetActive(false);
         AudioManager.instance.PlaySFX(AudioManager.SFX.closeClick);
+        isTurnOn = false;
     }
 
     private void OnMouseDown()

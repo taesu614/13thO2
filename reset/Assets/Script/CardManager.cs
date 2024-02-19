@@ -475,6 +475,7 @@ public class CardManager : MonoBehaviour
                     CostManager.Inst.SubtractCost(selectCard);
                     CostManager.Inst.ShowCost();
                     UseCard();
+                    CostManager.Inst.SetSpotLight();
                     IntrusionConditionCheck();
                     EntityManager.Inst.FindDieEntity();
                 }

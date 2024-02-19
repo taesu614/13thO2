@@ -10,15 +10,12 @@ public class Slot : MonoBehaviour
     public List<Item> items;
     [SerializeField] Image coloruiimage;
     [SerializeField] Image costuiimage;
-    [SerializeField] SpriteRenderer colorimg;
-    [SerializeField] SpriteRenderer costcolor;
     [SerializeField] TMP_Text nameTMP;
     public string functionname;
     public string cardtype;
     public bool selectable;
     private void Start()
     {
-
     }
 
     public void ResetImage()
@@ -29,8 +26,6 @@ public class Slot : MonoBehaviour
     public void Setup(Item item)    //Card.cs를 복붙하고 수정한 코드 -기능: 카드 세팅
     {
         this.item = item;
-        colorimg.sprite = this.item.colorimg;
-        costcolor.sprite = this.item.costcolor;
         //character.sprite = this.item.sprite;
         coloruiimage.sprite = this.item.colorimg;       //UI에서 사용되려면 Image컴포넌트를 수정해야함
         costuiimage.sprite = this.item.costcolor;       //SO파일은 SpriteRender라 이미지를 2번 주는식으로 함
